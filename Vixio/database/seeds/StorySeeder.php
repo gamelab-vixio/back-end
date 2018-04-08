@@ -14,25 +14,47 @@ class StorySeeder extends Seeder
     {
         $faker = Faker::create('App\Story');
         $fisherYates = array();
-        for($i=0; $i < 10; $i++){
+        for($i=0; $i < 500; $i++){
+            $isPublish = (int) rand(0,1);
+            $releaseYear = null;
+            $played = rand(0, 50);
+            $userID = rand(1,1000);
+            if($isPublish) $releaseYear = \Carbon\Carbon::now();
+
             DB::table('stories')->insert([
-                'user_id' => rand(1,3),
+                'user_id' => $userID,
                 'title' => $faker->sentence,
-                'description' => implode($faker->paragraphs(2)),
-                'content' => implode($faker->paragraphs(1)),
+                'description' => implode($faker->paragraphs(1)),
+                'content' => implode($faker->paragraphs(rand(2,5))),
                 'inkle' => "﻿{\"inkVersion\":17,\"root\":[\"^whatssssup\",\"\\n\",\"^yey!\",\"\\n\",\"done\",{\"#f\":3}],\"listDefs\":{}}",
+                'publish' => $isPublish,
+                'year_of_release' => $releaseYear,
+                'played' => $played,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);
+
+            for($j = 0; $j < $played; $j++){
+                DB::table('story_reviews')->insert([
+                    'story_id' => $i+1,
+                    'user_id' => $userID,
+                    'star' => rand(0, 50)/10,
+                    'created_at' => \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now(),
+                ]);
+            }
+
             for($x = 0; $x < 19; $x++){
                 $fisherYates[$x] = $x+1;
             }
+
             for($x = 0; $x < 18; $x++){
                 $y = rand($x, 18);
                 $temp = $fisherYates[$x];
                 $fisherYates[$x] = $fisherYates[$y];
                 $fisherYates[$y] = $temp;
             }
+
             for($j=0; $j< rand(2,5); $j++){
                 DB::table('story_categories')->insert([
                     'story_id' => $i+1,
