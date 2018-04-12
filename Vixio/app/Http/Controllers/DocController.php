@@ -9,9 +9,9 @@ use App\DocumentationContent;
 class DocController extends Controller
 {
     public function getTableOfContent(){
-        $toc = DocumentationTitle::with(['subtitle:title_id,subtitle'])->get(['id','title']);
+        $docs = DocumentationTitle::with(['subtitle:id,title_id,subtitle', 'subtitle.content:subtitle_id,header,content'])->get(['id','title']);
 
-        return response()->json($toc, 200);
+        return response()->json($docs, 200);
     }
 
     public function getContent($tid = 1, $sid = 1){
