@@ -14,20 +14,6 @@ class DocController extends Controller
         return response()->json($docs, 200);
     }
 
-    public function getContent($tid = 1, $sid = 1){
-        $header = DocumentationTitle::with(array('subtitle' => function ($q) use ($sid){
-            $q->select(['id', 'title_id', 'subtitle'])->with(['content:subtitle_id,header'])->where('id','=', $sid)->get();
-        }))->where('id','=', $tid)->get(['id','title']);
-
-        $content = DocumentationContent::where('subtitle_id','=', $sid)->get(['subtitle_id','header','content']);
-
-        $response = [
-            'header' => $header,
-            'content' => $content
-        ];
-        return response()->json($response, 200);
-    }
-
     //admin
     public function adminGetTitle(){
         $title = DocumentationTitle::with(['subtitle:id,title_id,subtitle'])->get(['id','title']);

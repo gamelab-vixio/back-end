@@ -19,9 +19,7 @@ class BlogController extends Controller
     }
 
     public function getPost($bid){
-        /*try{
-            if(JWTAuth::parseToken()->authenticate()){
-                $post = Blog::with([
+        $post = Blog::select(['id', 'title', 'content', 'image_url', 'status', 'updated_at'])->with([
                     'blogComment' => function($q){
                         $q->Select(['id','blog_id','user_id','comment','comment_parent_id','created_at'])->whereNull('comment_parent_id')->orderBy('created_at','desc')->get();
                     },
@@ -31,23 +29,7 @@ class BlogController extends Controller
                     },
                     'blogComment.reply.user:id,name,email,image_url'
                     ])
-                ->where('status', 1)->where('id','=',$bid)->orderBy('updated_at', 'desc')->get(['id', 'title', 'content', 'image_url', 'status', 'updated_at']);
-            }
-        }
-        catch(JWTException $e){
-            $post = Blog::where('id','=',$bid)->where('status', 1)->orderBy('updated_at', 'desc')->get(['id', 'title', 'content', 'image_url', 'status', 'updated_at']);
-        }*/
-        $post = Blog::with([
-                    'blogComment' => function($q){
-                        $q->Select(['id','blog_id','user_id','comment','comment_parent_id','created_at'])->whereNull('comment_parent_id')->orderBy('created_at','desc')->get();
-                    },
-                    'blogComment.user:id,name,email,image_url',
-                    'blogComment.reply' => function($q){
-                        $q->select(['blog_id','user_id','comment_parent_id','comment','created_at'])->whereNotNull('comment_parent_id')->orderBy('created_at','desc')->get();
-                    },
-                    'blogComment.reply.user:id,name,email,image_url'
-                    ])
-                ->where('status', 1)->where('id','=',$bid)->orderBy('updated_at', 'desc')->get(['id', 'title', 'content', 'image_url', 'status', 'updated_at']);
+                ->where('status', 1)->orderBy('updated_at', 'desc')->find($bid);
 
         return response()->json($post, 200);
     }
@@ -111,8 +93,11 @@ class BlogController extends Controller
     public function loadImage($bid){
         $imageURL = Blog::find($bid)->image_url;
         
-        $image = Image::make(public_path().'/'.$imageURL)->resize(600,400);
-
+        if(!is_null($imageURL))
+            $image = Image::make(public_path().'/'.$imageURL)->resize(600,400);
+        else
+            $image = Image::make(public_path().'//image/default-blog.png')->resize(600,400);
+        
         return $image->response('jpeg');
     }
 

@@ -110,20 +110,15 @@ Route::prefix('story')->group(function(){
 		'middleware' => 'auth.jwt'
 	]);
 
-	Route::post('/getReviewStory/{id}',[
-		'uses' => 'StoryController@getReviewStory',
+	Route::post('/createComment/{bid}/{cpid?}', [
+		'uses' => 'StoryController@createComment',
+		'middleware' => 'auth.jwt'
 	]);
 });
 
-Route::prefix('docs')->group(function(){
-	Route::get('/getTableOfContent', [
-		'uses' => 'DocController@getTableOfContent',
-	]);
-
-	Route::get('/getContent/{tid?}/{sid?}', [
-		'uses' => 'DocController@getContent',
-	]);
-});
+Route::get('/docs/getTableOfContent', [
+	'uses' => 'DocController@getTableOfContent',
+]);
 
 Route::prefix('blog')->group(function(){
 	Route::get('/getPublishedBlog', [

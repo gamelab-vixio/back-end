@@ -11,7 +11,7 @@ use JWTAuth;
 class CategoryController extends Controller
 {
     public function getGenre(){
-    	$genres = CategoryGenre::with(['categoryType:genre_id,name'])->has('categoryType','>',0)->skip(1)->get(['id','genre']);
+    	$genres = CategoryGenre::where('id','!=',1)->with(['categoryType:id,genre_id,name'])->has('categoryType','>',0)->get(['id','genre']);
 
     	return response()->json($genres, 200);
     }

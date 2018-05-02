@@ -36,7 +36,7 @@ class UserController extends Controller
 
     public function getUser(){
         $userID = Auth::user()->id;
-        $user = User::find($userID)->get(array('name', 'email', 'image_url'));
+        $user = User::where('id',$userID)->get(array('name', 'email', 'image_url'));
 
         return response()->json($user ,201);
     }
@@ -50,7 +50,7 @@ class UserController extends Controller
             $response = [
                 'message' => 'Something wrong with the photo!'
             ];
-            return response()->json($response ,201);
+            return response()->json($response ,400);
         }
 
         $userID = Auth::user()->id;
@@ -61,8 +61,8 @@ class UserController extends Controller
         if (! File::exists(public_path().$path)) {
             File::makeDirectory(public_path().$path, 0755, true, true);
         }
-        Image::make($request->file('photo'))->save($path.$profile);
         $path = $path.$profile;
+        Image::make($request->file('photo'))->save($path);
 
         $user = User::find($userID);
         $user->image_url = $path;
@@ -79,11 +79,15 @@ class UserController extends Controller
     public function loadImage(){
         $userID = Auth::user()->id;
         $imageURL = User::find($userID)->image_url;
-        $image = Image::make(public_path().'/'.$imageURL)->resize(300,300);
+        if(!is_null($imageURL))
+            $image = Image::make(public_path().'/'.$imageURL)->resize(300,300);
+        else
+            $image = Image::make(public_path().'/image/default-user.png')->resize(300,300);
 
         return $image->response('jpeg');
     }
 
+    //put e-mail verificaton then create the user
     public function signup(Request $request){
     	$this->validate($request, [
     		'name' => 'required',

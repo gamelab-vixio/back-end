@@ -10,6 +10,7 @@ use App\Story;
 use App\StoryCategory;
 use App\CategoryType;
 use App\StoryReview;
+use App\StoryComment;
 use Auth;
 use Carbon\Carbon;
 use File;
@@ -33,11 +34,12 @@ class StoryController extends Controller
 		$story->user_id = $userID;
 		$story->title = $request->input('title');
 		$story->description = $request->input('description');
+
 		if($request->has(['content']))
-		$story->content = $request->input('content');
+			$story->content = $request->input('content');
+
 		$story->save();
 
-		$story = Story::select(['id','created_at'])->where('user_id','=',$userID)->orderBy('created_at','desc')->first();
 		$sid = $story->id;
 		$categories = $request->input('categories');
 		$length = count($categories);
@@ -56,7 +58,7 @@ class StoryController extends Controller
 		return response()->json($response ,201);
     }
 
-    //belom masukin api
+
 
     public function writerGetStoryList(){
     	$userID = Auth::user()->id;
@@ -98,7 +100,7 @@ class StoryController extends Controller
     	$story = Story::where('user_id','=', $userID)->findOrFail($sid);
 
 		//store image
-    	if($request->has(['photo']) && $request->file('image')->isvalid() ){
+    	if($request->has(['photo']) && $request->file('photo')->isvalid() ){
 	        $image = 'image.'.$request->file('photo')->extension();
 	        $path = './image/story/'.$sid.'/';
 	        if (! File::exists(public_path().$path)) {
@@ -140,7 +142,10 @@ class StoryController extends Controller
     public function writerLoadImage($sid){
         $imageURL = Story::find($sid)->image_url;
         
-        $image = Image::make(public_path().'/'.$imageURL)->resize(400,300);
+        if(!is_null($imageURL))
+        	$image = Image::make(public_path().'/'.$imageURL)->resize(400,300);
+        else
+        	$image = Image::make(public_path().'/image/default-story.png')->resize(400,300);
 
         return $image->response('jpeg');
     }
@@ -207,49 +212,55 @@ class StoryController extends Controller
 		return response()->json($response ,200);
 
     }
-    //belom masukin API (start)
-    	//write review
+    
+    //write review
     public function addReviewStory(Request $request, $sid){
     	$this->validate($request,[
-    		'star' => 'required',
+    		'star' => 'required|numeric|between:0,5.0|regex:/^\d*(\.\d{1,1})?$/',
 		]);
 
     	$userID = Auth::user()->id;
 
-    	$storyReview = new StoryReview();
-
-    	$storyReview->user_id = $userID;
-    	$storyReview->story_id = $sid;
-    	$storyReview->star = $request->input('star');
-
-    	$storyReview->save();
+    	$storyReview = StoryReview::updateOrCreate(
+    		['user_id' => $userID, 'story_id' => $sid],
+    		['star' => $request->input('star')]
+		);
 
     	$response = [
 			'message' => 'Thank you for reviewing this story.'
 		];
 
-		return response->json($response, 200);
+		return response()->json($response, 200);
 
     }
 
-    public function getReviewStory($sid){
-    	$starTotal = StoryReview::where('story_id','=', $sid)->sum('star');
-    	$totalRow = StoryReview::where('story_id','=', $sid)->get()->count();
+    public function createComment(Request $request, $sid, $cpid = null){
+        $this->validate($request, [
+            'comment' => 'required'
+        ]);
 
-    	$starAvg = $starTotal/$totalRow;
-    	$starAvg = number_format((float)$starAvg, 2, '.', '');
+        $userID = Auth::user()->id;
 
-    	$star = [
-    		'star' => $starAvg;
-    	]
+        $storyComment = new StoryComment();
 
-    	return response()->json($star, 200);
+        $storyComment->story_id = $sid;
+        $storyComment->user_id = $userID;
+        $storyComment->comment_parent_id = $cpid;
+        $storyComment->comment = $request->input('comment');
+
+        $storyComment->save();
+
+        $response = [
+            'message' => 'Comment Successfully pushed!'
+        ];
+        return response()->json($response ,201);
     }
-    //belom masukin API (end)
 
     public function getStoryList(){
     	//tambahin cek ID buat kasih albert pake gazzle
-    	$stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name'])->where('active', '=', '1')->where('publish', '=', '1')->paginate(6);
+    	$stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+    		$query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+    	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(6);
 
         return response()->json($stories, 200);
     }

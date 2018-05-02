@@ -19,7 +19,7 @@ class CreateUserReportsTable extends Migration
             $table->integer('reporter_user_id');
             $table->text('reason');
             $table->string('image_url')->nullable()->default(null);
-            $table->boolean('comment_type'); //0 for blog | 1 for story
+            $table->boolean('comment_type'); //0 for blog comment | 1 for story comment
             $table->timestamps();
         });
     }

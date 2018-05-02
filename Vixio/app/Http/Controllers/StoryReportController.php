@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Story;
+use App\StoryReport;
 use Auth;
 
 class StoryReportController extends Controller
@@ -15,15 +16,16 @@ class StoryReportController extends Controller
 
     	$reporterUserID = $userID = Auth::user()->id;
 
-		$report = new StoryReport();
+        $imageURL = NULL;
 
 		if($request->has(['imageURL'])){
-			$report->image_url = $request->input('imageURL');
+			$imageURL = $request->input('imageURL');
 		}
-		$report->reason = $request->input('reason');
-		$report->story_id = $story_id;
-		$report->reporter_user_id = $reporterUserID;
-		$report->save();
+		
+        $report = StoryReport::updateOrCreate(
+            ['reporter_user_id' => $reporterUserID, 'story_id' => $story_id],
+            ['reason' => $request->input('reason'), 'image_url' => $imageURL]
+        );
 
 		$response = [
 			'message' => 'Report submitted!'

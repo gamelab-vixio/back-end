@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\UserReport;
 use Auth;
 
 class UserReportController extends Controller
@@ -15,16 +16,16 @@ class UserReportController extends Controller
 
     	$reporterUserID = $userID = Auth::user()->id;
 
-		$report = new UserReport();
+        $imageURL = NULL;
 
-		if($request->has(['imageURL'])){
-			$report->image_url = $request->input('imageURL');
-		}
-		$report->reason = $request->input('reason');
-		$report->user_id = $reported_user_id;
-		$report->reporter_user_id = $reporterUserID;
-		$report->comment_type = $type;
-        $report->save();
+        if($request->has(['imageURL'])){
+            $imageURL = $request->input('imageURL');
+        }
+
+        $report = UserReport::updateOrCreate(
+            ['reporter_user_id' => $reporterUserID, 'comment_type' => $type, 'user_id' => $reported_user_id],
+            ['reason' => $request->input('reason'), 'image_url' => $imageURL]
+        );
 
         $response = [
             'message' => 'Report submitted!'
