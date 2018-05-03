@@ -63,14 +63,18 @@ class StoryController extends Controller
     public function writerGetStoryList(){
     	$userID = Auth::user()->id;
 
-    	$stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name'])->where('user_id', '=', $userID)->paginate(6);
+    	$stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+            $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+        }])->where('user_id', '=', $userID)->paginate(6);
 
         return response()->json($stories, 200);
     }
 
     public function writerGetStory($sid){
     	$userID = Auth::user()->id;
-    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name'])->where('user_id', '=', $userID)->find($sid);
+    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+            $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+        }])->where('user_id', '=', $userID)->find($sid);
 
         return response()->json($story, 200);
     }
@@ -266,7 +270,9 @@ class StoryController extends Controller
     }
 
     public function getStory($sid){
-    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release'])->with(['user:id,name,email,image_url','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name'])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
+    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release'])->with(['user:id,name,email,image_url','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+            $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+        }])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
 
         return response()->json($story, 200);
     }
