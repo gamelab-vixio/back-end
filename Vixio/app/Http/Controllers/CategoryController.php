@@ -50,6 +50,8 @@ class CategoryController extends Controller
     public function adminGetGenre(){
     	$genres = CategoryGenre::all(['id','genre']);
 
+    	// return view('')->with('data', $genres);
+
     	return response()->json($genres, 200);
     }
 
@@ -95,7 +97,7 @@ class CategoryController extends Controller
 
     public function adminDeleteGenre($gid){
     	if($gid != 1){
-    		$type = CategoryType::where('genre_id', '=', $gid)->update(['genre_id' => 0]);
+    		$type = CategoryType::where('genre_id', '=', $gid)->update(['genre_id' => 1]);
 
 			$genre = CategoryGenre::find($gid);
 
