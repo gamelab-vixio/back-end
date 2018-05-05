@@ -39,9 +39,6 @@
             <a class="navbar-brand" href="#">
                <h3>VIXIO CMS</h3>
             </a>
-            <a class="navbar-brand hidden" href="#">
-               <h3>VIXIO CMS</h3>
-            </a>
             <a class="navbar-brand hidden" href="#"></a>
          </div>
 

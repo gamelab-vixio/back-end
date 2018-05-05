@@ -18,7 +18,7 @@ Auth::routes();
 });*/
 
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
-	Route::get('/', 'HomeController@index')->name('home');
+	Route::get('/', 'HomeController@index')->name('dashboard');
 
 	Route::prefix('category')->group(function(){
 		Route::get('/genre/adminGet', [
