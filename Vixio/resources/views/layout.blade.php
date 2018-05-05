@@ -42,6 +42,7 @@
             <a class="navbar-brand hidden" href="#">
                <h3>VIXIO CMS</h3>
             </a>
+            <a class="navbar-brand hidden" href="#"></a>
          </div>
 
          <div id="main-menu" class="main-menu collapse navbar-collapse">
