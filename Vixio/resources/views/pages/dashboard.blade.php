@@ -10,7 +10,7 @@
               <h5 class="text-white text-center">User Count</h5>
               <br/>
               <h3 class="mb-0 text-center">
-                  <span class="count">329932932</span>
+                  <span class="count"><?php echo $data['user'];?></span>
               </h3>
               <br/>    
           </div>
@@ -23,7 +23,7 @@
               <h5 class="text-white text-center">Story Count</h5>
               <br/>
               <h3 class="mb-0 text-center">
-                  <span class="count">29392392</span>
+                  <span class="count"><?php echo $data['story'];?></span>
               </h3>
               <br/>    
           </div>

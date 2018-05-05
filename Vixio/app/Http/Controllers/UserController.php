@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
+use App\Permission;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
@@ -103,9 +105,44 @@ class UserController extends Controller
 
 		$user->save();
 
+        $role = Role::where('name', 'user')->first();
+
+        $user->attachRole($role);
+
 		$response = [
 			'message' => 'Successfully created user!'
 		];
 		return response()->json($response ,201);
+    }
+
+    //admin
+    public function userList(){
+        $user = User::withRole('user')->select(array('name','email','image_url'))->paginate(10);
+
+        return response()->json($user, 200);
+    }
+
+    public function addAdmin(Request $request){
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
+        ]);
+
+        $admin = Role::where('name', 'admin')->first();
+
+        $user = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        $user->attachRole($admin);
+
+        $user->save();
+
+        $response = ['message' => 'Successfully create new admin'];
+
+        return response()->json($response, 201);
     }
 }
