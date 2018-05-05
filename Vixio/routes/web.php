@@ -11,116 +11,120 @@
 |
 */
 
-Route::get('/', function () {
+Auth::routes();
+
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
 
-//admin
-Route::prefix('category')->group(function(){
-	Route::get('/genre/adminGet', [
-		'uses' => 'CategoryController@adminGetGenre'
-	]);
+Route::group(['middleware' => ['auth', 'role:admin']], function(){
+	Route::get('/', 'HomeController@index')->name('home');
 
-	Route::get('/type/adminGet', [
-		'uses' => 'CategoryController@adminGetType'
-	]);
+	Route::prefix('category')->group(function(){
+		Route::get('/genre/adminGet', [
+			'uses' => 'CategoryController@adminGetGenre',
+		]);
 
-	Route::post('/genre/adminUpdate/{id}', [
-		'uses' => 'CategoryController@adminUpdateGenre'
-	]);
+		Route::get('/type/adminGet', [
+			'uses' => 'CategoryController@adminGetType',
+		]);
 
-	Route::post('/type/adminUpdate/{id}', [
-		'uses' => 'CategoryController@adminUpdateType'
-	]);
+		Route::post('/genre/adminUpdate/{id}', [
+			'uses' => 'CategoryController@adminUpdateGenre',
+		]);
 
-	Route::get('/genre/adminDelete/{id}', [
-		'uses' => 'CategoryController@adminDeleteGenre'
-	]);
+		Route::post('/type/adminUpdate/{id}', [
+			'uses' => 'CategoryController@adminUpdateType',
+		]);
 
-	Route::get('/type/adminDelete/{id}', [
-		'uses' => 'CategoryController@adminDeleteType'
-	]);
+		Route::get('/genre/adminDelete/{id}', [
+			'uses' => 'CategoryController@adminDeleteGenre',
+		]);
 
-	Route::post('/genre/create', [
-		'uses' => 'CategoryController@createGenre',
-	]);
+		Route::get('/type/adminDelete/{id}', [
+			'uses' => 'CategoryController@adminDeleteType',
+		]);
 
-	Route::post('/type/create', [
-		'uses' => 'CategoryController@createType',
-	]);
-});
+		Route::post('/genre/create', [
+			'uses' => 'CategoryController@createGenre',
+		]);
 
-Route::prefix('docs')->group(function(){
-	Route::get('/adminGet',[
-		'uses' => 'DocController@adminGetAll'
-	]);
+		Route::post('/type/create', [
+			'uses' => 'CategoryController@createType',
+		]);
+	});
 
-	Route::post('/createTitle', [
-		'uses' => 'DocController@createTitle',
-	]);
+	Route::prefix('docs')->group(function(){
+		Route::get('/adminGet',[
+			'uses' => 'DocController@adminGetAll',
+		]);
 
-	Route::post('/createSubtitle', [
-		'uses' => 'DocController@createSubtitle',
-	]);
+		Route::post('/createTitle', [
+			'uses' => 'DocController@createTitle',
+		]);
 
-	Route::post('/createContent', [
-		'uses' => 'DocController@createContent',
-	]);
+		Route::post('/createSubtitle', [
+			'uses' => 'DocController@createSubtitle',
+		]);
 
-	Route::get('/adminGetTitle', [
-		'uses' => 'DocController@adminGetTitle',
-	]);
+		Route::post('/createContent', [
+			'uses' => 'DocController@createContent',
+		]);
 
-	Route::post('/adminUpdate/{tid}/{sid?}/{hid?}', [
-		'uses' => 'DocController@adminUpdate',
-	]);
+		Route::get('/adminGetTitle', [
+			'uses' => 'DocController@adminGetTitle',
+		]);
 
-	Route::get('/adminDelete/{tid}/{sid?}/{hid?}', [
-		'uses' => 'DocController@adminDelete',
-	]);
-});
+		Route::post('/adminUpdate/{tid}/{sid?}/{hid?}', [
+			'uses' => 'DocController@adminUpdate',
+		]);
 
-Route::prefix('blog')->group(function(){
-	Route::post('/createBlog', [
-		'uses' => 'BlogController@createBlog',
-		// 'middleware' => 'auth.jwt'
-	]);
+		Route::get('/adminDelete/{tid}/{sid?}/{hid?}', [
+			'uses' => 'DocController@adminDelete',
+		]);
+	});
 
-	Route::get('/getUnpublishedBlog', [
-		'uses' => 'BlogController@getUnpublishedBlog',
-	]);
+	Route::prefix('blog')->group(function(){
+		Route::post('/createBlog', [
+			'uses' => 'BlogController@createBlog',
+		]);
 
-	Route::post('/updateBlog/{id}',[
-		'uses' => 'BlogController@updateBlog',
-	]);
+		Route::get('/getUnpublishedBlog', [
+			'uses' => 'BlogController@getUnpublishedBlog',
+		]);
 
-	Route::get('/deleteBlog/{id}',[
-		'uses' => 'BlogController@deleteBlog',
-	]);
-});
+		Route::post('/updateBlog/{id}',[
+			'uses' => 'BlogController@updateBlog',
+		]);
 
-Route::prefix('report')->group(function(){
-	Route::get('/user/getReport', [
-		'uses' => 'UserReportController@getReport',
-	]);
+		Route::get('/deleteBlog/{id}',[
+			'uses' => 'BlogController@deleteBlog',
+		]);
+	});
 
-	Route::get('/user/ban/{id}', [
-		'uses' => 'UserReportController@banUser',
-	]);
+	Route::prefix('report')->group(function(){
+		Route::get('/user/getReport', [
+			'uses' => 'UserReportController@getReport',
+		]);
 
-	Route::get('/user/unban/{id}', [
-		'uses' => 'UserReportController@unbanUser',
-	]);
+		Route::get('/user/ban/{id}', [
+			'uses' => 'UserReportController@banUser',
+		]);
 
-	Route::get('/story/getReport', [
-		'uses' => 'StoryReportController@getReport',
-	]);
+		Route::get('/user/unban/{id}', [
+			'uses' => 'UserReportController@unbanUser',
+		]);
 
-	Route::get('/story/ban/{id}', [
-		'uses' => 'StoryReportController@banStory',
-	]);
+		Route::get('/story/getReport', [
+			'uses' => 'StoryReportController@getReport',
+		]);
 
-	Route::get('/story/unban/{id}', [
-		'uses' => 'StoryReportController@unbanStory',
-	]);
+		Route::get('/story/ban/{id}', [
+			'uses' => 'StoryReportController@banStory',
+		]);
+
+		Route::get('/story/unban/{id}', [
+			'uses' => 'StoryReportController@unbanStory',
+		]);
+	});
 });

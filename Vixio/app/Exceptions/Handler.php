@@ -57,7 +57,8 @@ class Handler extends ExceptionHandler
             return response::json(['error' => 'Token Invalid'] ,$exception->getStatusCode());
         } else if( $exception instanceof JWTException){
             return response::json(['error' => 'Error Fetching Token'] ,$exception->getStatusCode());
-        } 
+        }
+
         return parent::render($request, $exception);
     }
 }
