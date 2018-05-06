@@ -11,11 +11,14 @@ use App\StoryCategory;
 use App\CategoryType;
 use App\StoryReview;
 use App\StoryComment;
+use App\StoryPlayed;
 use App\User;
 use Auth;
 use Carbon\Carbon;
 use File;
 use Image;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
 
 class StoryController extends Controller
 {
@@ -285,8 +288,31 @@ class StoryController extends Controller
         return response()->json($story, 200);
     }
 
+    public function addPlayed($sid){
+        try{
+            if(JWTAuth::parseToken()->authenticate()){
+                $userID = Auth::user()->id;
+                $played = StoryPlayed::updateOrCreate(
+                    ['user_id' => $userID, 'story_id' => $sid],
+                    ['user_id' => $userID, 'story_id' => $sid]
+                );
+            }
+        }catch(JWTException $e){
+
+        }
+        $story = Story::where('active', '=', '1')->where('publish', '=', '1')->find($sid);
+
+        $story->played = $story->played + 1;
+
+        $story->save();
+
+        $response = ['message' => 'Let\'s play the story!'];
+
+        return response()->json($response, 200);
+    }
+
     public function playStory($sid){
-    	$story = Story::select(['inkle'])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);    	
+    	$story = Story::select(['inkle'])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
 
         return response()->json($story, 200);
     }

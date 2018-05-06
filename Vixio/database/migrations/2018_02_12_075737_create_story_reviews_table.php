@@ -17,7 +17,7 @@ class CreateStoryReviewsTable extends Migration
             $table->increments('id');
             $table->integer('story_id')->unsigned();
             $table->foreign('story_id')->references('id')->on('stories')->onDelete('cascade');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->double('star');
             $table->timestamps();
         });

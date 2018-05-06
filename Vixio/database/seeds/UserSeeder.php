@@ -27,6 +27,11 @@ class UserSeeder extends Seeder
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);
+
+            DB::table('role_user')->insert([
+                'user_id' => $i+1,
+                'role_id' => 2
+            ]);
         }
     }
 }

@@ -25,4 +25,8 @@ class Story extends Model
     public function reportedStory(){
         return $this->hasMany(StoryReport::class, 'story_id');
     }
+
+    public function storyPlayed(){
+        return $this->hasMany(StoryPlayed::class, 'story_id');
+    }
 }

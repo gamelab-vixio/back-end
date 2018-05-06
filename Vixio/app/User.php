@@ -56,4 +56,8 @@ class User extends Authenticatable
     public function storyReview(){
         return $this->hasMany(StoryReview::class, 'user_id');
     }
+
+    public function storyPlayed(){
+        return $this->hasMany(StoryPlayed::class, 'user_id');
+    }
 }

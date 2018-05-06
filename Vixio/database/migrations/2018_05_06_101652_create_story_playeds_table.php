@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStoryCommentsTable extends Migration
+class CreateStoryPlayedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateStoryCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('story_comments', function (Blueprint $table) {
+        Schema::create('story_playeds', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('story_id')->unsigned();
             $table->foreign('story_id')->references('id')->on('stories')->onDelete('cascade');
             $table->integer('user_id')->unsigned();
-            $table->integer('comment_parent_id')->nullable()->default(null);
-            $table->text('comment');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateStoryCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('story_comments');
+        Schema::dropIfExists('story_playeds');
     }
 }

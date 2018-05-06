@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Role;
+use App\StoryPlayed;
 use App\Permission;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -113,6 +114,17 @@ class UserController extends Controller
 			'message' => 'Successfully created user!'
 		];
 		return response()->json($response ,201);
+    }
+
+    public function history(){
+        $userID = Auth::user()->id;
+
+        $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->with(['story' => function($q){
+            $q->where('publish', 1)->where('active', 1)->get(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release']);
+        }
+        ])->get();
+
+        return response()->json($stories , 200);
     }
 
     //admin
