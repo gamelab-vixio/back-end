@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'User | List')
+@section('title', 'Story | List')
 
 @section('stylesheet')
 	<link rel="stylesheet" href="{{asset('vixio-cms/assets/css/lib/datatable/dataTables.bootstrap.min.css')}}">
@@ -27,54 +27,86 @@
 
 	         <div class="card">
 						<div class="card-header">
-							<strong class="card-title">User List</strong>
+							<strong class="card-title">Story List</strong>
 						</div>
 						<div class="card-body">
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th class="text-center">No</th>
-										<th class="text-center">Name</th>
-										<th class="text-center">Email</th>
-										<th class="text-center">Profile Image</th>
-										<th class="text-center">Commentable</th>
-										<th class="text-center">Join Date</th>
+										<th class="text-center">Title</th>
+										<th class="text-center">Description</th>
+										<th class="text-center">Story Image</th>
+										<th class="text-center">Publish</th>
+										<th class="text-center">Active</th>
+										<th class="text-center">Author</th>
+										<th class="text-center">Release Year</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td class="text-center" style="vertical-align: middle;">1</td>
-										<td class="text-center" style="vertical-align: middle;">Ieuan Kappa 1 2 3</td>
-										<td class="text-center" style="vertical-align: middle;">ieuanignatius@gmail.com</td>
+										<td class="text-center" style="vertical-align: middle;">Timun Perak</td>
 										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showDescription">Show Reason</button>
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage">Show Image</button>
 										</td>
 										<td class="text-center" style="vertical-align: middle;">Yes</td>
-										<td class="text-center" style="width: 10%;">20 May 2020</td>
+										<td class="text-center" style="vertical-align: middle;">Yes</td>
+										<td class="text-center" style="vertical-align: middle;">Bumblebee</td>
+										<td class="text-center" style="width: 10%;">2020</td>
 									</tr>
 
 									<tr>
 										<td class="text-center" style="vertical-align: middle;">2</td>
-										<td class="text-center" style="vertical-align: middle;">Valdo</td>
-										<td class="text-center" style="vertical-align: middle;">shanvaldo@gmail.com</td>
+										<td class="text-center" style="vertical-align: middle;">Danau Batu</td>
 										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showDescription">Show Reason</button>
 										</td>
-										<td class="text-center" style="vertical-align: middle;">No</td>
-										<td class="text-center" style="width: 10%;">22 May 2020</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage">Show Image</button>
+										</td>
+										<td class="text-center" style="vertical-align: middle;">Yes</td>
+										<td class="text-center" style="vertical-align: middle;">Yes</td>
+										<td class="text-center" style="vertical-align: middle;">SiapaAjah</td>
+										<td class="text-center" style="width: 10%;">2020</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
+				
+				<div class="modal fade" id="showDescription" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+              	<div class="modal-dialog modal-lg" role="document">
+                  <form action="#">
+	                  <div class="modal-content">
+	                     <div class="modal-header">
+	                          	<h5 class="modal-title" id="mediumModalLabel">Story Description</h5>
+	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                              <span aria-hidden="true">&times;</span>
+	                          	</button>
+	                     </div>
+	                     <div class="modal-body">
+	                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint quam harum numquam perspiciatis labore sequi quo facere, ad eaque vero facilis nisi at, beatae dicta modi cum. Veniam, alias, aliquid!</p>
+	                     </div>
 
-				<div class="modal fade" id="showProfileImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+	                     <div class="modal-footer">
+	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	                     </div>
+	                  </div>
+                  </form>
+            	</div>
+          	</div>
+
+				<div class="modal fade" id="showStoryImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
                <div class="modal-dialog modal-sm" role="document">
 	               <form action="#">
 	                  <div class="modal-content">
 	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">User Profile Image</h5>
+	                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
 	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                           <span aria-hidden="true">&times;</span>
 	                        </button>

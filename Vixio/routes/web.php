@@ -54,6 +54,14 @@ Route::get('/user/ban', function () {
     return view('/pages/userBan');
 })->name('userBan');
 
+Route::get('/story/list', function () {
+    return view('/pages/storyList');
+})->name('storyList');
+
+Route::get('/story/ban', function () {
+    return view('/pages/storyBan');
+})->name('storyBan');
+
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');

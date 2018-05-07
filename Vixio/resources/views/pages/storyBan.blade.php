@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'User | Ban')
+@section('title', 'Story | Ban')
 
 @section('stylesheet')
 	<link rel="stylesheet" href="{{asset('vixio-cms/assets/css/lib/datatable/dataTables.bootstrap.min.css')}}">
@@ -27,17 +27,16 @@
 
 	         <div class="card">
 						<div class="card-header">
-							<strong class="card-title">User Ban List</strong>
+							<strong class="card-title">Story Ban List</strong>
 						</div>
 						<div class="card-body">
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th class="text-center">No</th>
-										<th class="text-center">Name</th>
-										<th class="text-center">Email</th>
+										<th class="text-center">Title</th>
 										<th class="text-center">Reason</th>
-										<th class="text-center">Profile Image</th>
+										<th class="text-center">Story Image</th>
 										<th class="text-center">Reported</th>
 										<th class="text-center">Action</th>
 									</tr>
@@ -50,21 +49,45 @@
 												<input type="hidden" name="row_number[]" value="write_value_here"/>
 											</td>
 											<td class="text-center" style="vertical-align: middle;">
-												Ieuan Kappa 1 2 3
-												<input type="hidden" name="user_name[]" value="write_value_here"/>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">
-												ieuanignatius@gmail.com
-												<input type="hidden" name="user_email[]" value="write_value_here"/>
+												Timun Perak
+												<input type="hidden" name="story_title[]" value="write_value_here"/>
 											</td>
 											<td class="text-center" style="vertical-align: middle;">
 												<button class="btn btn-primary" data-toggle="modal" data-target="#showReason">Show Reason</button>
-												<input type="hidden" name="user_reason[]" value="write_value_here"/>
+												<input type="hidden" name="story_reason[]" value="write_value_here"/>
 											</td>
 											<td class="text-center" style="vertical-align: middle;">
-												<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
+												<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage">Show Image</button>
 											</td>
 											<td class="text-center" style="vertical-align: middle;">20 Times</td>
+											<td class="text-center" style="width: 10%;">
+												{{-- @if(blablabla) --}}
+												<button type="submit" class="btn btn-primary">Ban</button>
+												{{-- @else --}}
+												<button type="submit" class="btn btn-danger">Unban</button>
+												{{-- @endif --}}
+											</td>
+										</form>
+									</tr>
+
+									<tr>
+										<form action="#">
+											<td class="text-center" style="vertical-align: middle;">
+												2
+												<input type="hidden" name="row_number[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												Danau Toba
+												<input type="hidden" name="story_title[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<button class="btn btn-primary" data-toggle="modal" data-target="#showReason">Show Reason</button>
+												<input type="hidden" name="story_reason[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage">Show Image</button>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">322 Times</td>
 											<td class="text-center" style="width: 10%;">
 												{{-- @if(blablabla) --}}
 												<button type="submit" class="btn btn-primary">Ban</button>
@@ -91,7 +114,7 @@
 	                          	</button>
 	                     </div>
 	                     <div class="modal-body">
-	                        <p>Intentional Feeding (Send couriers to enemy base 322 times)</p>
+	                        <p>Intentionally shows porn image XD</p>
 	                     </div>
 
 	                     <div class="modal-footer">
@@ -102,7 +125,7 @@
             	</div>
           	</div>
 
-				<div class="modal fade" id="showProfileImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+				<div class="modal fade" id="showStoryImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
                <div class="modal-dialog modal-sm" role="document">
 	               <form action="#">
 	                  <div class="modal-content">
