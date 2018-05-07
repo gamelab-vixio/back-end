@@ -34,6 +34,14 @@ Route::get('/documentation/create/content', function () {
     return view('/pages/documentationContent');
 })->name('documentationContent');
 
+Route::get('/category/create/genre', function () {
+    return view('/pages/categoryGenre');
+})->name('categoryGenre');
+
+Route::get('/category/create/type', function () {
+    return view('/pages/categoryType');
+})->name('categoryType');
+
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');

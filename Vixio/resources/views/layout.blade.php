@@ -85,8 +85,8 @@
                <li class="menu-item-has-children dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon ti-view-list"></i>Story Category</a>
                   <ul class="sub-menu children dropdown-menu">
-                     <li><i class="menu-icon fa fa-bars"></i><a href="#">Genre</a></li>
-                     <li><i class="menu-icon fa fa-bars"></i><a href="#">Type</a></li>
+                     <li><i class="menu-icon fa fa-bars"></i><a href="{{ route('categoryGenre') }}">Genre</a></li>
+                     <li><i class="menu-icon fa fa-bars"></i><a href="{{ route('categoryType') }}">Type</a></li>
                   </ul>
                </li>
                <li>
