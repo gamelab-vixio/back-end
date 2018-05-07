@@ -13,9 +13,10 @@
 
 Auth::routes();
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+// TEST ROUTES
+Route::get('/blog/create', function () {
+    return view('/pages/blogCreate');
+})->name('blogCreate');
 
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	Route::get('/', 'HomeController@index')->name('dashboard');
