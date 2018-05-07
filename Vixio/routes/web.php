@@ -14,6 +14,10 @@
 Auth::routes();
 
 // TEST ROUTES
+Route::get('/blog/dashboard', function () {
+    return view('/pages/blogDashboard');
+})->name('blogDashboard');
+
 Route::get('/blog/create', function () {
     return view('/pages/blogCreate');
 })->name('blogCreate');

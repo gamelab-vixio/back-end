@@ -12,6 +12,10 @@
 		<div class="animated fadeIn">
 			<div class="row">
 				<div class="col-md-12">
+					<button class="btn btn-primary">
+						<a href="{{ route('blogCreate') }}" style="color: #fff";><i class="fa fa-plus"></i>&nbsp;New Blog</a>
+					</button>
+					<hr>
 					<div class="card">
 						<div class="card-header">
 							<strong class="card-title">Data Table</strong>
@@ -20,32 +24,51 @@
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th>Name</th>
-										<th>Position</th>
-										<th>Office</th>
-										<th>Salary</th>
+										<th>Title</th>
+										<th>Content</th>
+										<th>Image</th>
+										<th>Status</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>Tiger Nixon</td>
-										<td>System Architect</td>
-										<td>Edinburgh</td>
-										<td>$320,800</td>
+										<td>Test Title</td>
+										<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni enim quod eos sunt quis eius consequatur, dolore aut, earum sed atque cumque tempora nostrum. Laborum earum, facilis accusamus repudiandae in.</td>
+										<td>
+											<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman">
+										</td>
+										<td>Publish</td>
+										<td>
+											<button class="btn btn-primary btn-block">Edit</button>
+											<button class="btn btn-danger btn-block">Delete</button>
+										</td>
 									</tr>
 
 									<tr>
-										<td>Tiger Nixon</td>
-										<td>System Architect</td>
-										<td>Edinburgh</td>
-										<td>$320,800</td>
+										<td>Test Title 2</td>
+										<td>The quick brown fox jumps over the lazy dog</td>
+										<td>
+											<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman">
+										</td>
+										<td>Publish</td>
+										<td>
+											<button class="btn btn-primary btn-block">Edit</button>
+											<button class="btn btn-danger btn-block">Delete</button>
+										</td>
 									</tr>
 
 									<tr>
-										<td>Tiger Nixon</td>
-										<td>System Architect</td>
-										<td>Edinburgh</td>
-										<td>$320,800</td>
+										<td>Test Title 3</td>
+										<td>LALALALALALALAAAAAAAAAAAAAA</td>
+										<td>
+											<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman">
+										</td>
+										<td>Unpublish</td>
+										<td>
+											<button class="btn btn-primary btn-block">Edit</button>
+											<button class="btn btn-danger btn-block">Delete</button>
+										</td>
 									</tr>
 								</tbody>
 							</table>

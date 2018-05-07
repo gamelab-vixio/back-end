@@ -17,7 +17,7 @@
    <link rel="stylesheet" href="{{asset('vixio-cms/assets/css/bootstrap.min.css')}}">
    <link rel="stylesheet" href="{{asset('vixio-cms/assets/css/font-awesome.min.css')}}">
    <link rel="stylesheet" href="{{asset('vixio-cms/assets/css/themify-icons.css')}}">
-   <link rel="stylesheet" href="{{asset('vixio-cms/assets/css/flag-icon-min.css')}}">
+   {{-- <link rel="stylesheet" href="{{asset('vixio-cms/assets/css/flag-icon-min.css')}}"> --}}
    <link rel="stylesheet" href="{{asset('vixio-cms/assets/css/cs-skin-elastic.css')}}">
    <!-- <link rel="stylesheet" href="assets/css/bootstrap-select.less"> -->
    <link rel="stylesheet" href="{{asset('vixio-cms/assets/scss/style.css')}}">
@@ -25,8 +25,7 @@
    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' type='text/css'>
    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
    
-   <!-- Quill Text Editor Theme included stylesheets -->
-   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+   @yield('stylesheet')
 </head>
 
 <body>
@@ -55,7 +54,7 @@
                {{-- Pages --}}
                <h3 class="menu-title">Pages</h3>
                <li>
-                  <a href="{{ route('blogCreate') }}"> <i class="menu-icon fa fa-pencil-square"></i>Blog</a>
+                  <a href="{{ route('blogDashboard') }}"> <i class="menu-icon fa fa-pencil-square"></i>Blog</a>
                </li>
 
                <li class="menu-item-has-children dropdown">
@@ -190,11 +189,8 @@
    <script src="{{asset('vixio-cms/assets/js/plugins.js')}}"></script>
    <script src="{{asset('vixio-cms/assets/js/main.js')}}"></script>
    <script src="{{asset('vixio-cms/assets/js/lib/chart-js/Chart.bundle.js')}}"></script>
-   <script src="{{asset('vixio-cms/assets/js/dashboard.js')}}"></script>
-   <script src="{{asset('vixio-cms/assets/js/widgets.js')}}"></script>
-
-   <!-- Main Quill Text Editor Library -->
-   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+   {{-- <script src="{{asset('vixio-cms/assets/js/dashboard.js')}}"></script> --}}
+   {{-- <script src="{{asset('vixio-cms/assets/js/widgets.js')}}"></script> --}}
    
    {{-- Insert JS Here --}}
    @yield('script')

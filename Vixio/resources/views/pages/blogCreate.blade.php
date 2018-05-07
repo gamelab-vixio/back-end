@@ -2,6 +2,11 @@
 
 @section('title', 'Blog | Create')
 
+@section('stylesheet')
+	<!-- Quill Text Editor Theme included stylesheets -->
+	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@endsection
+
 @section('content')
 
 	<div class="animated fadeIn">
@@ -63,13 +68,18 @@
 @endsection
 
 @section('script')
+	<!-- Main Quill Text Editor Library -->
+	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	
 	<!-- Initialize Quill editor -->
 	<script>
-
 		var toolbarOptions = [
 			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 			// ['blockquote', 'code-block'],
-			['link', 'image'], 											// link and image
+			
+			['link'],														// link only
+
+			// ['link', 'image'], 											// link and image
 			// [{ 'header': 1 }, { 'header': 2 }],               // custom button values
 			[{ 'list': 'ordered'}, { 'list': 'bullet' }],
 			[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
