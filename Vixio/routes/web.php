@@ -46,6 +46,10 @@ Route::get('/user/list', function () {
     return view('/pages/userList');
 })->name('userList');
 
+Route::get('/user/ban', function () {
+    return view('/pages/userBan');
+})->name('userBan');
+
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');

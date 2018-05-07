@@ -77,7 +77,7 @@
                   <a href="#"> <i class="menu-icon fa fa-plus"></i>Add Admin</a>
                </li>
                <li>
-                  <a href="#"> <i class="menu-icon fa fa-warning"></i>User Reporting</a>
+                  <a href="{{ route('userBan') }}"> <i class="menu-icon fa fa-warning"></i>User Reporting</a>
                </li>
                
                {{-- Story --}}

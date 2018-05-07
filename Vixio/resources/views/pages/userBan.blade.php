@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'User | List')
+@section('title', 'User | Ban')
 
 @section('stylesheet')
 	<link rel="stylesheet" href="{{asset('vixio-cms/assets/css/lib/datatable/dataTables.bootstrap.min.css')}}">
@@ -27,7 +27,7 @@
 
 	         <div class="card">
 						<div class="card-header">
-							<strong class="card-title">User List</strong>
+							<strong class="card-title">User Ban</strong>
 						</div>
 						<div class="card-body">
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
@@ -36,42 +36,71 @@
 										<th class="text-center">No</th>
 										<th class="text-center">Name</th>
 										<th class="text-center">Email</th>
+										<th class="text-center">Reason</th>
 										<th class="text-center">Profile Image</th>
-										<th class="text-center">Commentable</th>
-										<th class="text-center">Join Date</th>
+										<th class="text-center">Reported</th>
+										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">1
-											<input type="hidden" name="color_1[]" value="write_value_here"/>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">Ieuan Kappa 1 2 3</td>
-										<td class="text-center" style="vertical-align: middle;">ieuanignatius@gmail.com</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">Yes</td>
-										<td class="text-center" style="width: 10%;">20 May 2020</td>
-									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">1
-											<input type="hidden" name="color_1[]" value="write_value_here"/>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">Valdo</td>
-										<td class="text-center" style="vertical-align: middle;">shanvaldo@gmail.com</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">No</td>
-										<td class="text-center" style="width: 10%;">22 May 2020</td>
+										<form action="#">
+											<td class="text-center" style="vertical-align: middle;">
+												1
+												<input type="hidden" name="row_number[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												Ieuan Kappa 1 2 3
+												<input type="hidden" name="user_name[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												ieuanignatius@gmail.com
+												<input type="hidden" name="user_email[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<button class="btn btn-primary" data-toggle="modal" data-target="#showReason">Show Reason</button>
+												<input type="hidden" name="user_reason[]" value="write_value_here"/>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
+											</td>
+											<td class="text-center" style="vertical-align: middle;">20 Times</td>
+											<td class="text-center" style="width: 10%;">
+												{{-- @if(blablabla) --}}
+												<button type="submit" class="btn btn-primary">Ban</button>
+												{{-- @else --}}
+												<button type="submit" class="btn btn-danger">Unban</button>
+												{{-- @endif --}}
+											</td>
+										</form>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
+				
+				<div class="modal fade" id="showReason" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+              	<div class="modal-dialog modal-lg" role="document">
+                  <form action="#">
+	                  <div class="modal-content">
+	                     <div class="modal-header">
+	                          	<h5 class="modal-title" id="mediumModalLabel">Reason</h5>
+	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                              <span aria-hidden="true">&times;</span>
+	                          	</button>
+	                     </div>
+	                     <div class="modal-body">
+	                        <p>Intentional Feeding (Send couriers to enemy base 322 times)</p>
+	                     </div>
+
+	                     <div class="modal-footer">
+	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	                     </div>
+	                  </div>
+                  </form>
+            	</div>
+          	</div>
 
 				<div class="modal fade" id="showProfileImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
                <div class="modal-dialog modal-sm" role="document">
