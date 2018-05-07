@@ -74,7 +74,7 @@
                   <a href="{{ route('userList') }}"> <i class="menu-icon fa fa-users"></i>User List</a>
                </li>
                <li>
-                  <a href="#"> <i class="menu-icon fa fa-plus"></i>Add Admin</a>
+                  <a href="{{ route('userAdd') }}"> <i class="menu-icon fa fa-plus"></i>Add Admin</a>
                </li>
                <li>
                   <a href="{{ route('userBan') }}"> <i class="menu-icon fa fa-warning"></i>User Reporting</a>

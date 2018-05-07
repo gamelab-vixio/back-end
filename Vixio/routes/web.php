@@ -46,6 +46,10 @@ Route::get('/user/list', function () {
     return view('/pages/userList');
 })->name('userList');
 
+Route::get('/user/add', function () {
+    return view('/pages/userAdd');
+})->name('userAdd');
+
 Route::get('/user/ban', function () {
     return view('/pages/userBan');
 })->name('userBan');
