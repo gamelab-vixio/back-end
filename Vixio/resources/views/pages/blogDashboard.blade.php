@@ -4,6 +4,15 @@
 
 @section('stylesheet')
 	<link rel="stylesheet" href="{{asset('vixio-cms/assets/css/lib/datatable/dataTables.bootstrap.min.css')}}">
+	<style>
+		body{
+			padding-right: 0 !important;
+		}
+
+		.modal-backdrop.show, .modal-backdrop.fade{
+			display: none;
+		}
+	</style>
 @endsection
 
 @section('content')
