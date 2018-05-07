@@ -64,7 +64,7 @@
                   <ul class="sub-menu children dropdown-menu">
                      <li><i class="fa fa-table"></i><a href="{{ route('documentationTitle') }}">Title</a></li>
                      <li><i class="fa fa-table"></i><a href="{{ route('documentationSubtitle') }}">Subtitle</a></li>
-                     <li><i class="fa fa-table"></i><a href="#">Content</a></li>
+                     <li><i class="fa fa-table"></i><a href="{{ route('documentationContent') }}">Content</a></li>
                   </ul>
                </li>
       
