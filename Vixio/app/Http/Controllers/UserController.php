@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
+use App\StoryPlayed;
+use App\Permission;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
@@ -103,9 +106,55 @@ class UserController extends Controller
 
 		$user->save();
 
+        $role = Role::where('name', 'user')->first();
+
+        $user->attachRole($role);
+
 		$response = [
 			'message' => 'Successfully created user!'
 		];
 		return response()->json($response ,201);
+    }
+
+    public function history(){
+        $userID = Auth::user()->id;
+
+        $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->with(['story' => function($q){
+            $q->where('publish', 1)->where('active', 1)->get(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release']);
+        }
+        ])->get();
+
+        return response()->json($stories , 200);
+    }
+
+    //admin
+    public function userList(){
+        $user = User::withRole('user')->select(array('name','email','image_url'))->paginate(10);
+
+        return response()->json($user, 200);
+    }
+
+    public function addAdmin(Request $request){
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
+        ]);
+
+        $admin = Role::where('name', 'admin')->first();
+
+        $user = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        $user->attachRole($admin);
+
+        $user->save();
+
+        $response = ['message' => 'Successfully create new admin'];
+
+        return response()->json($response, 201);
     }
 }

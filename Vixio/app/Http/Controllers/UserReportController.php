@@ -34,9 +34,9 @@ class UserReportController extends Controller
     }
 
     public function getReport(){
-        $reports = User::select(['id','name','email'])->with(['reportedUser' => function ($q){
+        $reports = User::select(['id','name','email', 'commentable'])->with(['reportedUser' => function ($q){
             $q->with(['reported:id,name,email', 'reporter:id,name,email'])->get(['id','user_id','reporter_user_id', 'reason', 'image_url', 'comment_type']);
-        }])->has('reportedUser', '>', 0)->withCount(['reportedUser'])->orderBy('reported_user_count', 'desc')->get();
+        }])->withCount(['reportedUser'])->has('reportedUser', '>', 0)->orderBy('reported_user_count', 'desc')->where('commentable', 1)->paginate(10);
 
         return response()->json($reports, 200);
     }

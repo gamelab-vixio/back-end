@@ -11,10 +11,14 @@ use App\StoryCategory;
 use App\CategoryType;
 use App\StoryReview;
 use App\StoryComment;
+use App\StoryPlayed;
+use App\User;
 use Auth;
 use Carbon\Carbon;
 use File;
 use Image;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
 
 class StoryController extends Controller
 {
@@ -245,18 +249,25 @@ class StoryController extends Controller
 
         $userID = Auth::user()->id;
 
-        $storyComment = new StoryComment();
+        if(User::find($userID)->commentable){
+            $storyComment = new StoryComment();
 
-        $storyComment->story_id = $sid;
-        $storyComment->user_id = $userID;
-        $storyComment->comment_parent_id = $cpid;
-        $storyComment->comment = $request->input('comment');
+            $storyComment->story_id = $sid;
+            $storyComment->user_id = $userID;
+            $storyComment->comment_parent_id = $cpid;
+            $storyComment->comment = $request->input('comment');
 
-        $storyComment->save();
+            $storyComment->save();
 
-        $response = [
-            'message' => 'Comment Successfully pushed!'
-        ];
+            $response = [
+                'message' => 'Comment Successfully pushed!'
+            ];
+        }else{
+            $response = [
+                'message' => 'Your ID has been banned and cannot comment.'
+            ];
+        }
+
         return response()->json($response ,201);
     }
 
@@ -277,8 +288,37 @@ class StoryController extends Controller
         return response()->json($story, 200);
     }
 
+    public function addPlayed($sid){
+        try{
+            if(JWTAuth::parseToken()->authenticate()){
+                $userID = Auth::user()->id;
+                $played = StoryPlayed::updateOrCreate(
+                    ['user_id' => $userID, 'story_id' => $sid],
+                    ['user_id' => $userID, 'story_id' => $sid]
+                );
+            }
+        }catch(JWTException $e){
+
+        }
+        $story = Story::where('active', '=', '1')->where('publish', '=', '1')->find($sid);
+
+        $story->played = $story->played + 1;
+
+        $story->save();
+
+        $response = ['message' => 'Let\'s play the story!'];
+
+        return response()->json($response, 200);
+    }
+
     public function playStory($sid){
-    	$story = Story::select(['inkle'])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);    	
+    	$story = Story::select(['inkle'])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
+
+        return response()->json($story, 200);
+    }
+
+    public function storyList(){
+        $story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release','created_at'])->with(['user:id,name'])->paginate(10);
 
         return response()->json($story, 200);
     }

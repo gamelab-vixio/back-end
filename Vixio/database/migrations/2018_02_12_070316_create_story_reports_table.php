@@ -17,7 +17,7 @@ class CreateStoryReportsTable extends Migration
             $table->increments('id');
             $table->integer('story_id')->unsigned();
             $table->foreign('story_id')->references('id')->on('stories')->onDelete('cascade');
-            $table->integer('reporter_user_id');
+            $table->integer('reporter_user_id')->unsigned();
             $table->text('reason');
             $table->string('image_url')->nullable()->default(null);
             $table->timestamps();

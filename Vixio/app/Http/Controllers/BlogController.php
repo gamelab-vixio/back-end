@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\Blog;
 use App\BlogComment;
 use Auth;
@@ -41,18 +42,25 @@ class BlogController extends Controller
 
         $userID = Auth::user()->id;
 
-        $blogComment = new BlogComment();
+        if(User::find($userID)->commentable){
+            $blogComment = new BlogComment();
 
-        $blogComment->blog_id = $bid;
-        $blogComment->user_id = $userID;
-        $blogComment->comment_parent_id = $cpid;
-        $blogComment->comment = $request->input('comment');
+            $blogComment->blog_id = $bid;
+            $blogComment->user_id = $userID;
+            $blogComment->comment_parent_id = $cpid;
+            $blogComment->comment = $request->input('comment');
 
-        $blogComment->save();
+            $blogComment->save();
 
-        $response = [
-            'message' => 'Comment Successfully pushed!'
-        ];
+            $response = [
+                'message' => 'Comment Successfully pushed!'
+            ];
+        }else{
+            $response = [
+                'message' => 'Your ID has been banned and cannot comment.'
+            ];
+        }
+        
         return response()->json($response ,201);
     }
 

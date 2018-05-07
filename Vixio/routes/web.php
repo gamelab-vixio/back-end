@@ -19,6 +19,7 @@ Route::get('/blog/create', function () {
 })->name('blogCreate');
 
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
+
 	Route::get('/', 'HomeController@index')->name('dashboard');
 
 	Route::prefix('category')->group(function(){
@@ -76,6 +77,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 			'uses' => 'DocController@adminGetTitle',
 		]);
 
+		Route::get('/adminGetSubtitle', [
+			'uses' => 'DocController@adminGetSubtitle',
+		]);
+
 		Route::post('/adminUpdate/{tid}/{sid?}/{hid?}', [
 			'uses' => 'DocController@adminUpdate',
 		]);
@@ -88,6 +93,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	Route::prefix('blog')->group(function(){
 		Route::post('/createBlog', [
 			'uses' => 'BlogController@createBlog',
+		]);
+
+		Route::get('/getPublishedBlog', [
+			'uses' => 'BlogController@getPublishedBlog',
 		]);
 
 		Route::get('/getUnpublishedBlog', [
@@ -128,4 +137,18 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 			'uses' => 'StoryReportController@unbanStory',
 		]);
 	});
+
+	Route::prefix('user')->group(function(){
+		Route::get('/userList',[
+			'uses' => 'UserController@userList'
+		]);
+
+		Route::post('/addAdmin',[
+			'uses' => 'UserController@addAdmin'
+		]);
+	});
+
+	Route::get('/story/storyList',[
+		'uses' => 'StoryController@storyList'
+	]);
 });

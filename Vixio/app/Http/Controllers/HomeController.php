@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Story;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('pages/dashboard');
+        $user = User::withRole('user')->count();
+        $story = Story::where('active', 1)->count();
+
+        $data =[
+            'user' => $user,
+            'story' => $story
+        ];
+        return view('pages/dashboard')->with('data',$data);
     }
 }

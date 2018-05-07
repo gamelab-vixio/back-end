@@ -16,6 +16,12 @@ class DocController extends Controller
 
     //admin
     public function adminGetTitle(){
+        $title = DocumentationTitle::get(['id','title']);
+
+        return response()->json($title, 200);
+    }
+
+    public function adminGetSubtitle(){
         $title = DocumentationTitle::with(['subtitle:id,title_id,subtitle'])->get(['id','title']);
 
         return response()->json($title, 200);

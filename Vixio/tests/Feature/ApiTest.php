@@ -25,7 +25,7 @@ class ApiTest extends TestCase{
 			'Content-Type' => 'application/json'
 		];
 
-		$user = User::find(280);
+		$user = User::find(860);
 
 		$this->token = JWTAuth::fromUser($user);
         
@@ -85,6 +85,14 @@ class ApiTest extends TestCase{
 		]]);
 
 		$response->assertStatus(201);
+	}
+
+	/** @test */
+	function history(){
+		$response = $this->get('/api/user/history/?token='.$this->token);
+
+		$response->assertStatus(200);
+
 	}
 
 	/***************************** User (END) ************************************/
@@ -218,7 +226,7 @@ class ApiTest extends TestCase{
 
 	/** @test */
 	function writer_get_story_using_id(){
-		$response = $this->get('/api/story/writer/getStory/106/?token='.$this->token);
+		$response = $this->get('/api/story/writer/getStory/1/?token='.$this->token);
 
 		$response->assertJsonStructure([
 			'id','user_id','title', 'description','image_url','publish','active','year_of_release','played',
@@ -236,7 +244,7 @@ class ApiTest extends TestCase{
 
 	/** @test */
 	function writer_get_story_content_using_id(){
-		$response = $this->get('/api/story/writer/getContent/106/?token='.$this->token);
+		$response = $this->get('/api/story/writer/getContent/1/?token='.$this->token);
 
 		$response->assertJsonStructure(['user_id','content']);
 
@@ -257,7 +265,7 @@ class ApiTest extends TestCase{
 	/** @test */
 	function writer_story_load_image(){
 
-		$response = $this->get('/api/story/writer/loadImage/106/?token='.$this->token);
+		$response = $this->get('/api/story/writer/loadImage/1/?token='.$this->token);
 
 		$response->assertStatus(200);
 	}
@@ -265,7 +273,7 @@ class ApiTest extends TestCase{
 	/** @test */
 	function writer_story_update(){
 
-		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/106/?token='.$this->token, [
+		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/1/?token='.$this->token, [
 			'title' => 'demo test',
 			'categories' => [2,3,4,7],
 			'description' => 'testing purpose'
@@ -273,7 +281,7 @@ class ApiTest extends TestCase{
 
 		$response->assertStatus(201);
 
-		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/106/?token='.$this->token, [
+		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/1/?token='.$this->token, [
 			'title' => 'demo test',
 			'categories' => [2,3,4,7],
 			'description' => 'testing purpose',
@@ -286,14 +294,14 @@ class ApiTest extends TestCase{
 	//writer_story_publish will be tested in postman because i cannot find a way to test inklecate.exe in phpunit
 	/** @test */
 	function writer_story_unpublish(){
-		$response = $this->get('/api/story/writer/unpublish/106/?token='.$this->token);
+		$response = $this->get('/api/story/writer/unpublish/1/?token='.$this->token);
 
 		$response->assertStatus(200);
 	}
 
 	/** @test */
 	function writer_story_delete(){
-		$response = $this->get('/api/story/writer/delete/106/?token='.$this->token);
+		$response = $this->get('/api/story/writer/delete/1/?token='.$this->token);
 
 		$response->assertStatus(200);
 	}
@@ -343,6 +351,17 @@ class ApiTest extends TestCase{
 		]);
 
 		$response->assertStatus(201);
+	}
+
+	/** @test */
+	function add_played(){
+		$response = $this->get('/api/story/addPlayed/1');
+
+		$response->assertStatus(200);
+
+		$response = $this->get('/api/story/addPlayed/1?token='.$this->token);
+
+		$response->assertStatus(200);
 	}
 
 	/***************************** Story (END) ************************************/

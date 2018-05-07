@@ -13,12 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/login', [
-	'uses' => 'UserController@login'
-]);
-
 Route::post('/signup', [
 	'uses' => 'UserController@signup'
+]);
+
+Route::post('/login', [
+	'uses' => 'UserController@login',
 ]);
 
 Route::prefix('user')->group(function(){
@@ -33,6 +33,11 @@ Route::prefix('user')->group(function(){
 
 	Route::get('/getUser', [
 		'uses' => 'userController@getUser',
+		'middleware' => 'auth.jwt'
+	]);
+
+	Route::get('/history', [
+		'uses' => 'userController@history',
 		'middleware' => 'auth.jwt'
 	]);
 });
@@ -57,6 +62,10 @@ Route::prefix('story')->group(function(){
 
 	Route::get('/playStory/{id}',[
 		'uses' => 'StoryController@playStory',
+	]);
+
+	Route::get('/addPlayed/{id}', [
+		'uses' => 'StoryController@addPlayed'
 	]);
 
 	Route::prefix('writer')->group(function(){
