@@ -42,6 +42,10 @@ Route::get('/category/create/type', function () {
     return view('/pages/categoryType');
 })->name('categoryType');
 
+Route::get('/user/list', function () {
+    return view('/pages/userList');
+})->name('userList');
+
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');

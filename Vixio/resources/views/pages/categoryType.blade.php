@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Documentation | Subtitle')
+@section('title', 'Category | Type')
 
 @section('stylesheet')
 	<link rel="stylesheet" href="{{asset('vixio-cms/assets/css/lib/datatable/dataTables.bootstrap.min.css')}}">

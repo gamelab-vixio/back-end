@@ -71,7 +71,7 @@
                {{-- User --}}
                <h3 class="menu-title">User</h3>
                <li>
-                  <a href="#"> <i class="menu-icon fa fa-users"></i>User List</a>
+                  <a href="{{ route('userList') }}"> <i class="menu-icon fa fa-users"></i>User List</a>
                </li>
                <li>
                   <a href="#"> <i class="menu-icon fa fa-plus"></i>Add Admin</a>
