@@ -22,6 +22,10 @@ Route::get('/blog/create', function () {
     return view('/pages/blogCreate');
 })->name('blogCreate');
 
+Route::get('/documentation/create/title', function () {
+    return view('/pages/documentationTitle');
+})->name('documentationTitle');
+
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');

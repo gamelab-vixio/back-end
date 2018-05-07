@@ -62,7 +62,7 @@
                      <i class="menu-icon fa fa-list-alt"></i>Documentation
                   </a>
                   <ul class="sub-menu children dropdown-menu">
-                     <li><i class="fa fa-table"></i><a href="#">Title</a></li>
+                     <li><i class="fa fa-table"></i><a href="{{ route('documentationTitle') }}">Title</a></li>
                      <li><i class="fa fa-table"></i><a href="#">Subtitle</a></li>
                      <li><i class="fa fa-table"></i><a href="#">Content</a></li>
                   </ul>

@@ -107,7 +107,7 @@
 	                        <div class="card-body card-block">
 
 					               <div class="form-group" style="width: 50%;">
-					                  <label class=" form-control-label">Title</label>
+					                  <label class="form-control-label">Title</label>
 				                     <div class="input-group">
 				                        <input class="form-control" value="Current Title">
 				                     </div>
@@ -121,7 +121,7 @@
 					               </div>
 
 					               <div class="form-group">
-					                  <label class=" form-control-label">Status</label>
+					                  <label class="form-control-label">Status</label>
 				                     <div class="input-group">
 				                        <label class="radio-inline">
 											      <input type="radio" name="optRadio" value="publish" style="margin-right: 3px;">Publish
@@ -134,6 +134,7 @@
 					               </div>
 
 					               <div class="form-group">
+					               	<label class="form-control-label">Current Thumbnail image</label>
 					                  <div class="current-thumbnail-image">
 					                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
 					                  </div>
