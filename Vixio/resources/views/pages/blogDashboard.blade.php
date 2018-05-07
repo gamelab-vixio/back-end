@@ -40,7 +40,7 @@
 										</td>
 										<td>Publish</td>
 										<td>
-											<button class="btn btn-primary btn-block">Edit</button>
+											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#mediumModal">Edit</button>
 											<button class="btn btn-danger btn-block">Delete</button>
 										</td>
 									</tr>
@@ -75,6 +75,29 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+	            <div class="modal-dialog modal-lg" role="document">
+	               <div class="modal-content">
+	                  <div class="modal-header">
+	                     <h5 class="modal-title" id="mediumModalLabel">Delete Confirmation</h5>
+	            				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                           <span aria-hidden="true">&times;</span>
+	                        </button>
+	                  </div>
+							<div class="modal-body">
+							  	<p class="text-center" style="color: #000;">
+							      Are you sure want to delete this blog?
+								</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-danger">Confirm</button>
+							</div>
+	               </div>
+	            </div>
+	         </div>
+
 			</div>
 		</div>
 	</div>
