@@ -73,6 +73,9 @@
                   <a href="#"> <i class="menu-icon fa fa-users"></i>User List</a>
                </li>
                <li>
+                  <a href="#"> <i class="menu-icon fa fa-plus"></i>Add Admin</a>
+               </li>
+               <li>
                   <a href="#"> <i class="menu-icon fa fa-warning"></i>User Reporting</a>
                </li>
                
