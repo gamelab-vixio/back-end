@@ -130,7 +130,7 @@
 	               <form action="#">
 	                  <div class="modal-content">
 	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">User Profile Image</h5>
+	                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
 	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                           <span aria-hidden="true">&times;</span>
 	                        </button>

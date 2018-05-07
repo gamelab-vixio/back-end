@@ -40,48 +40,48 @@
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th>Title</th>
-										<th>Content</th>
-										<th>Image</th>
-										<th>Status</th>
-										<th>Action</th>
+										<th class="text-center">Title</th>
+										<th class="text-center">Content</th>
+										<th class="text-center">Image</th>
+										<th class="text-center">Status</th>
+										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>Test Title</td>
-										<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni enim quod eos sunt quis eius consequatur, dolore aut, earum sed atque cumque tempora nostrum. Laborum earum, facilis accusamus repudiandae in.</td>
-										<td>
-											<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman">
+										<td class="text-center" style="vertical-align: middle;">Test Title</td>
+										<td class="text-center" style="vertical-align: middle;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni enim quod eos sunt quis eius consequatur, dolore aut, earum sed atque cumque tempora nostrum. Laborum earum, facilis accusamus repudiandae in.</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
 										</td>
-										<td>Publish</td>
-										<td>
+										<td class="text-center" style="vertical-align: middle;">Publish</td>
+										<td class="text-center" style="vertical-align: middle;">
 											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal">Edit</button>
 											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
 										</td>
 									</tr>
 
 									<tr>
-										<td>Test Title 2</td>
-										<td>The quick brown fox jumps over the lazy dog</td>
-										<td>
-											<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman">
+										<td class="text-center" style="vertical-align: middle;">Test Title 2</td>
+										<td class="text-center" style="vertical-align: middle;">The quick brown fox jumps over the lazy dog</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
 										</td>
-										<td>Publish</td>
-										<td>
+										<td class="text-center" style="vertical-align: middle;">Publish</td>
+										<td class="text-center" style="vertical-align: middle;">
 											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal">Edit</button>
 											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
 										</td>
 									</tr>
 
 									<tr>
-										<td>Test Title 3</td>
-										<td>LALALALALALALAAAAAAAAAAAAAA</td>
-										<td>
-											<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman">
+										<td class="text-center" style="vertical-align: middle;">Test Title 3</td>
+										<td class="text-center" style="vertical-align: middle;">LALALALALALALAAAAAAAAAAAAAA</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
 										</td>
-										<td>Unpublish</td>
-										<td>
+										<td class="text-center" style="vertical-align: middle;">Unpublish</td>
+										<td class="text-center" style="vertical-align: middle;">
 											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal">Edit</button>
 											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
 										</td>
@@ -91,6 +91,29 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="modal fade" id="showBlogImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-sm" role="document">
+	               <form action="#">
+	                  <div class="modal-content">
+	                     <div class="modal-header">
+	                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
+	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                           <span aria-hidden="true">&times;</span>
+	                        </button>
+	                     </div>
+	                     <div class="modal-body">
+	                        <div class="user-profile">
+			                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
+			                  </div>
+	                     </div>
+	                     <div class="modal-footer">
+	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	                     </div>
+	                  </div>
+	               </form>
+               </div>
+            </div>
 				
 				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
               	<div class="modal-dialog modal-lg" role="document">
