@@ -26,6 +26,10 @@ Route::get('/documentation/create/title', function () {
     return view('/pages/documentationTitle');
 })->name('documentationTitle');
 
+Route::get('/documentation/create/subtitle', function () {
+    return view('/pages/documentationSubtitle');
+})->name('documentationSubtitle');
+
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');

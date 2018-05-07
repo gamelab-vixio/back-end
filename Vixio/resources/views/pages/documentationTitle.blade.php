@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Documentation | Create')
+@section('title', 'Documentation | Title')
 
 @section('stylesheet')
 	<link rel="stylesheet" href="{{asset('vixio-cms/assets/css/lib/datatable/dataTables.bootstrap.min.css')}}">
@@ -94,7 +94,7 @@
                   <form action="#">
 	                  <div class="modal-content">
 	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Edit Blog</h5>
+	                          	<h5 class="modal-title" id="mediumModalLabel">Edit Title</h5>
 	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                              <span aria-hidden="true">&times;</span>
 	                          	</button>
@@ -102,7 +102,7 @@
 	                     <div class="modal-body">
 	                        <div class="card-body card-block text-center">
 					               <div class="form-group"">
-					                  <label class="form-control-label">Documentation Title</label>
+					                  <label class="form-control-label">New Title</label>
 				                     <div class="input-group">
 				                        <input class="form-control text-center" value="Current Title">
 				                     </div>
