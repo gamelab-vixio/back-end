@@ -66,11 +66,13 @@ class BlogController extends Controller
 
     //admin
     public function createBlog(Request $request){
+
         $this->validate($request, [
             'title' => 'required|unique:blogs',
             'content' => 'required',
             'status' => 'required'
         ]);
+
 
         $blog = new Blog();
 
@@ -95,7 +97,8 @@ class BlogController extends Controller
         $response = [
             'message' => 'Successfully created a new blog!'
         ];
-        return response()->json($response ,201);
+
+        return back();
     }
 
     public function loadImage($bid){
@@ -109,10 +112,26 @@ class BlogController extends Controller
         return $image->response('jpeg');
     }
 
-    public function getUnpublishedBlog(){
+    public function getPublishedBlogAdmin(){
+        $blog = Blog::where('status', 1)->orderBy('updated_at', 'desc')->get(['id', 'title', 'content', 'image_url', 'status', 'updated_at']);
+
+        $data = [
+            'data-table' => 'Published Posts',
+            'blog' => $blog
+        ];
+
+        return view('/pages/blogDashboard')->with('data', $data);
+    }
+
+    public function getUnpublishBlog(){
         $blog = Blog::where('status', 0)->orderBy('updated_at', 'desc')->get(['id', 'title', 'content', 'image_url', 'status', 'updated_at']);
 
-        return response()->json($blog, 200);
+        $data = [
+            'data-table' => 'Unpublish Posts',
+            'blog' => $blog
+        ];
+
+        return view('/pages/blogDashboard')->with('data', $data);
     }
 
     public function updateBlog(Request $request, $bid){
@@ -163,6 +182,6 @@ class BlogController extends Controller
         $response = [
             'message' => 'Blog has been deleted!'
         ];
-        return response()->json($response ,201);
+        return back();
     }
 }

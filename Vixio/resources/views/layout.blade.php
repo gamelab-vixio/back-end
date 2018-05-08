@@ -53,8 +53,14 @@
 
                {{-- Pages --}}
                <h3 class="menu-title">Pages</h3>
-               <li>
-                  <a href="{{ route('blogDashboard') }}"> <i class="menu-icon fa fa-pencil-square"></i>Blog</a>
+               <li class="menu-item-has-children dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="menu-icon fa fa-list-alt"></i>Blog
+                  </a>
+                  <ul class="sub-menu children dropdown-menu">
+                     <li><i class="fa fa-table"></i><a href="{{ route('getPusblisedPost') }}">Published Posts</a></li>
+                     <li><i class="fa fa-table"></i><a href="{{ route('getUnpublishPost') }}">Unpublish Posts</a></li>
+                  </ul>
                </li>
 
                <li class="menu-item-has-children dropdown">

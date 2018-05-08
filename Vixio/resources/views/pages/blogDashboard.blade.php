@@ -16,6 +16,7 @@
 		.modal-backdrop.show, .modal-backdrop.fade{
 			display: none;
 		}
+
 	</style>
 
 	<!-- Quill Text Editor Theme included stylesheets -->
@@ -34,7 +35,7 @@
 					<hr>
 					<div class="card">
 						<div class="card-header">
-							<strong class="card-title">Data Table</strong>
+							<strong class="card-title">{{$data['data-table']}}</strong>
 						</div>
 						<div class="card-body">
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
@@ -48,164 +49,166 @@
 									</tr>
 								</thead>
 								<tbody>
+								<?php foreach($data['blog'] as $i => $post){ ?>
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title</td>
-										<td class="text-center" style="vertical-align: middle;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni enim quod eos sunt quis eius consequatur, dolore aut, earum sed atque cumque tempora nostrum. Laborum earum, facilis accusamus repudiandae in.</td>
+										<td class="text-center" style="vertical-align: middle;">{{$post['title']}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$post['content']}}</td>
 										<td class="text-center" style="vertical-align: middle;">
+										<?php if(!is_null($post['image_url'])) { ?>
 											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
+										<?php } else { ?>
+											-
+										<?php } ?>
 										</td>
-										<td class="text-center" style="vertical-align: middle;">Publish</td>
 										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
+										<?php
+										if($post['status']) echo 'published';
+										else echo 'Unpublish';
+										?>
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal{{$post['id']}}">Edit</button>
+											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal{{$post['id']}}">Delete</button>
 										</td>
 									</tr>
 
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 2</td>
-										<td class="text-center" style="vertical-align: middle;">The quick brown fox jumps over the lazy dog</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">Publish</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
+									<!-- Modal Picture -->
+									<div class="modal fade" id="showBlogImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+						               <div class="modal-dialog modal-sm" role="document">
+							               <form action="#">
+							                  <div class="modal-content">
+							                     <div class="modal-header">
+							                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
+							                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                           <span aria-hidden="true">&times;</span>
+							                        </button>
+							                     </div>
+							                     <div class="modal-body">
+							                        <div class="user-profile">
+									                  	<img src='{{ asset($post["image_url"]) }}' alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
+									                  </div>
+							                     </div>
+							                     <div class="modal-footer">
+							                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+							                     </div>
+							                  </div>
+							               </form>
+						               </div>
+						            </div>
 
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 3</td>
-										<td class="text-center" style="vertical-align: middle;">LALALALALALALAAAAAAAAAAAAAA</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">Unpublish</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
+						            <!-- Modal Edit -->
+									<div class="modal fade" id="editModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+						              	<div class="modal-dialog modal-lg" role="document">
+						                  <form action="#">
+							                  <div class="modal-content">
+							                     <div class="modal-header">
+							                          	<h5 class="modal-title" id="mediumModalLabel">Edit Blog</h5>
+							                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                              <span aria-hidden="true">&times;</span>
+							                          	</button>
+							                     </div>
+							                     <div class="modal-body">
+
+							                        <div class="card-body card-block">
+
+											               <div class="form-group" style="width: 50%;">
+											                  <label class="form-control-label">Title</label>
+										                     <div class="input-group">
+										                        <input class="form-control" placeholder="Title" value="{{$post['title']}}">
+										                     </div>
+										                     <small class="form-text text-muted">ex. How To Create Better Story</small>
+											               </div>
+
+											               <div class="form-group">
+											                  <label class=" form-control-label">Content</label>
+									                        <div data-editor="editor" style="height: 250px">{{$post['content']}}</div>
+										                     <small class="form-text text-muted">ex. Content of the blog goes here</small>
+											               </div>
+
+											               <div class="form-group">
+											                  	<label class="form-control-label">Status</label>
+										                    	<div class="input-group">
+										                        <label class="radio-inline">
+										                        	<?php if($post['status']) {?>
+																	<input type="radio" name="optRadio" value="publish" style="margin-right: 3px;" checked>
+																	<?php } else {?>
+																	<input type="radio" name="optRadio" value="publish" style="margin-right: 3px;">
+																	<?php } ?>
+																	Publish
+																</label>
+															   	<label class="radio-inline" style="margin-left: 15px;"">
+															   		<?php if($post['status']) {?>
+																	<input type="radio" name="optRadio" value="unpublish" style="margin-right: 3px;">
+																	<?php } else {?>
+																	<input type="radio" name="optRadio" value="unpublish" style="margin-right: 3px;" checked>
+																	<?php } ?>
+															   		Unpublish
+															   	</label>
+										                     </div>
+										                     <small class="form-text text-muted">ex. Select blog status</small>
+											               </div>
+
+											               <div class="form-group">
+											               	<label class="form-control-label">Current Thumbnail image</label>
+											                  <div class="current-thumbnail-image">
+											                  <?php if(is_null($post['image_url'])) { ?>
+											                  	<img src="{{ asset('/image/default-blog.png') }}" alt="blog" style="border: 2px dashed black; padding: 10px;">
+											                  	<?php }else{ ?>
+											                  	<img src='{{ asset($post["image_url"]) }}' alt="blog" style="border: 2px dashed black; padding: 10px;">
+											                  	<?php } ?>
+											                  </div>
+											               </div>
+
+											               <div class="form-group" style="width: 50%;">
+											                  <label class="form-control-label">Thumbnail image</label>
+										                     <div class="input-group">
+										                        <input type="file" class="form-control" name="blogImage" accept="image/x-png,image/jpeg" />
+										                     </div>
+										                     <small class="form-text text-muted">ex. Choose thumbnail image</small>
+											               </div>
+											            </div>
+							                     </div>
+
+							                     <div class="modal-footer">
+							                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+							                        <button type="submit" class="btn btn-danger">Confirm</button>
+							                     </div>
+							                  </div>
+						                  </form>
+						            	</div>
+						          	</div>
+
+						          	<!-- Modal Delete-->
+		          					<div class="modal fade" id="deleteModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+						           		<div class="modal-dialog modal-sm" role="document">
+							               	<form action="{{url('/')}}/blog/deleteBlog/{{$post['id']}}" method="get">
+							               		{{ csrf_field() }}
+							                  	<div class="modal-content">
+							                     	<div class="modal-header">
+							                       		<h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
+								                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								                           <span aria-hidden="true">&times;</span>
+								                        </button>
+							                     	</div>
+							                     	<div class="modal-body">
+								                        <p class="text-center" style="color: #000; margin-bottom: 0;">
+								                        	Are you sure to delete this blog?
+								                        </p>
+							                     	</div>
+							                     	<div class="modal-footer">
+								                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+								                        <button type="submit" class="btn btn-danger">Confirm</button>
+							                     	</div>
+							                  	</div>
+							              	</form>
+						               	</div>
+					            	</div>
+								<?php } ?>
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-
-				<div class="modal fade" id="showBlogImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="user-profile">
-			                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
-			                  </div>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-				
-				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-              	<div class="modal-dialog modal-lg" role="document">
-                  <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Edit Blog</h5>
-	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                              <span aria-hidden="true">&times;</span>
-	                          	</button>
-	                     </div>
-	                     <div class="modal-body">
-
-	                        <div class="card-body card-block">
-
-					               <div class="form-group" style="width: 50%;">
-					                  <label class="form-control-label">Title</label>
-				                     <div class="input-group">
-				                        <input class="form-control" value="Current Title">
-				                     </div>
-				                     <small class="form-text text-muted">ex. How To Create Better Story</small>
-					               </div>
-
-					               <div class="form-group">
-					                  <label class=" form-control-label">Content</label>
-			                        <div id="editor" style="height: 250px"></div>
-				                     <small class="form-text text-muted">ex. Content of the blog goes here</small>
-					               </div>
-
-					               <div class="form-group">
-					                  <label class="form-control-label">Status</label>
-				                     <div class="input-group">
-				                        <label class="radio-inline">
-											      <input type="radio" name="optRadio" value="publish" style="margin-right: 3px;">Publish
-											   </label>
-											   <label class="radio-inline" style="margin-left: 15px;"">
-											   	<input type="radio" name="optRadio" value="unpublish" style="margin-right: 3px;">Unpublish
-											   </label>
-				                     </div>
-				                     <small class="form-text text-muted">ex. Select blog status</small>
-					               </div>
-
-					               <div class="form-group">
-					               	<label class="form-control-label">Current Thumbnail image</label>
-					                  <div class="current-thumbnail-image">
-					                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
-					                  </div>
-					               </div>
-
-					               <div class="form-group" style="width: 50%;">
-					                  <label class="form-control-label">Thumbnail image</label>
-				                     <div class="input-group">
-				                        <input type="file" class="form-control" name="blogImage" accept="image/x-png,image/gif,image/jpeg" />
-				                     </div>
-				                     <small class="form-text text-muted">ex. Choose thumbnail image</small>
-					               </div>
-					            </div>
-	                     </div>
-
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-                  </form>
-            	</div>
-          	</div>
-
-				<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <p class="text-center" style="color: #000; margin-bottom: 0;">
-	                        	Are you sure to delete this blog?
-	                        </p>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 			</div>
 		</div>
 	</div>
@@ -260,7 +263,7 @@
 			// ['clean']                                         // remove formatting button
 		];
 
-		var quill = new Quill('#editor', {
+		var quill = new Quill("div[data-editor='editor']", {
 			modules: { 
 				toolbar: toolbarOptions 
 			},

@@ -14,13 +14,6 @@
 Auth::routes();
 
 // TEST ROUTES
-Route::get('/blog/dashboard', function () {
-    return view('/pages/blogDashboard');
-})->name('blogDashboard');
-
-Route::get('/blog/create', function () {
-    return view('/pages/blogCreate');
-})->name('blogCreate');
 
 Route::get('/documentation/create/title', function () {
     return view('/pages/documentationTitle');
@@ -135,17 +128,21 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	});
 
 	Route::prefix('blog')->group(function(){
-		Route::post('/createBlog', [
-			'uses' => 'BlogController@createBlog',
-		]);
+		Route::get('/dashboard', function () {
+		    return view('/pages/blogDashboard');
+		})->name('blogDashboard');
 
+		Route::get('/create', function () {
+		    return view('/pages/blogCreate');
+		})->name('blogCreate');
+		
 		Route::get('/getPublishedBlog', [
-			'uses' => 'BlogController@getPublishedBlog',
-		]);
+			'uses' => 'BlogController@getPublishedBlogAdmin',
+		])->name('getPusblisedPost');
 
-		Route::get('/getUnpublishedBlog', [
-			'uses' => 'BlogController@getUnpublishedBlog',
-		]);
+		Route::get('/getUnpublishBlog', [
+			'uses' => 'BlogController@getUnpublishBlog',
+		])->name('getUnpublishPost');
 
 		Route::post('/updateBlog/{id}',[
 			'uses' => 'BlogController@updateBlog',

@@ -600,4 +600,8 @@ header .form-inline {
 .language-show + .dropdown-menu {
   display: block; }
 
+.ql-editor{
+  word-break: break-word;
+}
+
 /*# sourceMappingURL=style.css.map */
