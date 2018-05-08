@@ -12,6 +12,7 @@ use App\User;
 use Auth;
 class ApiTest extends TestCase{
 
+	// use RefreshDatabase;
 	use DatabaseTransactions;
 
 	protected $header;

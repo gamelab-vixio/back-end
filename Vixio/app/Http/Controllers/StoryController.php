@@ -292,10 +292,11 @@ class StoryController extends Controller
         try{
             if(JWTAuth::parseToken()->authenticate()){
                 $userID = Auth::user()->id;
-                $played = StoryPlayed::updateOrCreate(
-                    ['user_id' => $userID, 'story_id' => $sid],
-                    ['user_id' => $userID, 'story_id' => $sid]
-                );
+                $played = new StoryPlayed();
+                $played->user_id = $userID;
+                $played->story_id = $sid;
+
+                $played->save();
             }
         }catch(JWTException $e){
 

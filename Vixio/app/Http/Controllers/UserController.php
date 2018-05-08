@@ -119,10 +119,10 @@ class UserController extends Controller
     public function history(){
         $userID = Auth::user()->id;
 
-        $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->with(['story' => function($q){
+        $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->orderBy('created_at', 'DESC')->with(['story' => function($q){
             $q->where('publish', 1)->where('active', 1)->get(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release']);
         }
-        ])->get();
+        ])->paginate(10);
 
         return response()->json($stories , 200);
     }

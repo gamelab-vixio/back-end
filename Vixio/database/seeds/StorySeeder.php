@@ -15,10 +15,15 @@ class StorySeeder extends Seeder
         $faker = Faker::create('App\Story');
         $fisherYates = array();
         for($i=0; $i < 500; $i++){
+            $year = rand(2007, 2017);
+            $month = rand(1, 12);
+            $day = rand(1, 28);
+            $date = \Carbon\Carbon::create($year,$month ,$day , 0, 0, 0);
             $isPublish = (int) rand(0,1);
             $releaseYear = null;
             $played = rand(0, 50);
             $userID = rand(1,1000);
+
             if($isPublish) $releaseYear = \Carbon\Carbon::now();
 
             DB::table('stories')->insert([
@@ -30,8 +35,8 @@ class StorySeeder extends Seeder
                 'publish' => $isPublish,
                 'year_of_release' => $releaseYear,
                 'played' => $played,
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'created_at' => $date->format('Y-m-d H:i:s'),
+                'updated_at' => $date->format('Y-m-d H:i:s'),
             ]);
 
             for($j = 0; $j < $played; $j++){
