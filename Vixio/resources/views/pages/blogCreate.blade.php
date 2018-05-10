@@ -28,13 +28,19 @@
 	                     </div>
 	                     <small class="form-text text-muted">ex. How To Create Better Story</small>
 		               </div>
-
-		               <div class="form-group">
+							
+							{{-- Quill Div --}}
+		               {{-- <div class="form-group">
 		                  <label class=" form-control-label">Content</label>
                         <div id="editor" style="height: 250px"></div>
 	                     <small class="form-text text-muted">ex. Content of the blog goes here</small>
 		               </div>
-		               <textarea name="content" id="content" hidden value=""></textarea>
+		               <textarea name="content" id="content" hidden value=""></textarea> --}}
+							
+							{{-- NicEditor --}}
+		               <div class="form-group">
+		               	<textarea name="test" id="editor" style="width: 100%; height: 250px"></textarea>
+		               </div>
 
 		               <div class="form-group">
 		                  <label class=" form-control-label">Status</label>
@@ -84,10 +90,10 @@
 	<script src="{{asset('vixio-cms/assets/js/lib/data-table/datatables-init.js')}}"></script>
 
 	<!-- Main Quill Text Editor Library -->
-	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	{{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
 	
 	<!-- Initialize Quill editor -->
-	<script>
+	{{-- <script>
 		var toolbarOptions = [
 			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 			// ['blockquote', 'code-block'],
@@ -119,9 +125,9 @@
 		});
 
 		quill.format('color', 'black');
-	</script>
+	</script> --}}
 
-	<script>
+	{{-- <script>
 	$(document).ready(function(){
 	    $('#createBlog').on('submit', function(e){
 	        e.preventDefault();
@@ -129,5 +135,14 @@
 	        this.submit();
 	    });
 	});
+	</script> --}}
+
+	{{-- NicEditor --}}
+	<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		bkLib.onDomLoaded(function() {
+      	new nicEditor({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']}).panelInstance('editor');
+      });
 	</script>
+						
 @endsection
