@@ -135,6 +135,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 		Route::get('/create', function () {
 		    return view('/pages/blogCreate');
 		})->name('blogCreate');
+
+		Route::post('/createBlog', [
+			'uses' => 'BlogController@createBlog',
+		]);
 		
 		Route::get('/getPublishedBlog', [
 			'uses' => 'BlogController@getPublishedBlogAdmin',

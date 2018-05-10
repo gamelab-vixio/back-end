@@ -107,7 +107,7 @@ class BlogController extends Controller
         if(!is_null($imageURL))
             $image = Image::make(public_path().'/'.$imageURL)->resize(600,400);
         else
-            $image = Image::make(public_path().'//image/default-blog.png')->resize(600,400);
+            $image = Image::make(public_path().'/image/default-blog.png')->resize(600,400);
         
         return $image->response('jpeg');
     }
@@ -143,45 +143,54 @@ class BlogController extends Controller
 
         $blog = Blog::findOrFail($bid);
 
+        if($blog->title != $request->input('title')){
+            $this->validate($request, ['title' => 'unique:blogs']);
+            if(!is_null($blog->image_url) && !$request->has('photo')){
+                $oldPath = './image/blog/'.$blog->title.'/';
+                $path = './image/blog/'.$request->input('title').'/';
+                File::makeDirectory(public_path().$path, 0755, true, true);
+                $path = str_replace($blog->title, $request->input('title'), $blog->image_url);
+                Image::make(public_path().'/'.$blog->image_url)->save($path);
+
+                $blog->image_url = $path;
+
+                File::deleteDirectory(public_path().$oldPath);
+            }
+        }
+
         //store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
-            $oldPath = './image/blog/'.$blog->title.'/';
-            $path = './image/blog/'.$request->input('title').'/';
+            $oldPath = '/image/blog/'.$blog->title.'/';
+            $path = '/image/blog/'.$request->input('title').'/';
             if (! File::exists(public_path().$path) && File::exists(public_path().$oldPath)) {
                 File::deleteDirectory(public_path().$oldPath);
                 File::makeDirectory(public_path().$path, 0755, true, true);
             }
-            Image::make($request->file('photo'))->save($path.$image);
-            $path = $path.$image;
+            Image::make($request->file('photo'))->save('.'.$path.$image);
+            $path = '.'.$path.$image;
 
             $blog->image_url = $path;
         }
 
-        if($blog->title != $request->input('title'))
-            $this->validate($request, ['title' => 'unique:blogs']);
         $blog->title = $request->input('title');
         $blog->content = $request->input('content');
         $blog->status = $request->input('status');
 
         $blog->save();
 
-        $response = [
-            'message' => 'Blog has been updated!'
-        ];
-        return response()->json($response ,201);
+        return back();
     }
 
     public function deleteBlog($bid){
         $blog = Blog::findOrFail($bid);
 
+        $path = '/image/blog/'.$blog->title.'/';
+
+        File::deleteDirectory(public_path().'/'.$path);
+
         $blog->delete();
 
-        Storage::deleteDirectory('/blog/'.$bid);
-
-        $response = [
-            'message' => 'Blog has been deleted!'
-        ];
         return back();
     }
 }

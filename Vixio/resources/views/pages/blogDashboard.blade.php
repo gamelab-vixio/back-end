@@ -21,9 +21,6 @@
 
 	<!-- Quill Text Editor Theme included stylesheets -->
 	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-	<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-  <script>tinymce.init({ selector:'textarea' });</script>
 @endsection
 
 @section('content')
@@ -55,10 +52,10 @@
 								<?php foreach($data['blog'] as $i => $post){ ?>
 									<tr>
 										<td class="text-center" style="vertical-align: middle;">{{$post['title']}}</td>
-										<td class="text-center" style="vertical-align: middle;">{{$post['content']}}</td>
+										<td class="text-center" style="vertical-align: middle;"><?php echo $post['content']; ?></td>
 										<td class="text-center" style="vertical-align: middle;">
 										<?php if(!is_null($post['image_url'])) { ?>
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage">Show Image</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage{{$post['id']}}">Show Image</button>
 										<?php } else { ?>
 											-
 										<?php } ?>
@@ -76,7 +73,7 @@
 									</tr>
 
 									<!-- Modal Picture -->
-									<div class="modal fade" id="showBlogImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+									<div class="modal fade" id="showBlogImage{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
 						               <div class="modal-dialog modal-sm" role="document">
 							               <form action="#">
 							                  <div class="modal-content">
@@ -88,7 +85,7 @@
 							                     </div>
 							                     <div class="modal-body">
 							                        <div class="user-profile">
-									                  	<img src='{{ asset($post["image_url"]) }}' alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
+									                  	<img src='{{ asset($post["image_url"]) }}' alt="blog Image" style="border: 2px dashed black; padding: 10px;">
 									                  </div>
 							                     </div>
 							                     <div class="modal-footer">
@@ -102,7 +99,8 @@
 						            <!-- Modal Edit -->
 									<div class="modal fade" id="editModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
 						              	<div class="modal-dialog modal-lg" role="document">
-						                  <form action="#">
+						                  <form action="{{url('/')}}/blog/updateBlog/{{$post['id']}}" method="post" enctype="multipart/form-data">
+						                  {{ csrf_field() }}
 							                  <div class="modal-content">
 							                     <div class="modal-header">
 							                          	<h5 class="modal-title" id="mediumModalLabel">Edit Blog</h5>
@@ -117,22 +115,14 @@
 											               <div class="form-group" style="width: 50%;">
 											                  <label class="form-control-label">Title</label>
 										                     <div class="input-group">
-										                        <input class="form-control" placeholder="Title" value="{{$post['title']}}">
+										                        <input class="form-control" name="title" placeholder="Title" value="{{$post['title']}}">
 										                     </div>
 										                     <small class="form-text text-muted">ex. How To Create Better Story</small>
 											               </div>
 
-											               {{-- <div class="form-group">
-											                  <label class=" form-control-label">Content</label>
-									                        <div data-editor="editor" style="height: 250px">{{$post['content']}}</div>
-									                        <textarea></textarea>
-										                     <small class="form-text text-muted">ex. Content of the blog goes here</small>
-											               </div> --}}
-
-											               {{-- New Content - NicEditor --}}
 											               <div class="form-group">
 											               	<label class=" form-control-label">Content</label>
-											               	<textarea name="test" id="editor" style="max-width:100%; width: 736px; height: 250px"></textarea>
+											               	<textarea name="content" style="max-width:100%; width: 736px; height: 250px"><?php echo $post['content']; ?></textarea>
 											               	<small class="form-text text-muted">ex. Content of the blog goes here</small>
 											               </div>
 
@@ -141,17 +131,17 @@
 										                    	<div class="input-group">
 										                        <label class="radio-inline">
 										                        	<?php if($post['status']) {?>
-																	<input type="radio" name="optRadio" value="publish" style="margin-right: 3px;" checked>
+																	<input type="radio" name="status" value="1" style="margin-right: 3px;" checked>
 																	<?php } else {?>
-																	<input type="radio" name="optRadio" value="publish" style="margin-right: 3px;">
+																	<input type="radio" name="status" value="0" style="margin-right: 3px;">
 																	<?php } ?>
 																	Publish
 																</label>
 															   	<label class="radio-inline" style="margin-left: 15px;"">
 															   		<?php if($post['status']) {?>
-																	<input type="radio" name="optRadio" value="unpublish" style="margin-right: 3px;">
+																	<input type="radio" name="status" value="1" style="margin-right: 3px;">
 																	<?php } else {?>
-																	<input type="radio" name="optRadio" value="unpublish" style="margin-right: 3px;" checked>
+																	<input type="radio" name="status" value="0" style="margin-right: 3px;" checked>
 																	<?php } ?>
 															   		Unpublish
 															   	</label>
@@ -170,13 +160,13 @@
 											                  </div>
 											               </div>
 
-											               <div class="form-group" style="width: 50%;">
-											                  <label class="form-control-label">Thumbnail image</label>
-										                     <div class="input-group">
-										                        <input type="file" class="form-control" name="blogImage" accept="image/x-png,image/jpeg" />
-										                     </div>
-										                     <small class="form-text text-muted">ex. Choose thumbnail image</small>
-											               </div>
+											                <div class="form-group" style="width: 50%;">
+											                  	<label class="form-control-label">Thumbnail image</label>
+										                     	<div class="input-group">
+										                       		<input type="file" class="form-control" name="photo" accept="image/x-png,image/jpeg" value="" />
+										                     	</div>
+										                     	<small class="form-text text-muted">ex. Choose thumbnail image</small>
+											                </div>
 											            </div>
 							                     </div>
 
@@ -247,49 +237,9 @@
 	</script>
 
 	{{-- NicEditor --}}
-	<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		bkLib.onDomLoaded(function() {
-      	nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']})
-      });
+	<script src="{{asset('vixio-cms/assets/js/richTextEditor.js')}}" type="text/javascript"></script>
+
+	<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']}));</script>
 	</script>
-
-	<!-- Main Quill Text Editor Library -->
-	{{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
-	
-	<!-- Initialize Quill editor -->
-	{{-- <script>
-		var toolbarOptions = [
-			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-			// ['blockquote', 'code-block'],
-			
-			['link'],														// link only
-
-			// ['link', 'image'], 											// link and image
-			// [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-			[{ 'list': 'ordered'}, { 'list': 'bullet' }],
-			[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-			[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-			[{ 'direction': 'rtl' }],                         // text direction
-
-			// [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-			[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-			[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-			[{ 'font': [] }],
-			[{ 'align': [] }],
-
-			// ['clean']                                         // remove formatting button
-		];
-
-		var quill = new Quill("div[data-editor='editor']", {
-			modules: { 
-				toolbar: toolbarOptions 
-			},
-			theme: 'snow'
-		});
-
-		quill.format('color', 'black');
-	</script> --}}
 
 @endsection
