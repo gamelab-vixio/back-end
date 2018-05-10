@@ -19,7 +19,7 @@
 	</style>
 
 	<!-- Quill Text Editor Theme included stylesheets -->
-	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+	{{-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> --}}
 @endsection
 
 @section('content')
@@ -65,11 +65,18 @@
 	                     <small class="form-text text-muted">ex. Installation</small>
 		               </div>
 							
-							{{-- Content --}}
-		               <div class="form-group" style="width: 50%;">
+							{{-- Content - QuillJS--}}
+		               {{-- <div class="form-group" style="width: 50%;">
 		                  <label class="form-control-label">Content</label>
 	                     <div id="editor1" style="height: 250px"></div>
 	                     <small class="form-text text-muted">ex. Documentation content goes here</small>
+		               </div> --}}
+
+		               {{-- New Content - NicEditor --}}
+		               <div class="form-group">
+		               	<label class="form-control-label">Content</label>
+		               	<textarea name="test" id="editor1" style="width: 100%; height: 250px"></textarea>
+		               	<small class="form-text text-muted">ex. Documentation content goes here</small>
 		               </div>
 
 		               <button type="submit" class="btn btn-primary">Submit</button>
@@ -169,7 +176,7 @@
 			                     </div>
 
 			                     {{-- New Header --}}
-					               <div class="form-group"">
+					               <div class="form-group">
 					                  <label class="form-control-label">New Header</label>
 				                     <div class="input-group">
 				                        <input class="form-control" value="Current Header">
@@ -177,11 +184,18 @@
 				                     <small class="form-text text-muted">ex. Installation</small>
 					               </div>
 
-					               {{-- New Content --}}
-					               <div class="form-group"">
+					               {{-- New Content - QuillJS --}}
+					               {{-- <div class="form-group"">
 					                  <label class="form-control-label">New Content</label>
 				                     <div id="editor2" style="height: 250px"></div>
 				                     <small class="form-text text-muted">ex. New documentation content goes here</small>
+					               </div> --}}
+
+					               {{-- New Content - NicEditor --}}
+					               <div class="form-group">
+					               	<label class=" form-control-label">Content</label>
+					               	<textarea name="test" id="editor2" style="max-width:100%; width: 736px; height: 250px"></textarea>
+					               	<small class="form-text text-muted">ex. New Content of the blog goes here</small>
 					               </div>
 					            </div>
 	                     </div>
@@ -244,11 +258,19 @@
 		});
 	</script>
 
+	{{-- NicEditor --}}
+	<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		bkLib.onDomLoaded(function() {
+      	nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']})
+      });
+	</script>
+
 	<!-- Main Quill Text Editor Library -->
-	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	{{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
 	
 	<!-- Initialize Quill editor -->
-	<script>
+	{{-- <script>
 		var toolbarOptions = [
 			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 			// ['blockquote', 'code-block'],
@@ -289,5 +311,6 @@
 		});
 
 		quill.format('color', 'black');
-	</script>
+	</script> --}}
+
 @endsection
