@@ -119,10 +119,17 @@
 										                     <small class="form-text text-muted">ex. How To Create Better Story</small>
 											               </div>
 
-											               <div class="form-group">
+											               {{-- <div class="form-group">
 											                  <label class=" form-control-label">Content</label>
 									                        <div data-editor="editor" style="height: 250px">{{$post['content']}}</div>
 										                     <small class="form-text text-muted">ex. Content of the blog goes here</small>
+											               </div> --}}
+
+											               {{-- New Content - NicEditor --}}
+											               <div class="form-group">
+											               	<label class=" form-control-label">Content</label>
+											               	<textarea name="test" id="editor" style="max-width:100%; width: 736px; height: 250px"></textarea>
+											               	<small class="form-text text-muted">ex. Content of the blog goes here</small>
 											               </div>
 
 											               <div class="form-group">
@@ -235,11 +242,19 @@
 		});
 	</script>
 
+	{{-- NicEditor --}}
+	<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		bkLib.onDomLoaded(function() {
+      	nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']})
+      });
+	</script>
+
 	<!-- Main Quill Text Editor Library -->
-	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	{{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
 	
 	<!-- Initialize Quill editor -->
-	<script>
+	{{-- <script>
 		var toolbarOptions = [
 			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 			// ['blockquote', 'code-block'],
@@ -271,6 +286,6 @@
 		});
 
 		quill.format('color', 'black');
-	</script>
+	</script> --}}
 
 @endsection
