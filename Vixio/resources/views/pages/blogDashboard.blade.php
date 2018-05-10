@@ -21,6 +21,9 @@
 
 	<!-- Quill Text Editor Theme included stylesheets -->
 	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+	<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
 @endsection
 
 @section('content')
@@ -122,6 +125,7 @@
 											               <div class="form-group">
 											                  <label class=" form-control-label">Content</label>
 									                        <div data-editor="editor" style="height: 250px">{{$post['content']}}</div>
+									                        <textarea></textarea>
 										                     <small class="form-text text-muted">ex. Content of the blog goes here</small>
 											               </div>
 
