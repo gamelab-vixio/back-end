@@ -68,6 +68,16 @@ class StorySeeder extends Seeder
                     'updated_at' => \Carbon\Carbon::now(),
                 ]);
             }
+
+            for($j = 0; $j < rand(0,5); $j++){
+                DB::table('story_comments')->insert([
+                    'story_id' => $i+1,
+                    'user_id' => rand(1,3),
+                    'comment' => implode($faker->paragraphs(1)),
+                    'created_at' => \Carbon\Carbon::now(),
+                    'updated_at' => \Carbon\Carbon::now(),
+                ]);
+            }
         }
     }
 }

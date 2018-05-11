@@ -37,94 +37,107 @@
 										<th class="text-center">Name</th>
 										<th class="text-center">Email</th>
 										<th class="text-center">Reason</th>
-										<th class="text-center">Profile Image</th>
+										<th class="text-center">Screenshot</th>
 										<th class="text-center">Reported</th>
 										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
+									@foreach($data as $report)
 									<tr>
-										<form action="#">
-											<td class="text-center" style="vertical-align: middle;">
-												1
-												<input type="hidden" name="row_number[]" value="write_value_here"/>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">
-												Ieuan Kappa 1 2 3
-												<input type="hidden" name="user_name[]" value="write_value_here"/>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">
-												ieuanignatius@gmail.com
-												<input type="hidden" name="user_email[]" value="write_value_here"/>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">
-												<button class="btn btn-primary" data-toggle="modal" data-target="#showReason">Show Reason</button>
-												<input type="hidden" name="user_reason[]" value="write_value_here"/>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">
-												<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">20 Times</td>
-											<td class="text-center" style="width: 10%;">
-												{{-- @if(blablabla) --}}
+										<td class="text-center" style="vertical-align: middle;">
+											{{$loop->iteration}}
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											{{$report['name']}}
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											{{$report['email']}}
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showReason{{$loop->iteration}}">Show Reason</button>
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<button class="btn btn-primary" data-toggle="modal" data-target="#imageReason{{$loop->iteration}}">Show Image</button>
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											{{$report['reported_user_count']}}
+										</td>
+										<td class="text-center" style="width: 10%;">
+											@if($report['commentable'])
+											<form action="{{ route('userBan', ['id' => $report['id']]) }}" method="post">
+											@else
+											<form action="{{ route('userUnban', ['id' => $report['id']]) }}" method="post">
+											@endif
+												{{ csrf_field() }}
+												@if($report['commentable'])
 												<button type="submit" class="btn btn-primary">Ban</button>
-												{{-- @else --}}
+												@else
 												<button type="submit" class="btn btn-danger">Unban</button>
-												{{-- @endif --}}
-											</td>
-										</form>
+												@endif
+											</form>
+										</td>
 									</tr>
+									<!-- Reason Modal -->
+									<div class="modal fade" id="showReason{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+						              	<div class="modal-dialog modal-lg" role="document">
+						                  	<form action="#">
+							                  	<div class="modal-content">
+							                     	<div class="modal-header">
+							                          	<h5 class="modal-title" id="mediumModalLabel">Reason(s)</h5>
+							                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                              		<span aria-hidden="true">&times;</span>
+							                          	</button>
+							                     	</div>
+							                     	<div class="modal-body">
+							                     		@foreach($report['reportedUser'] as $reason)
+							                        	<p>{{$loop->iteration}}. {{$reason['reason']}}</p>
+							                        	@endforeach
+							                     	</div>
+
+							                     	<div class="modal-footer">
+								                    	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+							                     	</div>
+						                  		</div>
+						                  </form>
+						            	</div>
+						          	</div>
+						          	<!-- Screenshot Modal -->
+						          	<div class="modal fade" id="imageReason{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+					               		<div class="modal-dialog modal-sm" role="document">
+					                  		<div class="modal-content">
+					                     		<div class="modal-header">
+					                        		<h5 class="modal-title" id="smallmodalLabel">Screenshot(s)</h5>
+					                    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                       				<span aria-hidden="true">&times;</span>
+					                    			</button>
+					                     		</div>
+					                     		<div class="modal-body">
+					                        		<div class="user-profile">
+						                        		@foreach($report['reportedUser'] as $image)
+						                        			@if(is_null($image['image_url']))
+								                        	<p>{{$loop->iteration}}. -
+								                        	</p>
+								                        	@else
+								                        	<p>{{$loop->iteration}}. <img src="{{ asset($image['image_url']) }}" alt="screenshot{{$loop->iteration}}" style="border: 2px dashed black; padding: 10px;">
+								                        	</p>
+								                        	@endif
+							                        	@endforeach
+							                  			
+							                  		</div>
+					                     		</div>
+					                    		<div class="modal-footer">
+					                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+					                     		</div>
+					                  		</div>
+					               		</div>
+					            	</div>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-				
-				<div class="modal fade" id="showReason" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-              	<div class="modal-dialog modal-lg" role="document">
-                  <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Reason</h5>
-	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                              <span aria-hidden="true">&times;</span>
-	                          	</button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <p>Intentional Feeding (Send couriers to enemy base 322 times)</p>
-	                     </div>
-
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-	                     </div>
-	                  </div>
-                  </form>
-            	</div>
-          	</div>
-
-				<div class="modal fade" id="showProfileImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">User Profile Image</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="user-profile">
-			                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
-			                  </div>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 	     	</div>
 	   </div>
 	</div>

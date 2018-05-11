@@ -32,9 +32,19 @@ class StoryController extends Controller
 		$userID = Auth::user()->id;
 		$story = new Story();
 
-		if($request->has(['imageURL'])){
-			$story->image_url = $request->input('imageURL');
-		}
+		//store image
+        if($request->has(['photo']) && $request->file('photo')->isvalid() ){
+            $image = 'image.'.$request->file('photo')->extension();
+            $path = './image/story/'.$sid.'/';
+            if (! File::exists(public_path().$path)) {
+                File::makeDirectory(public_path().$path, 0755, true, true);
+            }
+            Image::make($request->file('photo'))->save($path.$image);
+            $path = $path.$image;
+
+            $story->image_url = $path;
+        }
+
 		$story->user_id = $userID;
 		$story->title = $request->input('title');
 		$story->description = $request->input('description');
@@ -106,6 +116,8 @@ class StoryController extends Controller
 
     	$userID = Auth::user()->id;
     	$story = Story::where('user_id','=', $userID)->findOrFail($sid);
+
+        //benerin.. miripin kayak blog pas update
 
 		//store image
     	if($request->has(['photo']) && $request->file('photo')->isvalid() ){

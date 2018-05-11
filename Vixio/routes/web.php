@@ -35,18 +35,6 @@ Route::get('/category/create/type', function () {
     return view('/pages/categoryType');
 })->name('categoryType');
 
-Route::get('/user/list', function () {
-    return view('/pages/userList');
-})->name('userList');
-
-Route::get('/user/add', function () {
-    return view('/pages/userAdd');
-})->name('userAdd');
-
-Route::get('/user/ban', function () {
-    return view('/pages/userBan');
-})->name('userBan');
-
 Route::get('/story/list', function () {
     return view('/pages/storyList');
 })->name('storyList');
@@ -138,7 +126,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 		Route::post('/createBlog', [
 			'uses' => 'BlogController@createBlog',
-		]);
+		])->name('createPost');
 		
 		Route::get('/getPublishedBlog', [
 			'uses' => 'BlogController@getPublishedBlogAdmin',
@@ -150,47 +138,51 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 		Route::post('/updateBlog/{id}',[
 			'uses' => 'BlogController@updateBlog',
-		]);
+		])->name('updatePost');
 
-		Route::get('/deleteBlog/{id}',[
+		Route::post('/deleteBlog/{id}',[
 			'uses' => 'BlogController@deleteBlog',
-		]);
+		])->name('deletePost');
 	});
 
 	Route::prefix('report')->group(function(){
 		Route::get('/user/getReport', [
 			'uses' => 'UserReportController@getReport',
-		]);
+		])->name('userReport');
 
-		Route::get('/user/ban/{id}', [
+		Route::post('/user/ban/{id}', [
 			'uses' => 'UserReportController@banUser',
-		]);
+		])->name('userBan');
 
-		Route::get('/user/unban/{id}', [
+		Route::post('/user/unban/{id}', [
 			'uses' => 'UserReportController@unbanUser',
-		]);
+		])->name('userUnban');
 
 		Route::get('/story/getReport', [
 			'uses' => 'StoryReportController@getReport',
 		]);
 
-		Route::get('/story/ban/{id}', [
+		Route::post('/story/ban/{id}', [
 			'uses' => 'StoryReportController@banStory',
 		]);
 
-		Route::get('/story/unban/{id}', [
+		Route::post('/story/unban/{id}', [
 			'uses' => 'StoryReportController@unbanStory',
 		]);
 	});
 
 	Route::prefix('user')->group(function(){
-		Route::get('/userList',[
+		Route::get('/list',[
 			'uses' => 'UserController@userList'
-		]);
+		])->name('userList');
+
+		Route::get('/add', function () {
+		    return view('/pages/userAdd');
+		})->name('userAdd');
 
 		Route::post('/addAdmin',[
 			'uses' => 'UserController@addAdmin'
-		]);
+		])->name('addAdmin');
 	});
 
 	Route::get('/story/storyList',[

@@ -42,56 +42,49 @@
 									</tr>
 								</thead>
 								<tbody>
+								<?php foreach($data as $i => $user){ ?>
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">1</td>
-										<td class="text-center" style="vertical-align: middle;">Ieuan Kappa 1 2 3</td>
-										<td class="text-center" style="vertical-align: middle;">ieuanignatius@gmail.com</td>
+										<td class="text-center" style="vertical-align: middle;">{{$i+1}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$user['name']}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$user['email']}}</td>
 										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
+											<?php if(is_null($user['image_url'])){ ?>
+											-
+											<?php } else{ ?>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#userProfile{{$i}}">Show Image</button>
+											<?php } ?>
 										</td>
 										<td class="text-center" style="vertical-align: middle;">Yes</td>
 										<td class="text-center" style="width: 10%;">20 May 2020</td>
 									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">2</td>
-										<td class="text-center" style="vertical-align: middle;">Valdo</td>
-										<td class="text-center" style="vertical-align: middle;">shanvaldo@gmail.com</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showProfileImage">Show Image</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">No</td>
-										<td class="text-center" style="width: 10%;">22 May 2020</td>
-									</tr>
+									<div class="modal fade" id="userProfile{{$i}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-sm" role="document">
+						               		<form action="#">
+						                  		<div class="modal-content">
+						                    		<div class="modal-header">
+						                        		<h5 class="modal-title" id="smallmodalLabel">User Profile Image</h5>
+					                        			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                           				<span aria-hidden="true">&times;</span>
+					                        			</button>
+						                     		</div>
+						                     		<div class="modal-body">
+						                        		<?php if(!is_null($user['image_url'])) { ?>
+									                  	<img src='{{ asset($user["image_url"]) }}' alt="blog" style="border: 2px dashed black; padding: 10px;">
+									                  	<?php } ?>
+						                     		</div>
+							                    	<div class="modal-footer">
+							                        	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+							                    	</div>
+						                  		</div>
+						               		</form>
+					               		</div>
+					        		</div>
+								<?php } ?>
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-
-				<div class="modal fade" id="showProfileImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">User Profile Image</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="user-profile">
-			                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
-			                  </div>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 	     	</div>
 	   </div>
 	</div>

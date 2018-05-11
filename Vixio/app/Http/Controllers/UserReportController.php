@@ -18,8 +18,17 @@ class UserReportController extends Controller
 
         $imageURL = NULL;
 
-        if($request->has(['imageURL'])){
-            $imageURL = $request->input('imageURL');
+        //store image
+        if($request->has('photo') && $request->file('photo')->isvalid()){
+            $image = 'report_'.$reporterUserID.'.'.$request->file('photo')->extension();
+            $path = './image/report/user/'.$reported_user_id.'/';
+            if (! File::exists(public_path().$path)) {
+                File::makeDirectory(public_path().$path, 0755, true, true);
+            }
+            Image::make($request->file('photo'))->save($path.$image);
+            $path = $path.$image;
+
+            $imageURL = $path;
         }
 
         $report = UserReport::updateOrCreate(
@@ -36,9 +45,9 @@ class UserReportController extends Controller
     public function getReport(){
         $reports = User::select(['id','name','email', 'commentable'])->with(['reportedUser' => function ($q){
             $q->with(['reported:id,name,email', 'reporter:id,name,email'])->get(['id','user_id','reporter_user_id', 'reason', 'image_url', 'comment_type']);
-        }])->withCount(['reportedUser'])->has('reportedUser', '>', 0)->orderBy('reported_user_count', 'desc')->where('commentable', 1)->paginate(10);
+        }])->withCount(['reportedUser'])->has('reportedUser', '>', 0)->orderBy('reported_user_count', 'desc')->orderBy('commentable', 'desc')->get();
 
-        return response()->json($reports, 200);
+        return view('/pages/userBan')->with('data', $reports);
     }
 
     public function banUser($uid){
@@ -47,6 +56,8 @@ class UserReportController extends Controller
         $user->commentable = false;
 
         $user->save();
+
+        return back();
     }
 
     public function unbanUser($uid){
@@ -54,6 +65,8 @@ class UserReportController extends Controller
 
         $user->commentable = true;
 
-        $user->save(); 
+        $user->save();
+
+        return back();
     }
 }

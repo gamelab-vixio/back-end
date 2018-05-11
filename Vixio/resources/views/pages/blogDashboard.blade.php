@@ -75,31 +75,29 @@
 									<!-- Modal Picture -->
 									<div class="modal fade" id="showBlogImage{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
 						               <div class="modal-dialog modal-sm" role="document">
-							               <form action="#">
-							                  <div class="modal-content">
-							                     <div class="modal-header">
-							                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
-							                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							                           <span aria-hidden="true">&times;</span>
-							                        </button>
-							                     </div>
-							                     <div class="modal-body">
-							                        <div class="user-profile">
-									                  	<img src='{{ asset($post["image_url"]) }}' alt="blog Image" style="border: 2px dashed black; padding: 10px;">
-									                  </div>
-							                     </div>
-							                     <div class="modal-footer">
-							                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-							                     </div>
-							                  </div>
-							               </form>
+						                  <div class="modal-content">
+						                     <div class="modal-header">
+						                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
+						                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                           <span aria-hidden="true">&times;</span>
+						                        </button>
+						                     </div>
+						                     <div class="modal-body">
+						                        <div class="user-profile">
+								                  	<img src='{{ asset($post["image_url"]) }}' alt="blog Image" style="border: 2px dashed black; padding: 10px;">
+								                  </div>
+						                     </div>
+						                     <div class="modal-footer">
+						                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+						                     </div>
+						                  </div>
 						               </div>
 						            </div>
 
 						            <!-- Modal Edit -->
 									<div class="modal fade" id="editModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
 						              	<div class="modal-dialog modal-lg" role="document">
-						                  <form action="{{url('/')}}/blog/updateBlog/{{$post['id']}}" method="post" enctype="multipart/form-data">
+						                  <form action="{{ route('updatePost') }}" method="post" enctype="multipart/form-data">
 						                  {{ csrf_field() }}
 							                  <div class="modal-content">
 							                     <div class="modal-header">
@@ -182,7 +180,7 @@
 						          	<!-- Modal Delete-->
 		          					<div class="modal fade" id="deleteModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
 						           		<div class="modal-dialog modal-sm" role="document">
-							               	<form action="{{url('/')}}/blog/deleteBlog/{{$post['id']}}" method="get">
+							               	<form action="{{ route('deletePost') }}" method="post">
 							               		{{ csrf_field() }}
 							                  	<div class="modal-content">
 							                     	<div class="modal-header">

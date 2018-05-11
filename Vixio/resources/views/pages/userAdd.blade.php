@@ -17,13 +17,14 @@
 	               <strong>Add New Admin</strong>
 	            </div>
 		         
-		         <form action="#">
+		         <form action="{{ route('addAdmin') }}" method="post">
+		         	{{ csrf_field() }}
 		            <div class="card-body card-block">
 
 		               <div class="form-group" style="width: 50%;">
 		                  <label class=" form-control-label">Name</label>
 	                     <div class="input-group">
-	                        <input type="text" class="form-control" required>
+	                        <input type="text" name="name" class="form-control" required>
 	                     </div>
 	                     <small class="form-text text-muted">ex. Tony Stark</small>
 		               </div>
@@ -31,7 +32,7 @@
 		               <div class="form-group" style="width: 50%;">
 		                  <label class=" form-control-label">Email</label>
 	                     <div class="input-group">
-	                        <input type="email" class="form-control" required>
+	                        <input type="email" name="email" class="form-control" required>
 	                     </div>
 	                     <small class="form-text text-muted">ex. Tony@stark.com</small>
 		               </div>
@@ -39,7 +40,7 @@
 		               <div class="form-group" style="width: 50%;">
 		                  <label class=" form-control-label">Password</label>
 	                     <div class="input-group">
-	                        <input type="password" id="password" class="form-control" required>
+	                        <input type="password" id="password" name="password" class="form-control" required>
 	                     </div>
 	                     <small class="form-text text-muted">ex. Password123456</small>
 		               </div>
@@ -47,7 +48,7 @@
 		               <div class="form-group" style="width: 50%;">
 		                  <label class=" form-control-label">Confirm Password</label>
 	                     <div class="input-group">
-	                        <input type="password" id="confirm_password" class="form-control" required>
+	                        <input type="password" id="confirm_password" name="password_confirmation" class="form-control" required>
 	                     </div>
 	                     <small class="form-text text-muted">ex. ConfirmPassword123456</small>
 		               </div>

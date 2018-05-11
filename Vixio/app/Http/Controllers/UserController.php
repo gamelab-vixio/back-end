@@ -49,7 +49,7 @@ class UserController extends Controller
             'photo' => 'required'
         ]);
 
-        if(!$request->file('photo')->isvalid() && $request->has('image')){
+        if($request->has('photo') && !$request->file('photo')->isvalid()){
             $response = [
                 'message' => 'Something wrong with the photo!'
             ];
@@ -57,7 +57,7 @@ class UserController extends Controller
         }
 
         $userID = Auth::user()->id;
-
+        
         //store photo
         $profile = 'profile.'.$request->file('photo')->extension();
         $path = './image/user/'.$userID.'/';
@@ -129,16 +129,17 @@ class UserController extends Controller
 
     //admin
     public function userList(){
-        $user = User::withRole('user')->select(array('name','email','image_url'))->paginate(10);
+        $user = User::withRole('user')->select(array('name','email','image_url'))->get();
 
-        return response()->json($user, 200);
+        return view('/pages/userList')->with('data',$user);
     }
 
     public function addAdmin(Request $request){
+
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required'
+            'password' => 'required|min:6|confirmed'
         ]);
 
         $admin = Role::where('name', 'admin')->first();
@@ -149,12 +150,10 @@ class UserController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        $user->attachRole($admin);
-
         $user->save();
 
-        $response = ['message' => 'Successfully create new admin'];
+        $user->attachRole($admin);
 
-        return response()->json($response, 201);
+        return back();
     }
 }

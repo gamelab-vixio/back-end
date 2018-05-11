@@ -16,7 +16,7 @@
 	               <strong>Create Blog</strong>
 	            </div>
 		         
-		         <form method="post" action="{{url('/')}}/blog/createBlog" id="createBlog" enctype='multipart/form-data'>
+		         <form method="post" action="{{ route('createPost') }}" id="createBlog" enctype='multipart/form-data'>
 		         {{ csrf_field() }}
 		            <div class="card-body card-block">
 

@@ -14,18 +14,19 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //Necessary (only once)
-        $this->call(CategoryTypeSeeder::class);
+        /*$this->call(CategoryTypeSeeder::class);
         $this->call(CategoryGenreSeeder::class);
         $this->call(RoleSeeder::class);
-        $this->call(PermissionSeeder::class);
+        $this->call(PermissionSeeder::class);*/
 
         $this->testing();
     }
 
     public function testing(){
-        $this->call(DocumentationSeeder::class);
+       /* $this->call(DocumentationSeeder::class);
         $this->call(BlogSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(StorySeeder::class);
+        $this->call(StorySeeder::class);*/
+        $this->call(ReportSeeder::class);
     }
 }
