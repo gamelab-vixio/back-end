@@ -17,9 +17,6 @@
 			display: none;
 		}
 	</style>
-
-	<!-- Quill Text Editor Theme included stylesheets -->
-	{{-- <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> --}}
 @endsection
 
 @section('content')
@@ -32,51 +29,31 @@
 	               <strong>Create New Documentation Subtitle</strong>
 	            </div>
 		         
-		         <form action="#">
+		         <form action="{{ route('createContent') }}" method="post">
+		         	{{ csrf_field() }}
 		            <div class="card-body card-block">
-		            	{{-- Title --}}
-                     <div class="form-group">
-                        <label for="select" class=" form-control-label">Title</label>
-                        <select name="select" id="select" class="form-control" style="width: 50%;">
-									<option value="0">Please select</option>
-									<option value="1">Option #1</option>
-									<option value="2">Option #2</option>
-									<option value="3">Option #3</option>
-                        </select>
-                     </div>
 
-							{{-- Subtitle --}}
-							<div class="form-group">
-                        <label for="select" class=" form-control-label">Subitle</label>
-                        <select name="select" id="select" class="form-control" style="width: 50%;">
-									<option value="0">Please select</option>
-									<option value="1">Option #1</option>
-									<option value="2">Option #2</option>
-									<option value="3">Option #3</option>
-                        </select>
-                     </div>
+						<div class="form-group">
+                       		<label for="select" class=" form-control-label">Subitle</label>
+                        	<select name="subtitleID" class="form-control" style="width: 50%;">
+                        		@foreach($data['subtitle']  as $subtitle)
+								<option value="{{$subtitle['id']}}">{{$subtitle['subtitle']}}</option>
+								@endforeach
+                        	</select>
+                     	</div>
 							
-							{{-- Header --}}
-		               <div class="form-group" style="width: 50%;">
-		                  <label class="form-control-label">Header</label>
-	                     <div class="input-group">
-	                        <input class="form-control">
-	                     </div>
-	                     <small class="form-text text-muted">ex. Installation</small>
+		               	<div class="form-group" style="width: 50%;">
+		                	<label class="form-control-label">Header</label>
+                     		<div class="input-group">
+	                        	<input class="form-control" name="header">
+	                     	</div>
+	                     	<small class="form-text text-muted">ex. Installation</small>
 		               </div>
 							
-							{{-- Content - QuillJS--}}
-		               {{-- <div class="form-group" style="width: 50%;">
-		                  <label class="form-control-label">Content</label>
-	                     <div id="editor1" style="height: 250px"></div>
-	                     <small class="form-text text-muted">ex. Documentation content goes here</small>
-		               </div> --}}
-
-		               {{-- New Content - NicEditor --}}
 		               <div class="form-group">
-		               	<label class="form-control-label">Content</label>
-		               	<textarea name="test" id="editor1" style="width: 100%; height: 250px"></textarea>
-		               	<small class="form-text text-muted">ex. Documentation content goes here</small>
+			               	<label class="form-control-label">Content</label>
+			               	<textarea name="content" style="width: 100%; height: 250px"></textarea>
+			               	<small class="form-text text-muted">ex. Documentation content goes here</small>
 		               </div>
 
 		               <button type="submit" class="btn btn-primary">Submit</button>
@@ -94,6 +71,7 @@
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
+										<th class="text-center">No.</th>
 										<th class="text-center">Title</th>
 										<th class="text-center">Subtitle</th>
 										<th class="text-center">Header</th>
@@ -102,140 +80,107 @@
 									</tr>
 								</thead>
 								<tbody>
+									@foreach($data['content'] as $content)
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title</td>
-										<td class="text-center" style="vertical-align: middle;">Test Subtitle</td>
-										<td class="text-center" style="vertical-align: middle;">Test Header</td>
-										<td class="text-center" style="vertical-align: middle;">Test Content</td>
+										<td class="text-center" style="vertical-align: middle;">{{$loop->iteration}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$content['subtitle']['title']['title']}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$content['subtitle']['subtitle']}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$content['header']}}</td>
+										<td class="text-center" style="vertical-align: middle;"><?php echo $content['content']; ?></td>
 										<td class="text-center" style="width: 20%;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal{{$loop->iteration}}">Edit</button>
+											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{$loop->iteration}}">Delete</button>
 										</td>
 									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 2</td>
-										<td class="text-center" style="vertical-align: middle;">Test Subtitle 2</td>
-										<td class="text-center" style="vertical-align: middle;">Test Header 2</td>
-										<td class="text-center" style="vertical-align: middle;">Test Content 2</td>
-										<td class="text-center" style="width: 20%">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 3</td>
-										<td class="text-center" style="vertical-align: middle;">Test Subtitle 3</td>
-										<td class="text-center" style="vertical-align: middle;">Test Header 3</td>
-										<td class="text-center" style="vertical-align: middle;">Test Content 3</td>
-										<td class="text-center" style="width: 20%">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
+					          		<!-- Delete Modal -->
+									<div class="modal fade" id="deleteModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+					               		<div class="modal-dialog modal-sm" role="document">
+						               		<form action="{{ route('deleteDocs', ['tid' => $content['subtitle']['title_id'], 'sid' => $content['subtitle_id'], 'hid' => $content['id']]) }}" method="post">
+						               			{{ csrf_field() }}
+						                  		<div class="modal-content">
+						                     		<div class="modal-header">
+						                        		<h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
+						                        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                           			<span aria-hidden="true">&times;</span>
+						                        		</button>
+						                     		</div>	
+						                     		<div class="modal-body">
+						                        		<p class="text-center" style="color: #000; margin-bottom: 0;">
+						                        			Are you sure to delete this title?
+						                        		</p>
+						                     		</div>
+						                     		<div class="modal-footer">
+						                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+						                        		<button type="submit" class="btn btn-danger">Confirm</button>
+						                     		</div>
+						                  		</div>
+						               		</form>
+					               		</div>
+					        		</div>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-
-				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-              	<div class="modal-dialog modal-lg" role="document">
-                  <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Edit</h5>
-	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                              <span aria-hidden="true">&times;</span>
-	                          	</button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="card-body card-block">
-										{{-- New Title --}}
-			                     <div class="form-group">
-			                        <label for="select" class=" form-control-label">Title</label>
-			                        <select name="select" id="select" class="form-control">
-												<option value="0">Please select</option>
-												<option value="1">Option #1</option>
-												<option value="2">Option #2</option>
-												<option value="3">Option #3</option>
-			                        </select>
-			                     </div>
-										
-
-	                        	{{-- New Subtitle --}}
-	                        	<div class="form-group">
-			                        <label for="select" class=" form-control-label">Subtitle</label>
-			                        <select name="select" id="select" class="form-control">
-												<option value="0">Please select</option>
-												<option value="1">Option #1</option>
-												<option value="2">Option #2</option>
-												<option value="3">Option #3</option>
-			                        </select>
-			                     </div>
-
-			                     {{-- New Header --}}
-					               <div class="form-group">
-					                  <label class="form-control-label">New Header</label>
-				                     <div class="input-group">
-				                        <input class="form-control" value="Current Header">
-				                     </div>
-				                     <small class="form-text text-muted">ex. Installation</small>
-					               </div>
-
-					               {{-- New Content - QuillJS --}}
-					               {{-- <div class="form-group"">
-					                  <label class="form-control-label">New Content</label>
-				                     <div id="editor2" style="height: 250px"></div>
-				                     <small class="form-text text-muted">ex. New documentation content goes here</small>
-					               </div> --}}
-
-					               {{-- New Content - NicEditor --}}
-					               <div class="form-group">
-					               	<label class=" form-control-label">Content</label>
-					               	<textarea name="test" id="editor2" style="max-width:100%; width: 736px; height: 250px"></textarea>
-					               	<small class="form-text text-muted">ex. New Content of the blog goes here</small>
-					               </div>
-					            </div>
-	                     </div>
-
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-                  </form>
-            	</div>
-          	</div>
-
-				<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <p class="text-center" style="color: #000; margin-bottom: 0;">
-	                        	Are you sure to delete this row?
-	                        </p>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 	     	</div>
 	   </div>
 	</div>
+
+	@foreach($data['content'] as $content)
+	<!-- Edit Modal -->
+	<div class="modal fade" id="editModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+  		<div class="modal-dialog modal-lg" role="document">
+      		<form action="{{ route('editDocs', ['tid' => $content['subtitle']['title_id'], 'sid' => $content['subtitle_id'], 'hid' => $content['id']]) }}" method="post">
+      			{{ csrf_field() }}
+          		<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="mediumModalLabel">Edit Subtitle</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+						<div class="card-body card-block">
+ 							<div class="form-group">
+    							<label for="select" class=" form-control-label">Title</label>
+    							<select name="subtitleID" class="form-control">
+	                        		@foreach($data['subtitle']  as $subtitle)
+		                        		@if($subtitle['id'] == $content['subtitle_id'])
+		                        		<option value="{{$subtitle['id']}}" selected>
+										{{$subtitle['subtitle']}}</option>
+		                        		@else
+										<option value="{{$subtitle['id']}}">
+										{{$subtitle['subtitle']}}</option>
+										@endif
+									@endforeach
+	                        	</select>
+ 							</div>
+
+			               	<div class="form-group">
+		                		<label class="form-control-label">Header</label>
+                     			<div class="input-group">
+	                        		<input class="form-control" name="header" value="{{$content['header']}}">
+	                     		</div>
+	                     		<small class="form-text text-muted">ex. Installation</small>
+			               </div>
+
+			               	<div class="form-group">
+			               		<label class=" form-control-label">Content</label>
+			               		<textarea name="content" style="max-width:100%; width: 736px; height: 250px">{{$content['content']}}</textarea>
+			               		<small class="form-text text-muted">ex. New Content of the blog goes here</small>
+			               </div>
+						</div>
+						</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+	   						<button type="submit" class="btn btn-danger">Confirm</button>
+						</div>
+					</div>
+      		</form>
+		</div>
+	</div>
+	@endforeach
 
 @endsection
 
@@ -258,59 +203,7 @@
 		});
 	</script>
 
-	{{-- NicEditor --}}
-	<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		bkLib.onDomLoaded(function() {
-      	nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']})
-      });
-	</script>
-
-	<!-- Main Quill Text Editor Library -->
-	{{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
-	
-	<!-- Initialize Quill editor -->
-	{{-- <script>
-		var toolbarOptions = [
-			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-			// ['blockquote', 'code-block'],
-			
-			['link'],														// link only
-
-			// ['link', 'image'], 											// link and image
-			// [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-			[{ 'list': 'ordered'}, { 'list': 'bullet' }],
-			[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-			[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-			[{ 'direction': 'rtl' }],                         // text direction
-
-			// [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-			[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-			[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-			[{ 'font': [] }],
-			[{ 'align': [] }],
-
-			// ['clean']                                         // remove formatting button
-		];
-
-		var quill = new Quill('#editor1', {
-			modules: { 
-				toolbar: toolbarOptions 
-			},
-			theme: 'snow'
-		});
-
-		quill.format('color', 'black');
-
-		var quill = new Quill('#editor2', {
-			modules: { 
-				toolbar: toolbarOptions 
-			},
-			theme: 'snow'
-		});
-
-		quill.format('color', 'black');
-	</script> --}}
+	<script src="{{asset('vixio-cms/assets/js/richTextEditor.js')}}" type="text/javascript"></script>
+	<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']}));</script>
 
 @endsection

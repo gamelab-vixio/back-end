@@ -66,7 +66,6 @@ class BlogController extends Controller
 
     //admin
     public function createBlog(Request $request){
-
         $this->validate($request, [
             'title' => 'required|unique:blogs',
             'content' => 'required',

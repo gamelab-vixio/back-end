@@ -13,20 +13,6 @@
 
 Auth::routes();
 
-// TEST ROUTES
-
-Route::get('/documentation/create/title', function () {
-    return view('/pages/documentationTitle');
-})->name('documentationTitle');
-
-Route::get('/documentation/create/subtitle', function () {
-    return view('/pages/documentationSubtitle');
-})->name('documentationSubtitle');
-
-Route::get('/documentation/create/content', function () {
-    return view('/pages/documentationContent');
-})->name('documentationContent');
-
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');
@@ -67,37 +53,37 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	});
 
 	Route::prefix('docs')->group(function(){
-		Route::get('/adminGet',[
-			'uses' => 'DocController@adminGetAll',
-		]);
-
-		Route::post('/createTitle', [
-			'uses' => 'DocController@createTitle',
-		]);
-
-		Route::post('/createSubtitle', [
-			'uses' => 'DocController@createSubtitle',
-		]);
-
-		Route::post('/createContent', [
-			'uses' => 'DocController@createContent',
-		]);
-
 		Route::get('/adminGetTitle', [
 			'uses' => 'DocController@adminGetTitle',
-		]);
+		])->name('documentationTitle');
 
 		Route::get('/adminGetSubtitle', [
 			'uses' => 'DocController@adminGetSubtitle',
-		]);
+		])->name('documentationSubtitle');
+
+		Route::get('/adminGetContent',[
+			'uses' => 'DocController@adminGetContent',
+		])->name('documentationContent');
+
+		Route::post('/createTitle', [
+			'uses' => 'DocController@createTitle',
+		])->name('createTitle');
+
+		Route::post('/createSubtitle', [
+			'uses' => 'DocController@createSubtitle',
+		])->name('createSubtitle');
+
+		Route::post('/createContent', [
+			'uses' => 'DocController@createContent',
+		])->name('createContent');
 
 		Route::post('/adminUpdate/{tid}/{sid?}/{hid?}', [
 			'uses' => 'DocController@adminUpdate',
-		]);
+		])->name('editDocs');
 
-		Route::get('/adminDelete/{tid}/{sid?}/{hid?}', [
+		Route::post('/adminDelete/{tid}/{sid?}/{hid?}', [
 			'uses' => 'DocController@adminDelete',
-		]);
+		])->name('deleteDocs');
 	});
 
 	Route::prefix('blog')->group(function(){

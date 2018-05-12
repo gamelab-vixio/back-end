@@ -18,19 +18,36 @@ class DocController extends Controller
     public function adminGetTitle(){
         $title = DocumentationTitle::get(['id','title']);
 
-        return response()->json($title, 200);
+        return view('/pages/documentationTitle')->with('data', $title);
     }
 
     public function adminGetSubtitle(){
-        $title = DocumentationTitle::with(['subtitle:id,title_id,subtitle'])->get(['id','title']);
+        $title = DocumentationTitle::get(['id','title']);
 
-        return response()->json($title, 200);
+        $subtitle = DocumentationSubtitle::with(['title:id,title'])->get(['id','title_id','subtitle']);
+
+        $data = [
+            'title' => $title,
+            'subtitle' => $subtitle
+        ];
+
+        return view('/pages/documentationSubtitle')->with('data', $data);
     }
 
-    public function adminGetAll(){
-        $docs = DocumentationTitle::with(['subtitle:id,title_id,subtitle', 'subtitle.content:subtitle_id,header,content'])->get(['id','title']);
+    public function adminGetContent(){
+        $title = DocumentationTitle::get(['id','title']);
 
-        return response()->json($docs, 200);
+        $subtitle = DocumentationSubtitle::with(['title:id,title'])->get(['id','title_id','subtitle']);
+
+        $content = DocumentationContent::with(['subtitle:id,title_id,subtitle','subtitle.title:id,title'])->get(['id','subtitle_id','header','content']);
+
+        $data = [
+            'title' => $title,
+            'subtitle' => $subtitle,
+            'content' => $content
+        ];
+
+        return view('/pages/documentationContent')->with('data', $data);
     }
 
     public function createTitle(Request $request){
@@ -42,10 +59,7 @@ class DocController extends Controller
 		$docs->title = $request->input('title');
 		$docs->save();
 
-		$response = [
-			'message' => 'Successfully created a new documentation!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 
     public function createSubtitle(Request $request){
@@ -59,10 +73,7 @@ class DocController extends Controller
 		$docs->subtitle = $request->input('subtitle');
 		$docs->save();
 
-		$response = [
-			'message' => 'Successfully created a new documentation!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 
     public function createContent(Request $request){
@@ -78,16 +89,12 @@ class DocController extends Controller
 		$docs->content = $request->input('content');
 		$docs->save();
 
-		$response = [
-			'message' => 'Successfully created a new documentation!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 
     public function adminUpdate(Request $request, $tid, $sid = null, $hid = null){
         if(!is_null($hid)){
             $this->validate($request, [
-                'titleID' => 'required',
                 'subtitleID' => 'required',
                 'header' => 'required',
                 'content' => 'required'
@@ -125,10 +132,7 @@ class DocController extends Controller
             $title->save();
         }
 
-        $response = [
-            'message' => 'Successfully update the document!'
-        ];
-        return response()->json($response ,201);
+        return back();
     }
 
     public function adminDelete($tid, $sid = null, $hid = null){
@@ -148,9 +152,6 @@ class DocController extends Controller
             $title->delete();
         }
 
-        $response = [
-            'message' => 'Successfully update the document!'
-        ];
-        return response()->json($response ,201);
+        return back();
     }
 }

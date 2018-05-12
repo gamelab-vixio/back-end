@@ -29,27 +29,27 @@
 	               <strong>Create New Documentation Subtitle</strong>
 	            </div>
 		         
-		         <form action="#">
+		         <form action="{{ route('createSubtitle') }}" method="post">
+		         	{{csrf_field() }}
 		            <div class="card-body card-block">
 		            	{{-- Title --}}
-                     <div class="form-group">
+                    <div class="form-group">
                         <label for="select" class=" form-control-label">Title</label>
-                        <select name="select" id="select" class="form-control" style="width: 50%;">
-									<option value="0">Please select</option>
-									<option value="1">Option #1</option>
-									<option value="2">Option #2</option>
-									<option value="3">Option #3</option>
+                        <select name="titleID" class="form-control" style="width: 50%;">
+                        	@foreach($data['title'] as $title)
+							<option value="{{$title['id']}}">{{$title['title']}}</option>
+							@endforeach
                         </select>
-                     </div>
+                	</div>
 
 							{{-- Subtitle --}}
-		               <div class="form-group" style="width: 50%;">
-		                  <label class="form-control-label">Subtitle</label>
-	                     <div class="input-group">
-	                        <input class="form-control">
-	                     </div>
-	                     <small class="form-text text-muted">ex. Documentation Subtitle</small>
-		               </div>
+		               	<div class="form-group" style="width: 50%;">
+		                  	<label class="form-control-label">Subtitle</label>
+	                     	<div class="input-group">
+	                        	<input class="form-control" name="subtitle">
+	                     	</div>
+	                     	<small class="form-text text-muted">ex. Documentation Subtitle</small>
+		               	</div>
 
 		               <button type="submit" class="btn btn-primary">Submit</button>
 		                 
@@ -66,112 +66,97 @@
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
+										<th class="text-center">No.</th>
 										<th class="text-center">Title</th>
 										<th class="text-center">Subtitle</th>
 										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
+									@foreach($data['subtitle'] as $subtitle)
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title</td>
-										<td class="text-center" style="vertical-align: middle;">Test Subtitle</td>
+										<td class="text-center" style="vertical-align: middle;">{{$loop->iteration}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$subtitle['title']['title']}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$subtitle['subtitle']}}</td>
 										<td class="text-center" style="width: 20%;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal{{$loop->iteration}}">Edit</button>
+											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{$loop->iteration}}">Delete</button>
 										</td>
 									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 2</td>
-										<td class="text-center" style="vertical-align: middle;">Test Subtitle 2</td>
-										<td class="text-center" style="width: 20%">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 3</td>
-										<td class="text-center" style="vertical-align: middle;">Test Subtitle 3</td>
-										<td class="text-center" style="width: 20%">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
+									<!-- Edit Modal -->
+									<div class="modal fade" id="editModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+					              		<div class="modal-dialog modal-lg" role="document">
+					                  		<form action="{{ route('editDocs', ['tid' => $subtitle['title']['id'], 'sid' => $subtitle['id']]) }}" method="post">
+					                  			{{ csrf_field() }}
+						                  		<div class="modal-content">
+	                     							<div class="modal-header">
+	                          							<h5 class="modal-title" id="mediumModalLabel">Edit Subtitle</h5>
+	                          							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                              							<span aria-hidden="true">&times;</span>
+	                          							</button>
+	                     							</div>
+	                     							<div class="modal-body">
+	                        							<div class="card-body card-block">
+			                     							<div class="form-group">
+			                        							<label for="select" class=" form-control-label">Title</label>
+			                        							<select name="titleID" class="form-control">
+																	@foreach($data['title'] as $title)
+																		@if($title['id'] == $subtitle['title']['id'])
+																		<option value="{{$title['id']}}" selected>{{$title['title']}}</option>
+																		@else
+																		<option value="{{$title['id']}}">{{$title['title']}}</option>
+																		@endif
+																	@endforeach
+			                        							</select>
+			                     							</div>
+					               							<div class="form-group"">
+					                  							<label class="form-control-label">New Subtitle</label>
+				                     							<div class="input-group">
+				                        							<input class="form-control" name="subtitle" value="{{$subtitle['subtitle']}}">
+				                     							</div>
+				                     							<small class="form-text text-muted">ex. Posting Story</small>
+					               							</div>
+					            						</div>
+	                     							</div>
+	                     							<div class="modal-footer">
+	                        							<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+	                     		   						<button type="submit" class="btn btn-danger">Confirm</button>
+	                     							</div>
+	                  							</div>
+					                  		</form>
+					            		</div>
+					          		</div>
+					          		<!-- Delete Modal -->
+									<div class="modal fade" id="deleteModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+					               		<div class="modal-dialog modal-sm" role="document">
+						               		<form action="{{ route('deleteDocs', ['tid' => $subtitle['title']['id'], 'sid' => $subtitle['id']]) }}" method="post">
+						               			{{ csrf_field() }}
+						                  		<div class="modal-content">
+						                     		<div class="modal-header">
+						                        		<h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
+						                        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                           			<span aria-hidden="true">&times;</span>
+						                        		</button>
+						                     		</div>	
+						                     		<div class="modal-body">
+						                        		<p class="text-center" style="color: #000; margin-bottom: 0;">
+						                        			Are you sure to delete this title?
+						                        		</p>
+						                     		</div>
+						                     		<div class="modal-footer">
+						                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+						                        		<button type="submit" class="btn btn-danger">Confirm</button>
+						                     		</div>
+						                  		</div>
+						               		</form>
+					               		</div>
+					        		</div>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-
-				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-              	<div class="modal-dialog modal-lg" role="document">
-                  <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Edit Subtitle</h5>
-	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                              <span aria-hidden="true">&times;</span>
-	                          	</button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="card-body card-block">
-										{{-- New Title --}}
-			                     <div class="form-group">
-			                        <label for="select" class=" form-control-label">Title</label>
-			                        <select name="select" id="select" class="form-control">
-												<option value="0">Please select</option>
-												<option value="1">Option #1</option>
-												<option value="2">Option #2</option>
-												<option value="3">Option #3</option>
-			                        </select>
-			                     </div>
-										
-
-	                        	{{-- New Subtitle --}}
-					               <div class="form-group"">
-					                  <label class="form-control-label">New Subtitle</label>
-				                     <div class="input-group">
-				                        <input class="form-control" value="Current Subtitle">
-				                     </div>
-				                     <small class="form-text text-muted">ex. Posting Story</small>
-					               </div>
-					            </div>
-	                     </div>
-
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-                  </form>
-            	</div>
-          	</div>
-
-				<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <p class="text-center" style="color: #000; margin-bottom: 0;">
-	                        	Are you sure to delete this subtitle?
-	                        </p>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 	     	</div>
 	   </div>
 	</div>

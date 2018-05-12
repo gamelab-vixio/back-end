@@ -18,9 +18,6 @@
 		}
 
 	</style>
-
-	<!-- Quill Text Editor Theme included stylesheets -->
-	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -49,22 +46,23 @@
 									</tr>
 								</thead>
 								<tbody>
-								<?php foreach($data['blog'] as $i => $post){ ?>
+									<?php foreach ($data['blog'] as $i => $post) { ?>
 									<tr>
 										<td class="text-center" style="vertical-align: middle;">{{$post['title']}}</td>
 										<td class="text-center" style="vertical-align: middle;"><?php echo $post['content']; ?></td>
 										<td class="text-center" style="vertical-align: middle;">
-										<?php if(!is_null($post['image_url'])) { ?>
+										@if(!is_null($post['image_url']))
 											<button class="btn btn-primary" data-toggle="modal" data-target="#showBlogImage{{$post['id']}}">Show Image</button>
-										<?php } else { ?>
+										@else
 											-
-										<?php } ?>
+										@endif
 										</td>
 										<td class="text-center" style="vertical-align: middle;">
-										<?php
-										if($post['status']) echo 'published';
-										else echo 'Unpublish';
-										?>
+										@if($post['status'])
+										published
+										@else 
+										'Unpublish'
+										@endif
 										</td>
 										<td class="text-center" style="vertical-align: middle;">
 											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal{{$post['id']}}">Edit</button>
@@ -94,93 +92,10 @@
 						               </div>
 						            </div>
 
-						            <!-- Modal Edit -->
-									<div class="modal fade" id="editModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-						              	<div class="modal-dialog modal-lg" role="document">
-						                  <form action="{{ route('updatePost') }}" method="post" enctype="multipart/form-data">
-						                  {{ csrf_field() }}
-							                  <div class="modal-content">
-							                     <div class="modal-header">
-							                          	<h5 class="modal-title" id="mediumModalLabel">Edit Blog</h5>
-							                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							                              <span aria-hidden="true">&times;</span>
-							                          	</button>
-							                     </div>
-							                     <div class="modal-body">
-
-							                        <div class="card-body card-block">
-
-											               <div class="form-group" style="width: 50%;">
-											                  <label class="form-control-label">Title</label>
-										                     <div class="input-group">
-										                        <input class="form-control" name="title" placeholder="Title" value="{{$post['title']}}">
-										                     </div>
-										                     <small class="form-text text-muted">ex. How To Create Better Story</small>
-											               </div>
-
-											               <div class="form-group">
-											               	<label class=" form-control-label">Content</label>
-											               	<textarea name="content" style="max-width:100%; width: 736px; height: 250px"><?php echo $post['content']; ?></textarea>
-											               	<small class="form-text text-muted">ex. Content of the blog goes here</small>
-											               </div>
-
-											               <div class="form-group">
-											                  	<label class="form-control-label">Status</label>
-										                    	<div class="input-group">
-										                        <label class="radio-inline">
-										                        	<?php if($post['status']) {?>
-																	<input type="radio" name="status" value="1" style="margin-right: 3px;" checked>
-																	<?php } else {?>
-																	<input type="radio" name="status" value="0" style="margin-right: 3px;">
-																	<?php } ?>
-																	Publish
-																</label>
-															   	<label class="radio-inline" style="margin-left: 15px;"">
-															   		<?php if($post['status']) {?>
-																	<input type="radio" name="status" value="1" style="margin-right: 3px;">
-																	<?php } else {?>
-																	<input type="radio" name="status" value="0" style="margin-right: 3px;" checked>
-																	<?php } ?>
-															   		Unpublish
-															   	</label>
-										                     </div>
-										                     <small class="form-text text-muted">ex. Select blog status</small>
-											               </div>
-
-											               <div class="form-group">
-											               	<label class="form-control-label">Current Thumbnail image</label>
-											                  <div class="current-thumbnail-image">
-											                  <?php if(is_null($post['image_url'])) { ?>
-											                  	<img src="{{ asset('/image/default-blog.png') }}" alt="blog" style="border: 2px dashed black; padding: 10px;">
-											                  	<?php }else{ ?>
-											                  	<img src='{{ asset($post["image_url"]) }}' alt="blog" style="border: 2px dashed black; padding: 10px;">
-											                  	<?php } ?>
-											                  </div>
-											               </div>
-
-											                <div class="form-group" style="width: 50%;">
-											                  	<label class="form-control-label">Thumbnail image</label>
-										                     	<div class="input-group">
-										                       		<input type="file" class="form-control" name="photo" accept="image/x-png,image/jpeg" value="" />
-										                     	</div>
-										                     	<small class="form-text text-muted">ex. Choose thumbnail image</small>
-											                </div>
-											            </div>
-							                     </div>
-
-							                     <div class="modal-footer">
-							                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-							                        <button type="submit" class="btn btn-danger">Confirm</button>
-							                     </div>
-							                  </div>
-						                  </form>
-						            	</div>
-						          	</div>
-
-						          	<!-- Modal Delete-->
+						            <!-- Modal Delete-->
 		          					<div class="modal fade" id="deleteModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
 						           		<div class="modal-dialog modal-sm" role="document">
-							               	<form action="{{ route('deletePost') }}" method="post">
+							               	<form action="{{ route('deletePost', ['id' => $post['id']]) }}" method="post">
 							               		{{ csrf_field() }}
 							                  	<div class="modal-content">
 							                     	<div class="modal-header">
@@ -202,7 +117,9 @@
 							              	</form>
 						               	</div>
 					            	</div>
-								<?php } ?>
+								<?php
+									}
+									?>
 								</tbody>
 							</table>
 						</div>
@@ -211,6 +128,91 @@
 			</div>
 		</div>
 	</div>
+
+	@foreach($data['blog'] as $post)
+	<!-- Modal Edit -->
+		<div class="modal fade" id="editModal{{$post['id']}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+          	<div class="modal-dialog modal-lg" role="document">
+              <form action="{{ route('updatePost', ['id' => $post['id']]) }}" method="post" enctype="multipart/form-data">
+              	{{ csrf_field() }}
+                  <div class="modal-content">
+                     <div class="modal-header">
+                          	<h5 class="modal-title" id="mediumModalLabel">Edit Blog</h5>
+                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          	</button>
+                     </div>
+                     <div class="modal-body">
+
+                        <div class="card-body card-block">
+
+				               <div class="form-group" style="width: 50%;">
+				                  <label class="form-control-label">Title</label>
+			                     <div class="input-group">
+			                        <input class="form-control" name="title" value="{{ $post['title'] }}">
+			                     </div>
+			                     <small class="form-text text-muted">ex. How To Create Better Story</small>
+				               </div>
+
+				               <div class="form-group">
+				               	<label class=" form-control-label">Content</label>
+				               	<textarea name="content" style="max-width:100%; width: 736px; height: 250px">{{$post['content']}}</textarea>
+				               	<small class="form-text text-muted">ex. Content of the blog goes here</small>
+				               </div>
+
+				               <div class="form-group">
+				                  	<label class="form-control-label">Status</label>
+			                    	<div class="input-group">
+			                        <label class="radio-inline">
+			                        	@if($post['status'])
+										<input type="radio" name="status" value="1" style="margin-right: 3px;" checked>
+										@else
+										<input type="radio" name="status" value="0" style="margin-right: 3px;">
+										@endif
+										Publish
+									</label>
+								   	<label class="radio-inline" style="margin-left: 15px;"">
+								   		@if($post['status'])
+										<input type="radio" name="status" value="1" style="margin-right: 3px;">
+										@else
+										<input type="radio" name="status" value="0" style="margin-right: 3px;" checked>
+										@endif
+								   		Unpublish
+								   	</label>
+			                     </div>
+			                     <small class="form-text text-muted">ex. Select blog status</small>
+				               </div>
+
+				               <div class="form-group">
+				               	<label class="form-control-label">Current Thumbnail image</label>
+				                  <div class="current-thumbnail-image">
+				                  @if(is_null($post['image_url']))
+				                  	<img src="{{ asset('/image/default-blog.png') }}" alt="blog" style="border: 2px dashed black; padding: 10px;">
+				                  	@else
+				                  	<img src='{{ asset($post["image_url"]) }}' alt="blog" style="border: 2px dashed black; padding: 10px;">
+				                  	@endif
+				                  </div>
+				               </div>
+
+				                <div class="form-group" style="width: 50%;">
+				                  	<label class="form-control-label">Thumbnail image</label>
+			                     	<div class="input-group">
+			                       		<input type="file" class="form-control" name="photo" accept="image/x-png,image/jpeg" value="" />
+			                     	</div>
+			                     	<small class="form-text text-muted">ex. Choose thumbnail image</small>
+				                </div>
+				            </div>
+                     </div>
+
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                     </div>
+                  </div>
+              </form>
+        	</div>
+      	</div>
+	@endforeach
 
 @endsection
 
@@ -234,10 +236,7 @@
 		});
 	</script>
 
-	{{-- NicEditor --}}
 	<script src="{{asset('vixio-cms/assets/js/richTextEditor.js')}}" type="text/javascript"></script>
-
 	<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']}));</script>
-	</script>
 
 @endsection

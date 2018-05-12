@@ -29,13 +29,14 @@
 	               <strong>Create New Documentation Title</strong>
 	            </div>
 		         
-		         <form action="#">
+		         <form action="{{ route('createTitle') }}" method="post">
+		         	{{ csrf_field() }}
 		            <div class="card-body card-block">
 
 		               <div class="form-group" style="width: 50%;">
 		                  <label class=" form-control-label">Title</label>
 	                     <div class="input-group">
-	                        <input class="form-control">
+	                        <input class="form-control" name="title">
 	                     </div>
 	                     <small class="form-text text-muted">ex. How To Create Better Story</small>
 		               </div>
@@ -55,95 +56,83 @@
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
+										<th class="text-center">No.</th>
 										<th class="text-center">Title</th>
 										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
+									@foreach($data as $title)
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title</td>
+										<td class="text-center" style="vertical-align: middle;">{{$loop->iteration}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$title['title']}}</td>
 										<td class="text-center" style="width: 20%;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal{{$loop->iteration}}">Edit</button>
+											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{$loop->iteration}}">Delete</button>
 										</td>
 									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 2</td>
-										<td class="text-center" style="width: 20%">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">Test Title 3</td>
-										<td class="text-center" style="width: 20%">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-										</td>
-									</tr>
+									<!-- Edit Modal -->
+									<div class="modal fade" id="editModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+					              		<div class="modal-dialog modal-lg" role="document">
+					                  		<form action="{{ route('editDocs', ['tid' => $title['id']]) }}" method="post">
+					                  			{{ csrf_field() }}
+						                  		<div class="modal-content">
+						                     		<div class="modal-header">
+							                          	<h5 class="modal-title" id="mediumModalLabel">Edit Title</h5>
+						                          		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                              		<span aria-hidden="true">&times;</span>
+						                          		</button>
+						                     		</div>
+						                     		<div class="modal-body">
+						                        		<div class="card-body card-block text-center">
+										               		<div class="form-group"">
+										                  		<label class="form-control-label">New Title</label>
+									                     		<div class="input-group">
+									                        		<input class="form-control text-center" value="{{$title['title']}}" name="title">
+									                     		</div>
+									                     		<small class="form-text text-muted">ex. Posting Story</small>
+										               		</div>
+										            	</div>
+						                     		</div>
+							                     	<div class="modal-footer">
+						                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+							                        	<button type="submit" class="btn btn-danger">Confirm</button>
+							                     	</div>
+						                  		</div>
+					                  		</form>
+					            		</div>
+					          		</div>
+					          		<!-- Delete Modal -->
+									<div class="modal fade" id="deleteModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+					               		<div class="modal-dialog modal-sm" role="document">
+						               		<form action="{{ route('deleteDocs', ['tid' => $title['id']]) }}" method="post">
+						               			{{ csrf_field() }}
+						                  		<div class="modal-content">
+						                     		<div class="modal-header">
+						                        		<h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
+						                        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                           			<span aria-hidden="true">&times;</span>
+						                        		</button>
+						                     		</div>	
+						                     		<div class="modal-body">
+						                        		<p class="text-center" style="color: #000; margin-bottom: 0;">
+						                        			Are you sure to delete this title?
+						                        		</p>
+						                     		</div>
+						                     		<div class="modal-footer">
+						                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+						                        		<button type="submit" class="btn btn-danger">Confirm</button>
+						                     		</div>
+						                  		</div>
+						               		</form>
+					               		</div>
+					        		</div>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-
-				<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-              	<div class="modal-dialog modal-lg" role="document">
-                  <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Edit Title</h5>
-	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                              <span aria-hidden="true">&times;</span>
-	                          	</button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="card-body card-block text-center">
-					               <div class="form-group"">
-					                  <label class="form-control-label">New Title</label>
-				                     <div class="input-group">
-				                        <input class="form-control text-center" value="Current Title">
-				                     </div>
-				                     <small class="form-text text-muted">ex. Posting Story</small>
-					               </div>
-					            </div>
-	                     </div>
-
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-                  </form>
-            	</div>
-          	</div>
-
-				<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">Delete Confirmation</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <p class="text-center" style="color: #000; margin-bottom: 0;">
-	                        	Are you sure to delete this title?
-	                        </p>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	                        <button type="submit" class="btn btn-danger">Confirm</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 	     	</div>
 	   </div>
 	</div>
