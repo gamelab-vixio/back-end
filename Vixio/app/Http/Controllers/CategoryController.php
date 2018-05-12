@@ -25,10 +25,7 @@ class CategoryController extends Controller
 		$genre->genre = $request->input('genre');
 		$genre->save();
 
-		$response = [
-			'message' => 'Successfully created a new category genre!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 
     public function createType(Request $request){
@@ -41,24 +38,26 @@ class CategoryController extends Controller
 		$type->name = $request->input('name');
 		$type->save();
 
-		$response = [
-			'message' => 'Successfully created a new category type!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
     
     public function adminGetGenre(){
     	$genres = CategoryGenre::all(['id','genre']);
 
-    	// return view('')->with('data', $genres);
-
-    	return response()->json($genres, 200);
+    	return view('/pages/categoryGenre')->with('data', $genres);
     }
 
     public function adminGetType(){
-    	$types = CategoryType::with(['categoryGenre:id,genre'])->get(['genre_id','name']);
+    	$types = CategoryType::with(['categoryGenre:id,genre'])->get(['id','genre_id','name']);
 
-    	return response()->json($types, 200);
+    	$genres = CategoryGenre::all(['id','genre']);
+
+    	$data = [
+    		'types' => $types,
+    		'genres' => $genres,
+    	];
+
+    	return view('/pages/categoryType')->with('data', $data);
     }
 
     public function adminUpdateGenre(Request $request, $gid){
@@ -71,10 +70,7 @@ class CategoryController extends Controller
 
 		$genre->save();
 
-		$response = [
-			'message' => 'Category genre has been changed!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 
     public function adminUpdateType(Request $request, $tid){
@@ -89,10 +85,7 @@ class CategoryController extends Controller
 
 		$type->save();
 
-		$response = [
-			'message' => 'Category type has been changed!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 
     public function adminDeleteGenre($gid){
@@ -102,16 +95,9 @@ class CategoryController extends Controller
 			$genre = CategoryGenre::find($gid);
 
 			$genre->delete();
-
-			$response = [
-				'message' => 'Category genre has been deleted!'
-			];
-			return response()->json($response ,201);
     	}
-    	$response = [
-				'message' => 'Cannot delete "Uncategorized" genre'
-			];
-			return response()->json($response ,201);
+
+    	return back();
 		
     }
 
@@ -120,9 +106,6 @@ class CategoryController extends Controller
 
 		$type->delete();
 
-		$response = [
-			'message' => 'Category type has been deleted!'
-		];
-		return response()->json($response ,201);
+		return back();
     }
 }

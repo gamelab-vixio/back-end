@@ -37,6 +37,7 @@
 										<th class="text-center">Title</th>
 										<th class="text-center">Description</th>
 										<th class="text-center">Story Image</th>
+										<th class="text-center">Played</th>
 										<th class="text-center">Publish</th>
 										<th class="text-center">Active</th>
 										<th class="text-center">Author</th>
@@ -44,86 +45,107 @@
 									</tr>
 								</thead>
 								<tbody>
+									@foreach($data as $story)
 									<tr>
-										<td class="text-center" style="vertical-align: middle;">1</td>
-										<td class="text-center" style="vertical-align: middle;">Timun Perak</td>
+										<td class="text-center" style="vertical-align: middle;">{{$loop->iteration}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{$story['title']}}</td>
 										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showDescription">Show Reason</button>
+											@if(is_null($story['description']))
+											-
+											@else
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showDescription{{$loop->iteration}}">Show Description</button>
+											@endif
 										</td>
 										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage">Show Image</button>
+											@if(is_null($story['image_url']))
+											-
+											@else
+											<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage{{$loop->iteration}}">Show Image</button>
+											@endif
 										</td>
-										<td class="text-center" style="vertical-align: middle;">Yes</td>
-										<td class="text-center" style="vertical-align: middle;">Yes</td>
-										<td class="text-center" style="vertical-align: middle;">Bumblebee</td>
-										<td class="text-center" style="width: 10%;">2020</td>
+										<td class="text-center" style="vertical-align: middle;">
+											@if(!$story['played'])
+											0
+											@elseif($story['played'] == 1)
+											{{$story['played']}} time
+											@else
+											{{$story['played']}} times
+											@endif
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											@if(!$story['publish'])
+											No
+											@else
+											Yes
+											@endif
+										</td>
+										<td class="text-center" style="vertical-align: middle;">
+											@if(!$story['active'])
+											No
+											@else
+											Yes
+											@endif
+										</td>
+										<td class="text-center" style="vertical-align: middle;">{{$story['user']['name']}}</td>
+										<td class="text-center" style="width: 10%;">
+											@if(is_null($story['year_of_release']))
+											-
+											@else
+											{{$story['year_of_release']}}
+											@endif
+										</td>
 									</tr>
 
-									<tr>
-										<td class="text-center" style="vertical-align: middle;">2</td>
-										<td class="text-center" style="vertical-align: middle;">Danau Batu</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showDescription">Show Reason</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">
-											<button class="btn btn-primary" data-toggle="modal" data-target="#showStoryImage">Show Image</button>
-										</td>
-										<td class="text-center" style="vertical-align: middle;">Yes</td>
-										<td class="text-center" style="vertical-align: middle;">Yes</td>
-										<td class="text-center" style="vertical-align: middle;">SiapaAjah</td>
-										<td class="text-center" style="width: 10%;">2020</td>
-									</tr>
+									<!-- Description Modal -->
+									<div class="modal fade" id="showDescription{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+					              		<div class="modal-dialog modal-lg" role="document">
+					                  		<form action="#">
+						                 		<div class="modal-content">
+						                     		<div class="modal-header">
+						                          		<h5 class="modal-title" id="mediumModalLabel">Story Description</h5>
+						                          		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                              		<span aria-hidden="true">&times;</span>
+						                          		</button>
+						                     		</div>
+					                     			<div class="modal-body">
+						                        		<p>{{$story->description}}</p>
+						                     		</div>
+						                     		<div class="modal-footer">
+						                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+						                     		</div>
+						                  		</div>
+					                  		</form>
+					            		</div>
+					          		</div>
+					          		<!-- Image Modal -->
+					          		<div class="modal fade" id="showStoryImage{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+					               		<div class="modal-dialog modal-sm" role="document">
+						               		<form action="#">
+						                  		<div class="modal-content">
+						                     		<div class="modal-header">
+						                        		<h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
+					                        			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						                           			<span aria-hidden="true">&times;</span>
+						                        		</button>
+						                     		</div>
+						                     		<div class="modal-body">
+						                        		<div class="user-profile">
+								                  			<img src="{{ asset($story['image_url']) }}" alt="Story Display Picture" style="border: 2px dashed black; padding: 10px;">
+								                  		</div>
+						                     		</div>
+						                     		<div class="modal-footer">
+						                        		<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+						                     		</div>
+						                  		</div>
+						               		</form>
+					               		</div>
+					        		</div>
+									@endforeach
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-				
-				<div class="modal fade" id="showDescription" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-              	<div class="modal-dialog modal-lg" role="document">
-                  <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                          	<h5 class="modal-title" id="mediumModalLabel">Story Description</h5>
-	                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                              <span aria-hidden="true">&times;</span>
-	                          	</button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint quam harum numquam perspiciatis labore sequi quo facere, ad eaque vero facilis nisi at, beatae dicta modi cum. Veniam, alias, aliquid!</p>
-	                     </div>
-
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-	                     </div>
-	                  </div>
-                  </form>
-            	</div>
-          	</div>
-
-				<div class="modal fade" id="showStoryImage" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-	               <form action="#">
-	                  <div class="modal-content">
-	                     <div class="modal-header">
-	                        <h5 class="modal-title" id="smallmodalLabel">Story Image</h5>
-	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                           <span aria-hidden="true">&times;</span>
-	                        </button>
-	                     </div>
-	                     <div class="modal-body">
-	                        <div class="user-profile">
-			                  	<img src="{{ asset('/image/upload/feelsgoodman.jpg') }}" alt="feelsgoodman" style="border: 2px dashed black; padding: 10px;">
-			                  </div>
-	                     </div>
-	                     <div class="modal-footer">
-	                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-	                     </div>
-	                  </div>
-	               </form>
-               </div>
-            </div>
-
 	     	</div>
 	   </div>
 	</div>

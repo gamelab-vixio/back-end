@@ -45,9 +45,9 @@ class StoryReportController extends Controller
     public function getReport(){
     	$reports = Story::select(['id','user_id','title', 'active'])->with(['reportedStory' => function($q){
     		$q->with(['reported:id,user_id,title', 'reported.user:id,name,email', 'reporter:id,name,email'])->get(['id', 'story_id','reporter_user_id','reason','image_url']);
-    	}])->has('reportedStory','>',0)->withCount(['reportedStory'])->orderBy('reported_story_count','desc')->where('active', 1)->paginate(10);
+    	}])->has('reportedStory','>',0)->withCount(['reportedStory'])->orderBy('reported_story_count','desc')->get();
 
-        return response()->json($reports, 200);
+        return view('/pages/storyBan')->with('data', $reports);
     }
 
     public function banStory($sid){
@@ -56,6 +56,8 @@ class StoryReportController extends Controller
         $story->active = false;
 
         $story->save();
+
+        return back();
     }
 
     public function unbanStory($sid){
@@ -64,5 +66,7 @@ class StoryReportController extends Controller
         $story->active = true;
 
         $story->save(); 
+
+        return back();
     }
 }

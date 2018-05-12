@@ -27,58 +27,43 @@ Route::get('/documentation/create/content', function () {
     return view('/pages/documentationContent');
 })->name('documentationContent');
 
-Route::get('/category/create/genre', function () {
-    return view('/pages/categoryGenre');
-})->name('categoryGenre');
-
-Route::get('/category/create/type', function () {
-    return view('/pages/categoryType');
-})->name('categoryType');
-
-Route::get('/story/list', function () {
-    return view('/pages/storyList');
-})->name('storyList');
-
-Route::get('/story/ban', function () {
-    return view('/pages/storyBan');
-})->name('storyBan');
-
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::get('/', 'HomeController@index')->name('dashboard');
 
 	Route::prefix('category')->group(function(){
+
 		Route::get('/genre/adminGet', [
 			'uses' => 'CategoryController@adminGetGenre',
-		]);
+		])->name('categoryGenre');
 
 		Route::get('/type/adminGet', [
 			'uses' => 'CategoryController@adminGetType',
-		]);
+		])->name('categoryType');
 
 		Route::post('/genre/adminUpdate/{id}', [
 			'uses' => 'CategoryController@adminUpdateGenre',
-		]);
+		])->name('editGenre');
 
 		Route::post('/type/adminUpdate/{id}', [
 			'uses' => 'CategoryController@adminUpdateType',
-		]);
+		])->name('editType');
 
-		Route::get('/genre/adminDelete/{id}', [
+		Route::post('/genre/adminDelete/{id}', [
 			'uses' => 'CategoryController@adminDeleteGenre',
-		]);
+		])->name('deleteGenre');
 
-		Route::get('/type/adminDelete/{id}', [
+		Route::post('/type/adminDelete/{id}', [
 			'uses' => 'CategoryController@adminDeleteType',
-		]);
+		])->name('deleteType');
 
 		Route::post('/genre/create', [
 			'uses' => 'CategoryController@createGenre',
-		]);
+		])->name('addGenre');
 
 		Route::post('/type/create', [
 			'uses' => 'CategoryController@createType',
-		]);
+		])->name('addType');
 	});
 
 	Route::prefix('docs')->group(function(){
@@ -160,15 +145,15 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 		Route::get('/story/getReport', [
 			'uses' => 'StoryReportController@getReport',
-		]);
+		])->name('storyReport');
 
 		Route::post('/story/ban/{id}', [
 			'uses' => 'StoryReportController@banStory',
-		]);
+		])->name('storyBan');
 
 		Route::post('/story/unban/{id}', [
 			'uses' => 'StoryReportController@unbanStory',
-		]);
+		])->name('storyUnban');
 	});
 
 	Route::prefix('user')->group(function(){
@@ -185,7 +170,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 		])->name('addAdmin');
 	});
 
-	Route::get('/story/storyList',[
+	Route::get('/story/list',[
 		'uses' => 'StoryController@storyList'
-	]);
+	])->name('storyList');
 });

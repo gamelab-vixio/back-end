@@ -331,8 +331,8 @@ class StoryController extends Controller
     }
 
     public function storyList(){
-        $story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release','created_at'])->with(['user:id,name'])->paginate(10);
+        $story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','played' ,'year_of_release','created_at'])->with(['user:id,name'])->get();
 
-        return response()->json($story, 200);
+        return view('/pages/storyList')->with('data', $story);
     }
 }

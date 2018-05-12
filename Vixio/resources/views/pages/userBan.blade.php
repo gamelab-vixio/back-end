@@ -81,25 +81,23 @@
 									<!-- Reason Modal -->
 									<div class="modal fade" id="showReason{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
 						              	<div class="modal-dialog modal-lg" role="document">
-						                  	<form action="#">
-							                  	<div class="modal-content">
-							                     	<div class="modal-header">
-							                          	<h5 class="modal-title" id="mediumModalLabel">Reason(s)</h5>
-							                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						                              		<span aria-hidden="true">&times;</span>
-							                          	</button>
-							                     	</div>
-							                     	<div class="modal-body">
-							                     		@foreach($report['reportedUser'] as $reason)
-							                        	<p>{{$loop->iteration}}. {{$reason['reason']}}</p>
-							                        	@endforeach
-							                     	</div>
+						                  	<div class="modal-content">
+						                     	<div class="modal-header">
+						                          	<h5 class="modal-title" id="mediumModalLabel">Reason(s)</h5>
+						                          	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					                              		<span aria-hidden="true">&times;</span>
+						                          	</button>
+						                     	</div>
+						                     	<div class="modal-body">
+						                     		@foreach($report['reportedUser'] as $reason)
+						                        	<p>{{$loop->iteration}}. {{$reason['reason']}}</p>
+						                        	@endforeach
+						                     	</div>
 
-							                     	<div class="modal-footer">
-								                    	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-							                     	</div>
-						                  		</div>
-						                  </form>
+						                     	<div class="modal-footer">
+							                    	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+						                     	</div>
+					                  		</div>
 						            	</div>
 						          	</div>
 						          	<!-- Screenshot Modal -->

@@ -99,7 +99,7 @@
                   <a href="{{ route('storyList') }}"> <i class="menu-icon fa fa-book"></i>Story List</a>
                </li>
                <li>
-                  <a href="{{ route('storyBan') }}"> <i class="menu-icon fa fa-bullhorn"></i>Story Reporting</a>
+                  <a href="{{ route('storyReport') }}"> <i class="menu-icon fa fa-bullhorn"></i>Story Reporting</a>
                </li>
 
             </ul>
