@@ -17,7 +17,7 @@ class CreateStoriesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('title');
-            $table->string('image_url')->nullable()->default(null);
+            $table->longText('image_url')->nullable()->default(null);
             $table->longText('description');
             $table->longtext('content')->nullable()->default(null);
             $table->longtext('inkle')->nullable()->default(null);

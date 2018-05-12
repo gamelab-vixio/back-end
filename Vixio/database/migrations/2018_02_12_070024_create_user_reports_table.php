@@ -18,7 +18,7 @@ class CreateUserReportsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('reporter_user_id')->unsigned();
             $table->text('reason');
-            $table->string('image_url')->nullable()->default(null);
+            $table->longText('image_url')->nullable()->default(null);
             $table->boolean('comment_type'); //0 for blog comment | 1 for story comment
             $table->timestamps();
         });
