@@ -25,6 +25,8 @@ class CategoryController extends Controller
 		$genre->genre = $request->input('genre');
 		$genre->save();
 
+        $request->session()->flash('message', 'New genre has been created');
+
 		return back();
     }
 
@@ -37,6 +39,8 @@ class CategoryController extends Controller
 		$type->genre_id = $request->input('genreID');
 		$type->name = $request->input('name');
 		$type->save();
+
+        $request->session()->flash('message', 'New type has been created!');
 
 		return back();
     }
@@ -70,6 +74,8 @@ class CategoryController extends Controller
 
 		$genre->save();
 
+        $request->session()->flash('message', 'Genre updated successfully');
+
 		return back();
     }
 
@@ -85,26 +91,32 @@ class CategoryController extends Controller
 
 		$type->save();
 
+        $request->session()->flash('message', 'Type updated successfully');
+
 		return back();
     }
 
-    public function adminDeleteGenre($gid){
+    public function adminDeleteGenre(Request $request, $gid){
     	if($gid != 1){
     		$type = CategoryType::where('genre_id', '=', $gid)->update(['genre_id' => 1]);
 
 			$genre = CategoryGenre::find($gid);
 
 			$genre->delete();
+
+            $request->session()->flash('message', 'Genre deleted successfully');
     	}
 
     	return back();
 		
     }
 
-    public function adminDeleteType($tid){
+    public function adminDeleteType(Request $request, $tid){
 		$type = CategoryType::findOrFail($tid);
 
 		$type->delete();
+
+        $request->session()->flash('message', 'Type deleted successfully');
 
 		return back();
     }

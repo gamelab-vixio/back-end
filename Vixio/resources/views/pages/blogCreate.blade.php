@@ -69,6 +69,18 @@
 
 @section('script')
 
+	@if(Session::has('message'))
+	<script>
+		alert("{{Session::get('message')}}");
+	</script>
+	@elseif($errors->any())
+	<script>
+		@foreach ($errors->all() as $error)
+		alert("{{$error}}");
+    	@endforeach
+	</script>
+	@endif
+
 	<script src="{{asset('vixio-cms/assets/js/richTextEditor.js')}}" type="text/javascript"></script>
 	<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas({buttonList : ['bold','italic','underline','left','center','right','justify','ol','ul','subscript','superscript','strikeThrough','removeformat','indent','outdent','hr','forecolor','bgcolor','link','unlink','fontSize','fontFamily','fontFormat']}));</script>
 						

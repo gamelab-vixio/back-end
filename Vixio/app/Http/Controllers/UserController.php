@@ -154,6 +154,8 @@ class UserController extends Controller
 
         $user->attachRole($admin);
 
+        $request->session()->flash('message', 'New user admin has been created');
+
         return back();
     }
 }

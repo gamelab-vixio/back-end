@@ -140,6 +140,18 @@
 @endsection
 
 @section('script')
+	@if(Session::has('message'))
+	<script>
+		alert("{{Session::get('message')}}");
+	</script>
+	@elseif($errors->any())
+	<script>
+		@foreach ($errors->all() as $error)
+		alert("{{$error}}");
+    	@endforeach
+	</script>
+	@endif
+	
 	<script src="{{asset('vixio-cms/assets/js/lib/data-table/datatables.min.js')}}"></script>
 	<script src="{{asset('vixio-cms/assets/js/lib/data-table/dataTables.bootstrap.min.js')}}"></script>
 	<script src="{{asset('vixio-cms/assets/js/lib/data-table/dataTables.buttons.min.js')}}"></script>

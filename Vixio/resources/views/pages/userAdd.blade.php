@@ -67,23 +67,35 @@
 
 @section('script')
 
-<script>
-	var password = document.getElementById("password")
-	  , confirm_password = document.getElementById("confirm_password");
+	@if(Session::has('message'))
+	<script>
+		alert("{{Session::get('message')}}");
+	</script>
+	@elseif($errors->any())
+	<script>
+		@foreach ($errors->all() as $error)
+		alert("{{$error}}");
+    	@endforeach
+	</script>
+	@endif
 
-	function validatePassword(){
-	  	if(password.value != confirm_password.value)
-	  	{
-	   	confirm_password.setCustomValidity("Passwords Don't Match");
-	  	} 
-	  	else
-	  	{
-	   	confirm_password.setCustomValidity('');
-	  	}
-	}
+	<script>
+		var password = document.getElementById("password")
+		  , confirm_password = document.getElementById("confirm_password");
 
-	password.onchange = validatePassword;
-	confirm_password.onkeyup = validatePassword;
-</script>
+		function validatePassword(){
+		  	if(password.value != confirm_password.value)
+		  	{
+		   	confirm_password.setCustomValidity("Passwords Don't Match");
+		  	} 
+		  	else
+		  	{
+		   	confirm_password.setCustomValidity('');
+		  	}
+		}
+
+		password.onchange = validatePassword;
+		confirm_password.onkeyup = validatePassword;
+	</script>
 	
 @endsection

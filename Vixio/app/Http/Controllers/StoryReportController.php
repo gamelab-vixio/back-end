@@ -45,27 +45,32 @@ class StoryReportController extends Controller
     public function getReport(){
     	$reports = Story::select(['id','user_id','title', 'active'])->with(['reportedStory' => function($q){
     		$q->with(['reported:id,user_id,title', 'reported.user:id,name,email', 'reporter:id,name,email'])->get(['id', 'story_id','reporter_user_id','reason','image_url']);
-    	}])->has('reportedStory','>',0)->withCount(['reportedStory'])->orderBy('reported_story_count','desc')->get();
+    	}])->has('reportedStory','>',0)->withCount(['reportedStory'])->orderBy('reported_story_count','desc')->orderBy('active', 'desc')->get();
 
         return view('/pages/storyBan')->with('data', $reports);
     }
 
-    public function banStory($sid){
+    public function banStory(Request $request, $sid){
         $story = Story::find($sid);
 
         $story->active = false;
 
         $story->save();
 
+        $request->session()->flash('message', $story['title'].' has been banned');
+
+
         return back();
     }
 
-    public function unbanStory($sid){
+    public function unbanStory(Request $request, $sid){
         $story = Story::find($sid);
 
         $story->active = true;
 
         $story->save(); 
+
+        $request->session()->flash('message', $story['title'].' has been unban');
 
         return back();
     }

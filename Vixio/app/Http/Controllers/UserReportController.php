@@ -50,22 +50,26 @@ class UserReportController extends Controller
         return view('/pages/userBan')->with('data', $reports);
     }
 
-    public function banUser($uid){
+    public function banUser(Request $request, $uid){
         $user = User::find($uid);
 
         $user->commentable = false;
 
         $user->save();
 
+        $request->session()->flash('message', $user['name'].' has been banned');
+
         return back();
     }
 
-    public function unbanUser($uid){
+    public function unbanUser(Request $request, $uid){
         $user = User::find($uid);
 
         $user->commentable = true;
 
         $user->save();
+
+        $request->session()->flash('message', $user['name'].' has been unban');
 
         return back();
     }

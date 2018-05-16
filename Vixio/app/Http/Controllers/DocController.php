@@ -59,6 +59,8 @@ class DocController extends Controller
 		$docs->title = $request->input('title');
 		$docs->save();
 
+        $request->session()->flash('message', 'New title has been created');
+
 		return back();
     }
 
@@ -72,6 +74,8 @@ class DocController extends Controller
 		$docs->title_id = $request->input('titleID');
 		$docs->subtitle = $request->input('subtitle');
 		$docs->save();
+
+        $request->session()->flash('message', 'New subtitle has been created');
 
 		return back();
     }
@@ -88,6 +92,8 @@ class DocController extends Controller
 		$docs->header = $request->input('header');
 		$docs->content = $request->input('content');
 		$docs->save();
+
+        $request->session()->flash('message', 'New content has been created');
 
 		return back();
     }
@@ -108,6 +114,8 @@ class DocController extends Controller
 
             $content->save();
 
+            $request->session()->flash('message', 'Content updated successfully');
+
         }else if(!is_null($sid)){
             $this->validate($request, [
                 'titleID' => 'required',
@@ -120,6 +128,8 @@ class DocController extends Controller
             $subtitle->subtitle = $request->input('subtitle');
 
             $subtitle->save();
+
+            $request->session()->flash('message', 'Subtitle updated successfully');
         }else{
             $this->validate($request,[
                 'title' => 'required'
@@ -130,26 +140,34 @@ class DocController extends Controller
             $title->title = $request->input('title');
 
             $title->save();
+
+            $request->session()->flash('message', 'Title updated successfully');
         }
 
         return back();
     }
 
-    public function adminDelete($tid, $sid = null, $hid = null){
+    public function adminDelete(Request $request, $tid, $sid = null, $hid = null){
         if(!is_null($hid)){
             $content = DocumentationContent::findOrFail($hid);
 
             $content->delete();
 
+            $request->session()->flash('message', 'Content deleted successfully');
+
         }else if(!is_null($sid)){
             $subtitle = DocumentationSubtitle::findOrFail($sid);
 
             $subtitle->delete();
+
+            $request->session()->flash('message', 'Subtitle deleted successfully');
             
         }else{
             $title = DocumentationTitle::findOrFail($tid);
 
             $title->delete();
+
+            $request->session()->flash('message', 'Title deleted successfully');
         }
 
         return back();

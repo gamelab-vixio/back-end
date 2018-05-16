@@ -93,9 +93,7 @@ class BlogController extends Controller
 
         $blog->save();
 
-        $response = [
-            'message' => 'Successfully created a new blog!'
-        ];
+        $request->session()->flash('message', 'New blog post has been created');
 
         return back();
     }
@@ -178,10 +176,12 @@ class BlogController extends Controller
 
         $blog->save();
 
+        $request->session()->flash('message', 'Post updated successfully');
+
         return back();
     }
 
-    public function deleteBlog($bid){
+    public function deleteBlog(Request $request, $bid){
         $blog = Blog::findOrFail($bid);
 
         $path = '/image/blog/'.$blog->title.'/';
@@ -189,6 +189,8 @@ class BlogController extends Controller
         File::deleteDirectory(public_path().'/'.$path);
 
         $blog->delete();
+
+        $request->session()->flash('message', 'Post deleted successfully');
 
         return back();
     }

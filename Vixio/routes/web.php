@@ -87,10 +87,6 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	});
 
 	Route::prefix('blog')->group(function(){
-		Route::get('/dashboard', function () {
-		    return view('/pages/blogDashboard');
-		})->name('blogDashboard');
-
 		Route::get('/create', function () {
 		    return view('/pages/blogCreate');
 		})->name('blogCreate');

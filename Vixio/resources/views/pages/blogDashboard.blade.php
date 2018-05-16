@@ -38,16 +38,19 @@
 							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
+										<th class="text-center">No</th>
 										<th class="text-center">Title</th>
 										<th class="text-center">Content</th>
 										<th class="text-center">Image</th>
 										<th class="text-center">Status</th>
+										<th class="text-center">Last Update</th>
 										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach ($data['blog'] as $i => $post) { ?>
+									@foreach($data['blog'] as $post)
 									<tr>
+										<td class="text-center" style="vertical-align: middle;">{{$loop->iteration}}</td>
 										<td class="text-center" style="vertical-align: middle;">{{$post['title']}}</td>
 										<td class="text-center" style="vertical-align: middle;"><?php echo $post['content']; ?></td>
 										<td class="text-center" style="vertical-align: middle;">
@@ -64,6 +67,7 @@
 										'Unpublish'
 										@endif
 										</td>
+										<td class="text-center" style="vertical-align: middle;">{{$post['updated_at']}}</td>
 										<td class="text-center" style="vertical-align: middle;">
 											<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#editModal{{$post['id']}}">Edit</button>
 											<button class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal{{$post['id']}}">Delete</button>
@@ -117,9 +121,7 @@
 							              	</form>
 						               	</div>
 					            	</div>
-								<?php
-									}
-									?>
+								@endforeach
 								</tbody>
 							</table>
 						</div>
@@ -217,6 +219,18 @@
 @endsection
 
 @section('script')
+
+	@if(Session::has('message'))
+	<script>
+		alert("{{Session::get('message')}}");
+	</script>
+	@elseif($errors->any())
+	<script>
+		@foreach ($errors->all() as $error)
+		alert("{{$error}}");
+    	@endforeach
+	</script>
+	@endif
 
 	<script src="{{asset('vixio-cms/assets/js/lib/data-table/datatables.min.js')}}"></script>
 	<script src="{{asset('vixio-cms/assets/js/lib/data-table/dataTables.bootstrap.min.js')}}"></script>
