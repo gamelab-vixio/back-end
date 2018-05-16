@@ -19,11 +19,11 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
 	Route::prefix('category')->group(function(){
 
-		Route::get('/genre/adminGet', [
+		Route::get('/genre', [
 			'uses' => 'CategoryController@adminGetGenre',
 		])->name('categoryGenre');
 
-		Route::get('/type/adminGet', [
+		Route::get('/type', [
 			'uses' => 'CategoryController@adminGetType',
 		])->name('categoryType');
 
@@ -53,15 +53,15 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	});
 
 	Route::prefix('docs')->group(function(){
-		Route::get('/adminGetTitle', [
+		Route::get('/title', [
 			'uses' => 'DocController@adminGetTitle',
 		])->name('documentationTitle');
 
-		Route::get('/adminGetSubtitle', [
+		Route::get('/subtitle', [
 			'uses' => 'DocController@adminGetSubtitle',
 		])->name('documentationSubtitle');
 
-		Route::get('/adminGetContent',[
+		Route::get('/content',[
 			'uses' => 'DocController@adminGetContent',
 		])->name('documentationContent');
 
@@ -91,17 +91,17 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 		    return view('/pages/blogCreate');
 		})->name('blogCreate');
 
-		Route::post('/createBlog', [
-			'uses' => 'BlogController@createBlog',
-		])->name('createPost');
-		
-		Route::get('/getPublishedBlog', [
+		Route::get('/Published Posts', [
 			'uses' => 'BlogController@getPublishedBlogAdmin',
 		])->name('getPusblisedPost');
 
-		Route::get('/getUnpublishBlog', [
+		Route::get('/Unpublish Posts', [
 			'uses' => 'BlogController@getUnpublishBlog',
 		])->name('getUnpublishPost');
+
+		Route::post('/createBlog', [
+			'uses' => 'BlogController@createBlog',
+		])->name('createPost');
 
 		Route::post('/updateBlog/{id}',[
 			'uses' => 'BlogController@updateBlog',
@@ -113,7 +113,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 	});
 
 	Route::prefix('report')->group(function(){
-		Route::get('/user/getReport', [
+		Route::get('/user', [
 			'uses' => 'UserReportController@getReport',
 		])->name('userReport');
 
@@ -125,7 +125,7 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 			'uses' => 'UserReportController@unbanUser',
 		])->name('userUnban');
 
-		Route::get('/story/getReport', [
+		Route::get('/story', [
 			'uses' => 'StoryReportController@getReport',
 		])->name('storyReport');
 

@@ -58,6 +58,7 @@
                      <i class="menu-icon fa fa-list-alt"></i>Blog
                   </a>
                   <ul class="sub-menu children dropdown-menu">
+                     <li><i class="fa fa-plus"></i><a href="{{ route('blogCreate') }}">Create New Post</a></li>
                      <li><i class="fa fa-table"></i><a href="{{ route('getPusblisedPost') }}">Published Posts</a></li>
                      <li><i class="fa fa-table"></i><a href="{{ route('getUnpublishPost') }}">Unpublish Posts</a></li>
                   </ul>
@@ -155,10 +156,14 @@
                   </a>
 
                   <div class="user-menu dropdown-menu">
-                     <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
-                     <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
-                     <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
-                     <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
+                     <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">
+                           <i class="fa fa-power -off"></i>Logout
+                     </a>
+                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                     </form>
                   </div>
                </div>
             </div>
@@ -176,9 +181,23 @@
          <div class="col-sm-8">
             <div class="page-header float-right">
                <div class="page-title">
-                  <ol class="breadcrumb text-right">
+               <ol class="breadcrumb text-right">
+                  <li>
+                     <a href="{{route('dashboard')}}">Dashboard</a>
+                  </li>
+                  @for($i = 1; $i <= count(Request::segments()); $i++)
+                     @if($i == count(Request::segments()))
+                     <li class="active">
+                     @else
+                     <li>
+                     @endif
+                        {{Request::segment($i)}}
+                     </li>
+                  @endfor
+               </ol>
+                  <!-- <ol class="breadcrumb text-right">
                      <li class="active">Dashboard</li>
-                  </ol>
+                  </ol> -->
                </div>
             </div>
          </div>

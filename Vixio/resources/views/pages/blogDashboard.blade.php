@@ -26,10 +26,6 @@
 		<div class="animated fadeIn">
 			<div class="row">
 				<div class="col-md-12">
-					<button class="btn btn-primary">
-						<a href="{{ route('blogCreate') }}" style="color: #fff";><i class="fa fa-plus"></i>&nbsp;New Blog</a>
-					</button>
-					<hr>
 					<div class="card">
 						<div class="card-header">
 							<strong class="card-title">{{$data['data-table']}}</strong>
