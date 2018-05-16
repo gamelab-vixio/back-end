@@ -236,7 +236,7 @@ class StoryController extends Controller
     //write review
     public function addReviewStory(Request $request, $sid){
     	$this->validate($request,[
-    		'star' => 'required|numeric|between:0,5.0|regex:/^\d*(\.\d{1,1})?$/',
+    		'star' => 'required|integer|between:0,5|regex:/^\d*(\.\d{1,1})?$/',
 		]);
 
     	$userID = Auth::user()->id;
@@ -293,9 +293,21 @@ class StoryController extends Controller
     }
 
     public function getStory($sid){
-    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release'])->with(['user:id,name,email,image_url','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
-            $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
-        }])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
+        $story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release'])->with([
+            'user:id,name,email,image_url',
+            'storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name',
+            'storyReview'=>function($query){
+                $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+            },
+            'storyComment' => function($q){
+                $q->select(['id', 'story_id', 'user_id', 'comment_parent_id', 'comment', 'created_at'])->whereNull('comment_parent_id')->orderBy('created_at', 'desc')->get();
+            },
+            'storyComment.user:id,name,email,image_url',
+            'storyComment.reply' => function($q){
+                $q->select(['story_id', 'user_id', 'comment_parent_id', 'comment', 'created_at'])->whereNotNull('comment_parent_id')->orderBy('created_at', 'desc')->get();
+            },
+            'storyComment.reply.user:id,name,email,image_url'
+            ])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
 
         return response()->json($story, 200);
     }
