@@ -43,7 +43,7 @@ class StorySeeder extends Seeder
                 DB::table('story_reviews')->insert([
                     'story_id' => $i+1,
                     'user_id' => rand(1,1000),
-                    'star' => rand(0, 50)/10,
+                    'star' => rand(0, 5),
                     'created_at' => \Carbon\Carbon::now(),
                     'updated_at' => \Carbon\Carbon::now(),
                 ]);
