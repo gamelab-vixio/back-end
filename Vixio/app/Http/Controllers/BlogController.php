@@ -14,7 +14,7 @@ use Image;
 class BlogController extends Controller
 {
     public function getPublishedBlog(){
-    	$blog = Blog::where('status', 1)->orderBy('updated_at', 'desc')->get(['id', 'title', 'content', 'image_url', 'status', 'updated_at']);
+    	$blog = Blog::select(['id', 'title', 'content', 'image_url', 'status', 'updated_at'])->where('status', 1)->orderBy('updated_at', 'desc')->paginate(6);
 
     	return response()->json($blog, 200);
     }
