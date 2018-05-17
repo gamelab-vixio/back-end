@@ -26,7 +26,8 @@ class ApiTest extends TestCase{
 			'Content-Type' => 'application/json'
 		];
 
-		$user = User::find(860);
+		//change accordingly with the stories user_id
+		$user = User::find(642);
 
 		$this->token = JWTAuth::fromUser($user);
         
@@ -73,17 +74,33 @@ class ApiTest extends TestCase{
 
 		$response->assertStatus(200);
 	}
+
+	/** @test */
+	function changePassword(){
+
+		$response = $response = $this->withHeaders($this->header)->json('POST', '/api/user/changePassword/?token='.$this->token, [
+			'currentPassword' => "123123",
+			'newPassword' => "321321",
+			'newPassword_confirmation' => "321321"
+		]);
+
+		$response->assertJson([
+			'message' => 'Successfully changed password'
+		]);
+
+		$response->assertStatus(200);
+	}
 	
 	/** @test */
 	function getUser(){
 
 		$response = $this->get('/api/user/getUser/?token='.$this->token);
 
-		$response->assertJsonStructure([[
+		$response->assertJsonStructure([
 			'name',
 			'email',
 			'image_url'
-		]]);
+		]);
 
 		$response->assertStatus(201);
 	}
@@ -309,30 +326,15 @@ class ApiTest extends TestCase{
 
 	/** @test */
 	function addReviewStory(){
-		$response = $this->withHeaders($this->header)->json('POST', '/api/story/addReviewStory/105/?token='.$this->token, [
-			'star' => 4.7
+		//change accorindgly to stories story_id
+		$response = $this->withHeaders($this->header)->json('POST', '/api/story/addReviewStory/1/?token='.$this->token, [
+			'star' => 4
 		]);
 
 		$response->assertStatus(200);
 
-		$response = $this->withHeaders($this->header)->json('POST', '/api/story/addReviewStory/105/?token='.$this->token, [
-			'star' => 10.00
-		]);
-
-		$response->assertStatus(422);
-
-	}
-
-	/** @test */
-	function getReviewStory(){
-		$response = $this->withHeaders($this->header)->json('POST', '/api/story/addReviewStory/105/?token='.$this->token, [
-			'star' => 4.7
-		]);
-
-		$response->assertStatus(200);
-
-		$response = $this->withHeaders($this->header)->json('POST', '/api/story/addReviewStory/105/?token='.$this->token, [
-			'star' => 10.0
+		$response = $this->withHeaders($this->header)->json('POST', '/api/story/addReviewStory/1/?token='.$this->token, [
+			'star' => 10
 		]);
 
 		$response->assertStatus(422);

@@ -11,13 +11,14 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use Auth;
 use Image;
+use Hash;
 use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
     public function login(Request $request){
     	$this->validate($request, [
-    		'email' => 'required|email',
+    		'email' => 'required|email|max:255',
     		'password' => 'required'
 		]);
     	$credentials = $request->only('email', 'password');
@@ -37,9 +38,67 @@ class UserController extends Controller
     	], 200);
     }
 
+    //put e-mail verificaton then create the user
+    public function signup(Request $request){
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|max:255|email|unique:users',
+            'password' => 'required|min:6'
+        ]);
+
+        $user = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+
+        $user->save();
+
+        $role = Role::where('name', 'user')->first();
+
+        $user->attachRole($role);
+
+        $response = [
+            'message' => 'Successfully created user!'
+        ];
+        return response()->json($response ,201);
+    }
+
+    public function changePassword(Request $request){
+        $this->validate($request,[
+            'currentPassword' => 'required|min:6',
+            'newPassword' => 'required|confirmed|different:currentPassword|min:6'
+        ]);
+
+        $userID = Auth::user()->id;
+        $user = User::findOrFail($userID);
+
+        $currentPassword = $request->input('currentPassword');
+        $newPassword = $request->input('newPassword');
+
+        if(Hash::check($currentPassword, $user->password)) {
+            $user->password = bcrypt($newPassword);
+            $user->save();
+
+            $response = [
+                'message' => 'Successfully changed password'
+            ];
+
+        }else{
+            $response = [
+                'message' => 'Please enter the old password like your current password',
+                'old' => bcrypt($currentPassword),
+                'current' => $user->password
+            ];
+        }
+
+        return response()->json($response, 200);
+
+    }
+
     public function getUser(){
         $userID = Auth::user()->id;
-        $user = User::where('id',$userID)->get(array('name', 'email', 'image_url'));
+        $user = User::select(['name','email', 'image_url'])->findOrFail($userID);
 
         return response()->json($user ,201);
     }
@@ -88,32 +147,6 @@ class UserController extends Controller
             $image = Image::make(public_path().'/image/default-user.png')->resize(300,300);
 
         return $image->response('jpeg');
-    }
-
-    //put e-mail verificaton then create the user
-    public function signup(Request $request){
-    	$this->validate($request, [
-    		'name' => 'required',
-    		'email' => 'required|email|unique:users',
-    		'password' => 'required'
-		]);
-
-    	$user = new User([
-    		'name' => $request->input('name'),
-    		'email' => $request->input('email'),
-    		'password' => bcrypt($request->input('password')),
-		]);
-
-		$user->save();
-
-        $role = Role::where('name', 'user')->first();
-
-        $user->attachRole($role);
-
-		$response = [
-			'message' => 'Successfully created user!'
-		];
-		return response()->json($response ,201);
     }
 
     public function history(){

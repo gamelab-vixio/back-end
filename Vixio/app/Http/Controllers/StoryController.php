@@ -236,7 +236,7 @@ class StoryController extends Controller
     //write review
     public function addReviewStory(Request $request, $sid){
     	$this->validate($request,[
-    		'star' => 'required|integer|between:0,5|regex:/^\d*(\.\d{1,1})?$/',
+    		'star' => 'required|integer|between:0,5',
 		]);
 
     	$userID = Auth::user()->id;

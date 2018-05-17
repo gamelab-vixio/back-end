@@ -36,6 +36,11 @@ Route::prefix('user')->group(function(){
 		'middleware' => 'auth.jwt'
 	]);
 
+	Route::post('/changePassword', [
+		'uses' => 'userController@changePassword',
+		'middleware' => 'auth.jwt'
+	]);
+
 	Route::get('/history', [
 		'uses' => 'userController@history',
 		'middleware' => 'auth.jwt'
