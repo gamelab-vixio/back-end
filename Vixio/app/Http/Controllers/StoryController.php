@@ -287,7 +287,7 @@ class StoryController extends Controller
     	//tambahin cek ID buat kasih albert pake gazzle
     	$stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
     		$query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
-    	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(6);
+    	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(5);
 
         return response()->json($stories, 200);
     }
