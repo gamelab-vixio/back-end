@@ -21,6 +21,18 @@ Route::post('/login', [
 	'uses' => 'UserController@login',
 ]);
 
+Route::post('/password/email', [
+	'uses' => 'Auth\ForgotPasswordController@sendResetLinkEmailAPI'
+]);
+
+Route::get('/password/reset/{token}', [
+	'uses' => 'Auth\ResetPasswordController@getToken'
+])->name('password.resetAPI');
+
+Route::post('/password/reset', [
+	'uses' => 'Auth\ResetPasswordController@resetAPI'
+]);
+
 Route::prefix('user')->group(function(){
 	Route::post('/uploadImage', [
 		'uses' => 'userController@uploadImage',
