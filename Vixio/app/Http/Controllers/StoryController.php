@@ -283,8 +283,23 @@ class StoryController extends Controller
         return response()->json($response ,201);
     }
 
+    public function getMLList(){
+        //Test
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'vixio-backend.gamelabnetwork.com/api/story/getStoryList');
+
+        $story = json_decode($res->getBody()->getContents(), true);
+
+        $data = [
+            'statusCode' => $res->getStatusCode(),
+            'data' => $story
+        ];
+
+        return response()->json($data, 200);
+    }
+
     public function getStoryList(){
-    	//tambahin cek ID buat kasih albert pake gazzle
+        //Test
     	$stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
     		$query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
     	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(5);

@@ -69,6 +69,10 @@ Route::prefix('story')->group(function(){
 		'middleware' => 'auth.jwt'
 	]);
 
+	Route::get('/getMLList', [
+		'uses' => 'StoryController@getMLList'
+	]);
+
 	Route::get('/getStoryList', [
 		'uses' => 'StoryController@getStoryList',
 	]);
