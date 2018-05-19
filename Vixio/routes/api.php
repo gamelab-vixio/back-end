@@ -35,26 +35,26 @@ Route::post('/password/reset', [
 
 Route::prefix('user')->group(function(){
 	Route::post('/uploadImage', [
-		'uses' => 'userController@uploadImage',
+		'uses' => 'UserController@uploadImage',
 		'middleware' => 'auth.jwt'
 	]);
 	Route::get('/loadImage', [
-		'uses' => 'userController@loadImage',
+		'uses' => 'UserController@loadImage',
 		'middleware' => 'auth.jwt'
 	]);
 
 	Route::get('/getUser', [
-		'uses' => 'userController@getUser',
+		'uses' => 'UserController@getUser',
 		'middleware' => 'auth.jwt'
 	]);
 
 	Route::post('/changePassword', [
-		'uses' => 'userController@changePassword',
+		'uses' => 'UserController@changePassword',
 		'middleware' => 'auth.jwt'
 	]);
 
 	Route::get('/history', [
-		'uses' => 'userController@history',
+		'uses' => 'UserController@history',
 		'middleware' => 'auth.jwt'
 	]);
 });
