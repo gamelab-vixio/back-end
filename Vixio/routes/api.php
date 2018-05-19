@@ -32,7 +32,7 @@ Route::get('/password/reset/{token}', [
 Route::post('/password/reset', [
 	'uses' => 'Auth\ResetPasswordController@resetAPI'
 ]);
-
+//test
 Route::prefix('user')->group(function(){
 	Route::post('/uploadImage', [
 		'uses' => 'UserController@uploadImage',
