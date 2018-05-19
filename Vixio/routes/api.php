@@ -73,6 +73,10 @@ Route::prefix('story')->group(function(){
 		'uses' => 'StoryController@getMLList'
 	]);
 
+	Route::get('/search/{name?}',[
+		'uses' => 'StoryController@searchStory',
+	]);
+
 	Route::get('/getStoryList', [
 		'uses' => 'StoryController@getStoryList',
 	]);
