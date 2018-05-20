@@ -119,12 +119,12 @@ class UserController extends Controller
         
         //store photo
         $profile = 'profile.'.$request->file('photo')->extension();
-        $path = './image/user/'.$userID.'/';
-        if (! File::exists(public_path().$path)) {
-            File::makeDirectory(public_path().$path, 0755, true, true);
+        $path = 'image/user/'.$userID.'/';
+        if (! File::exists(public_path($path))) {
+            File::makeDirectory(public_path($path), 0755, true, true);
         }
         $path = $path.$profile;
-        Image::make($request->file('photo'))->save($path);
+        Image::make($request->file('photo'))->save(public_path($path));
 
         $user = User::find($userID);
         $user->image_url = $path;
@@ -142,7 +142,7 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $imageURL = User::find($userID)->image_url;
         if(!is_null($imageURL))
-            $image = Image::make(public_path().'/'.$imageURL)->resize(300,300);
+            $image = Image::make(public_path($imageURL))->resize(300,300);
         else
             $image = Image::make(public_path().'/image/default-user.png')->resize(300,300);
 
