@@ -21,13 +21,14 @@ class StoryReportController extends Controller
 		//store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'report_'.$reporterUserID.'.'.$request->file('photo')->extension();
-            $path = './image/report/story/'.$story_id.'/';
-            if (! File::exists(public_path().$path)) {
-                File::makeDirectory(public_path().$path, 0755, true, true);
+            $path = 'image/report/story/'.$story_id.'/';
+            if (! File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), 0755, true, true);
             }
-            Image::make($request->file('photo'))->save($path.$image);
             $path = $path.$image;
-
+            
+            Image::make($request->file('photo'))->save(public_path($path));
+            
             $imageURL = $path;
         }
 		

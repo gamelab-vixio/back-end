@@ -35,13 +35,15 @@ class StoryController extends Controller
 		//store image
         if($request->has(['photo']) && $request->file('photo')->isvalid() ){
             $image = 'image.'.$request->file('photo')->extension();
-            $path = './image/story/'.$sid.'/';
-            if (! File::exists(public_path().$path)) {
-                File::makeDirectory(public_path().$path, 0755, true, true);
+            $path = 'image/story/'.$sid.'/';
+            if (! File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), 0755, true, true);
             }
-            Image::make($request->file('photo'))->save($path.$image);
+
             $path = $path.$image;
 
+            Image::make($request->file('photo'))->save(public_path($path));
+            
             $story->image_url = $path;
         }
 
@@ -120,17 +122,20 @@ class StoryController extends Controller
         //benerin.. miripin kayak blog pas update
 
 		//store image
-    	if($request->has(['photo']) && $request->file('photo')->isvalid() ){
-	        $image = 'image.'.$request->file('photo')->extension();
-	        $path = './image/story/'.$sid.'/';
-	        if (! File::exists(public_path().$path)) {
-	            File::makeDirectory(public_path().$path, 0755, true, true);
-	        }
-	        Image::make($request->file('photo'))->save($path.$image);
-	        $path = $path.$image;
+        if($request->has(['photo']) && $request->file('photo')->isvalid() ){
+            $image = 'image.'.$request->file('photo')->extension();
+            $path = 'image/story/'.$sid.'/';
+            if (! File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), 0755, true, true);
+            }
 
-	        $story->image_url = $path;
-		}
+            $path = $path.$image;
+
+            Image::make($request->file('photo'))->save(public_path($path));
+            
+            $story->image_url = $path;
+        }
+
 
 		$story->user_id = $userID;
 		$story->title = $request->input('title');
@@ -163,7 +168,7 @@ class StoryController extends Controller
         $imageURL = Story::find($sid)->image_url;
         
         if(!is_null($imageURL))
-        	$image = Image::make(public_path().'/'.$imageURL)->resize(400,300);
+        	$image = Image::make(public_path($imageURL))->resize(400,300);
         else
         	$image = Image::make(public_path().'/image/default-story.png')->resize(400,300);
 
@@ -222,6 +227,11 @@ class StoryController extends Controller
     public function writerDeleteStory($sid){
     	$userID = Auth::user()->id;
     	$story = Story::where('user_id','=', $userID)->findOrFail($sid);
+
+        $path = 'image/story/'.$sid.'/';
+
+        File::deleteDirectory(public_path($path));
+
 
     	$story->delete();
 

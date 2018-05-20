@@ -78,12 +78,13 @@ class BlogController extends Controller
         //store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
-            $path = './image/blog/'.$request->input('title').'/';
-            if (! File::exists(public_path().$path)) {
-                File::makeDirectory(public_path().$path, 0755, true, true);
+            $path = 'image/blog/'.$request->input('title').'/';
+            if (! File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), 0755, true, true);
             }
-            Image::make($request->file('photo'))->save($path.$image);
             $path = $path.$image;
+            
+            Image::make($request->file('photo'))->save(public_path($path));
 
             $blog->image_url = $path;
         }
@@ -102,7 +103,7 @@ class BlogController extends Controller
         $imageURL = Blog::find($bid)->image_url;
         
         if(!is_null($imageURL))
-            $image = Image::make(public_path().'/'.$imageURL)->resize(600,400);
+            $image = Image::make(public_path($imageURL))->resize(600,400);
         else
             $image = Image::make(public_path().'/image/default-blog.png')->resize(600,400);
         
@@ -143,29 +144,30 @@ class BlogController extends Controller
         if($blog->title != $request->input('title')){
             $this->validate($request, ['title' => 'unique:blogs']);
             if(!is_null($blog->image_url) && !$request->has('photo')){
-                $oldPath = './image/blog/'.$blog->title.'/';
-                $path = './image/blog/'.$request->input('title').'/';
-                File::makeDirectory(public_path().$path, 0755, true, true);
+                $oldPath = 'image/blog/'.$blog->title.'/';
+                $path = 'image/blog/'.$request->input('title').'/';
+                File::makeDirectory(public_path($path), 0755, true, true);
                 $path = str_replace($blog->title, $request->input('title'), $blog->image_url);
-                Image::make(public_path().'/'.$blog->image_url)->save($path);
+                Image::make(public_path($blog->image_url))->save($path);
 
                 $blog->image_url = $path;
 
-                File::deleteDirectory(public_path().$oldPath);
+                File::deleteDirectory(public_path($oldPath));
             }
         }
 
         //store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
-            $oldPath = '/image/blog/'.$blog->title.'/';
-            $path = '/image/blog/'.$request->input('title').'/';
-            if (! File::exists(public_path().$path) && File::exists(public_path().$oldPath)) {
-                File::deleteDirectory(public_path().$oldPath);
-                File::makeDirectory(public_path().$path, 0755, true, true);
+            $oldPath = 'image/blog/'.$blog->title.'/';
+            $path = 'image/blog/'.$request->input('title').'/';
+            if (! File::exists(public_path($path)) && File::exists(public_path($oldPath))) {
+                File::deleteDirectory(public_path($oldPath));
+                File::makeDirectory(public_path($path), 0755, true, true);
             }
-            Image::make($request->file('photo'))->save('.'.$path.$image);
-            $path = '.'.$path.$image;
+            $path = $path.$image;
+            
+            Image::make($request->file('photo'))->save(public_path($path));
 
             $blog->image_url = $path;
         }
@@ -184,9 +186,9 @@ class BlogController extends Controller
     public function deleteBlog(Request $request, $bid){
         $blog = Blog::findOrFail($bid);
 
-        $path = '/image/blog/'.$blog->title.'/';
+        $path = 'image/blog/'.$blog->title.'/';
 
-        File::deleteDirectory(public_path().'/'.$path);
+        File::deleteDirectory(public_path($path));
 
         $blog->delete();
 
