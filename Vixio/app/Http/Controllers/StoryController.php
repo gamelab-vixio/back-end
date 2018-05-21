@@ -189,7 +189,7 @@ class StoryController extends Controller
 		// $url = 'story\\'.$userID.'\\'.$story->title.'.ink';
 		//convert ink to json
 		// $process = new Process('inklecate.exe "../storage/app'.$path.'"');
-        $process = new Process(public_path('mono inklecate.exe').' "'.public_path('../storage/app'.$path).'"');
+        $process = new Process('mono "'.public_path('inklecate.exe').'" "'.public_path('../storage/app'.$path).'"');
 		$process->run();
 
 		// executes after the command finishes
