@@ -175,7 +175,7 @@ class StoryController extends Controller
         return $image->response('jpeg');
     }
 
-    public function writerPublishedStory($sid){
+    public function writerPublishedStory(Request $request, $sid){
         $this->validate($request,[
             'ink' => 'required',
         ]);
@@ -185,8 +185,8 @@ class StoryController extends Controller
 		//create temp file
 		$path = '/story/'.$userID.'/'.$story->title.'.ink';
 		Storage::put($path, $request->input('ink'));
+        // Storage::put($path, $story->content);
 		
-
 		//convert ink to json
 		$process = new Process('inklecate.exe "../storage/app'.$path.'"');
 		$process->run();
