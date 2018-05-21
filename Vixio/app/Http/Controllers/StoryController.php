@@ -176,11 +176,15 @@ class StoryController extends Controller
     }
 
     public function writerPublishedStory($sid){
+        $this->validate($request,[
+            'ink' => 'required',
+        ]);
+
     	$userID = Auth::user()->id;
     	$story = Story::where('user_id','=', $userID)->findOrFail($sid);
 		//create temp file
 		$path = '/story/'.$userID.'/'.$story->title.'.ink';
-		Storage::put($path, $story->content);
+		Storage::put($path, $request->input('ink'));
 		
 
 		//convert ink to json
@@ -218,7 +222,7 @@ class StoryController extends Controller
 		$story->save();
 
 		$response = [
-			'message' => 'Story has been unpublished!'
+			'message' => 'Story has been unpublish!'
 		];
 
 		return response()->json($response ,200);

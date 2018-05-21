@@ -124,7 +124,7 @@ Route::prefix('story')->group(function(){
 			'middleware' => 'auth.jwt'
 		]);
 
-		Route::get('/publish/{id}',[
+		Route::post('/publish/{id}',[
 			'uses' => 'StoryController@writerPublishedStory',
 			'middleware' => 'auth.jwt'
 		]);
