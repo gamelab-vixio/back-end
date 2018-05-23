@@ -187,8 +187,11 @@ class StoryController extends Controller
 		Storage::put($path, $request->input('ink'));
         // Storage::put($path, $story->content);
 		// $url = 'story\\'.$userID.'\\'.$story->title.'.ink';
-		//convert ink to json
+		
+        //convert ink to json
+        //Windows
 		// $process = new Process('inklecate.exe "../storage/app'.$path.'"');
+        //Linux
         $process = new Process('mono "'.public_path('inklecate.exe').'" "'.public_path('../storage/app'.$path).'"');
 		$process->run();
 

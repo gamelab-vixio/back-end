@@ -16,6 +16,7 @@ class BlogSeeder extends Seeder
         for($i=0; $i < 6; $i++){
             DB::table('blogs')->insert([
                 'title' => $faker->sentence,
+                'user_id' => 1,
                 'content' => implode($faker->paragraphs(5)),
                 'status' => 1,
                 'created_at' => \Carbon\Carbon::now(),

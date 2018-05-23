@@ -17,6 +17,7 @@ class DocumentationSeeder extends Seeder
         for($i = 1; $i <= 5; $i++){
             DB::table('documentation_titles')->insert([
                 'title' => $faker->sentence,
+                'user_id' => 1,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);

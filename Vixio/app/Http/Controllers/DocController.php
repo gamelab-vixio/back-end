@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\DocumentationTitle;
 use App\DocumentationSubtitle;
 use App\DocumentationContent;
+use Auth;
+
 class DocController extends Controller
 {
     public function getTableOfContent(){
@@ -55,8 +57,11 @@ class DocController extends Controller
 			'title' => 'required|unique:documentation_titles',
 		]);
 
+        $userID = Auth::user()->id;
+
 		$docs = new DocumentationTitle();
 		$docs->title = $request->input('title');
+        $docs->user_id = $userID;
 		$docs->save();
 
         $request->session()->flash('message', 'New title has been created');

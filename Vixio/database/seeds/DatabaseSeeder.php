@@ -23,9 +23,9 @@ class DatabaseSeeder extends Seeder
     }
 
     public function testing(){
+        $this->call(UserSeeder::class);
         $this->call(DocumentationSeeder::class);
         $this->call(BlogSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(StorySeeder::class);
         $this->call(ReportSeeder::class);
     }

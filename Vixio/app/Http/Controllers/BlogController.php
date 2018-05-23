@@ -75,6 +75,8 @@ class BlogController extends Controller
 
         $blog = new Blog();
 
+        $userID = Auth::user()->id;
+
         //store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
@@ -89,6 +91,7 @@ class BlogController extends Controller
             $blog->image_url = $path;
         }
         $blog->title = $request->input('title');
+        $blog->user_id = $userID;
         $blog->content = $request->input('content');
         $blog->status = $request->input('status');
 
