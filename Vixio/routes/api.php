@@ -25,7 +25,7 @@ Route::post('/password/email', [
 	'uses' => 'Auth\ForgotPasswordController@sendResetLinkEmailAPI'
 ]);
 
-Route::get('/password/reset/{token}', [
+Route::post('/password/reset/{token}', [
 	'uses' => 'Auth\ResetPasswordController@getToken'
 ])->name('password.resetAPI');
 
@@ -93,10 +93,16 @@ Route::prefix('story')->group(function(){
 		'uses' => 'StoryController@addPlayed'
 	]);
 
-	Route::get('/loadImage/{id}', [
-		'uses' => 'StoryController@loadImage'
+	Route::post('/addReviewStory/{id}',[
+		'uses' => 'StoryController@addReviewStory',
+		'middleware' => 'auth.jwt'
 	]);
 
+	Route::post('/createComment/{sid}/{cpid?}', [
+		'uses' => 'StoryController@createComment',
+		'middleware' => 'auth.jwt'
+	]);
+	
 	Route::prefix('writer')->group(function(){
 		Route::get('/getStoryList',[
 			'uses' => 'StoryController@writerGetStoryList',
@@ -115,11 +121,6 @@ Route::prefix('story')->group(function(){
 
 		Route::get('/getCategoryList',[
 			'uses' => 'StoryController@writerGetCategoryList',
-			'middleware' => 'auth.jwt'
-		]);
-
-		Route::get('/loadImage/{id}',[
-			'uses' => 'StoryController@writerLoadImage',
 			'middleware' => 'auth.jwt'
 		]);
 
@@ -143,15 +144,6 @@ Route::prefix('story')->group(function(){
 			'middleware' => 'auth.jwt'
 		]);
 	});
-	Route::post('/addReviewStory/{id}',[
-		'uses' => 'StoryController@addReviewStory',
-		'middleware' => 'auth.jwt'
-	]);
-
-	Route::post('/createComment/{sid}/{cpid?}', [
-		'uses' => 'StoryController@createComment',
-		'middleware' => 'auth.jwt'
-	]);
 });
 
 Route::get('/docs/getTableOfContent', [

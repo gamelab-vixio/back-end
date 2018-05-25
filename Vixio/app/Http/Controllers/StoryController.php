@@ -89,6 +89,12 @@ class StoryController extends Controller
             $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
         }])->where('user_id', '=', $userID)->paginate(6);
 
+        foreach($stories as $story){
+            if(!is_null($story->image_url)){
+                $story->image_url = $this->loadImage($sid);
+            }
+        }
+
         return response()->json($stories, 200);
     }
 
@@ -97,6 +103,8 @@ class StoryController extends Controller
     	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
             $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
         }])->where('user_id', '=', $userID)->find($sid);
+
+        $story->image_url = $this->loadImage($sid);
 
         return response()->json($story, 200);
     }
@@ -172,17 +180,6 @@ class StoryController extends Controller
 		return response()->json($response ,201);
     }
 
-    public function writerLoadImage($sid){
-        $imageURL = Story::find($sid)->image_url;
-        
-        if(!is_null($imageURL))
-        	$image = Image::make(public_path($imageURL))->resize(400,300);
-        else
-        	$image = Image::make(public_path().'/image/default-story.png')->resize(400,300);
-
-        return $image->response('jpeg');
-    }
-
     public function writerPublishedStory(Request $request, $sid){
         $this->validate($request,[
             'ink' => 'required',
@@ -193,8 +190,6 @@ class StoryController extends Controller
 		//create temp file
 		$path = '/story/'.$userID.'/'.$story->title.'.ink';
 		Storage::put($path, $request->input('ink'));
-        // Storage::put($path, $story->content);
-		// $url = 'story\\'.$userID.'\\'.$story->title.'.ink';
 		
         //convert ink to json
         //Windows
@@ -330,6 +325,12 @@ class StoryController extends Controller
     		$query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
     	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(5);
 
+        foreach($stories as $story){
+            if(!is_null($story->image_url)){
+                $story->image_url = $this->loadImage($sid);
+            }
+        }
+
         return response()->json($stories, 200);
     }
 
@@ -350,6 +351,8 @@ class StoryController extends Controller
             'storyComment.reply.user:id,name,email,image_url'
             ])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
 
+        $story->image_url = $this->loadImage($sid);
+
         return response()->json($story, 200);
     }
 
@@ -357,11 +360,11 @@ class StoryController extends Controller
         $imageURL = Story::find($sid)->image_url;
         
         if(!is_null($imageURL))
-            $image = Image::make(public_path($imageURL))->resize(400,300);
+            $image = Image::make(public_path($imageURL))->resize(400,300)->encode('jpeg', 75);
         else
-            $image = Image::make(public_path().'/image/default-story.png')->resize(400,300);
+            $image = Image::make(public_path().'/image/default-story.png')->resize(400,300)->encode('png2wbmp(pngname, wbmpname, dest_height, dest_width, threshold)', 75);
 
-        return $image->response('jpeg');
+        return base64_encode($image);
     }
 
     public function searchStory($name = NULL){
