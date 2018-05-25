@@ -63,7 +63,7 @@ class StoryController extends Controller
 		$categories = json_decode($request->input('categories'));
         //old one
         // $categories = $request->input('categories');
-        
+
 		$length = count($categories);
 
 		for($i = 0; $i < $length; $i++){
@@ -118,14 +118,12 @@ class StoryController extends Controller
     public function writerUpdateStory(Request $request, $sid){
     	$this->validate($request,[
     		'title' => 'required',
-    		'categories' => 'required|array',
+    		'categories' => 'required',
     		'description' => 'required',
 		]);
 
     	$userID = Auth::user()->id;
     	$story = Story::where('user_id','=', $userID)->findOrFail($sid);
-
-        //benerin.. miripin kayak blog pas update
 
 		//store image
         if($request->has(['photo']) && $request->file('photo')->isvalid() ){
@@ -153,7 +151,11 @@ class StoryController extends Controller
 		//delete old categories
 		$storyCategory = StoryCategory::where('story_id','=',$sid)->delete();
 
-		$categories = $request->input('categories');
+        //new one
+        $categories = json_decode($request->input('categories'));
+        //old one
+        // $categories = $request->input('categories');
+        
 		$length = count($categories);
 
 		for($i = 0; $i < $length; $i++){
