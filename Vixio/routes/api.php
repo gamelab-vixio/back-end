@@ -93,6 +93,10 @@ Route::prefix('story')->group(function(){
 		'uses' => 'StoryController@addPlayed'
 	]);
 
+	Route::get('/loadImage/{id}', [
+		'uses' => 'StoryController@loadImage'
+	]);
+
 	Route::prefix('writer')->group(function(){
 		Route::get('/getStoryList',[
 			'uses' => 'StoryController@writerGetStoryList',
@@ -144,7 +148,7 @@ Route::prefix('story')->group(function(){
 		'middleware' => 'auth.jwt'
 	]);
 
-	Route::post('/createComment/{bid}/{cpid?}', [
+	Route::post('/createComment/{sid}/{cpid?}', [
 		'uses' => 'StoryController@createComment',
 		'middleware' => 'auth.jwt'
 	]);

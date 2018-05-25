@@ -353,6 +353,17 @@ class StoryController extends Controller
         return response()->json($story, 200);
     }
 
+    public function loadImage($sid){
+        $imageURL = Story::find($sid)->image_url;
+        
+        if(!is_null($imageURL))
+            $image = Image::make(public_path($imageURL))->resize(400,300);
+        else
+            $image = Image::make(public_path().'/image/default-story.png')->resize(400,300);
+
+        return $image->response('jpeg');
+    }
+
     public function searchStory($name = NULL){
         if(strlen($name) < 3){
             $name = NULL;
@@ -394,6 +405,7 @@ class StoryController extends Controller
         return response()->json($story, 200);
     }
 
+    //admin
     public function storyList(){
         $story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','played' ,'year_of_release','created_at'])->with(['user:id,name'])->get();
 
