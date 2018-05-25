@@ -200,7 +200,7 @@ class BlogController extends Controller
     public function deleteBlog(Request $request, $bid){
         $blog = Blog::findOrFail($bid);
 
-        $path = 'image/blog/'.$bid'/';
+        $path = 'image/blog/'.$bid.'/';
 
         File::deleteDirectory(public_path($path));
 
