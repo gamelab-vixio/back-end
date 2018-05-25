@@ -69,14 +69,6 @@ class ApiTest extends TestCase{
 	}
 
 	/** @test */
-	function loadImage(){
-
-		$response = $this->get('/api/user/loadImage/?token='.$this->token);
-
-		$response->assertStatus(200);
-	}
-
-	/** @test */
 	function changePassword(){
 
 		$response = $response = $this->withHeaders($this->header)->json('POST', '/api/user/changePassword/?token='.$this->token, [
@@ -144,7 +136,7 @@ class ApiTest extends TestCase{
 	function createStory(){
 		$response = $this->withHeaders($this->header)->json('POST', '/api/story/create/?token='.$this->token, [
 			'title' => 'demo test',
-			'categories' => [2,3,4,7],
+			'categories' => json_encode([2,3,4,7]),
 			'description' => 'testing purpose'
 		]);
 
@@ -152,7 +144,7 @@ class ApiTest extends TestCase{
 
 		$response = $this->withHeaders($this->header)->json('POST', '/api/story/create/?token='.$this->token, [
 			'title' => 'demo test',
-			'categories' => [2,3,4,7],
+			'categories' => json_encode([2,3,4,7]),
 			'description' => 'testing purpose',
 			'image_url' => UploadedFile::fake()->image('avatar.jpg'),
 		]);
@@ -161,7 +153,7 @@ class ApiTest extends TestCase{
 
 		$response = $this->withHeaders($this->header)->json('POST', '/api/story/create/?token='.$this->token, [
 			'title' => 'demo test',
-			'categories' => [2,3,4,7],
+			'categories' => json_encode([2,3,4,7]),
 			'description' => 'testing purpose',
 			'image_url' => UploadedFile::fake()->image('avatar.jpg'),
 			'content' => 'Quia impedit consequuntur id est eligendi. Porro soluta maiores reprehenderit hic minus enim expedita. Voluptate suscipit ducimus nihil.Rerum illum ullam quia ipsum ut. Quia nemo possimus ab blanditiis dolorum molestiae. Ratione sed totam quaerat asperiores. Est neque vel nesciunt architecto',
@@ -173,6 +165,52 @@ class ApiTest extends TestCase{
 	/** @test */
 	function getStoryList(){
 		$response = $this->get('/api/story/getStoryList');
+
+		$response->assertJsonStructure([
+			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
+			'data' => [
+				'*' => [
+					'id','user_id','title','image_url','publish','active','year_of_release',
+					'user' => ['id','name'],
+					'story_category' => [
+						'*' => [
+								'story_id','category_type_id',
+								'category_type' => ['id', 'name']
+							]
+					]
+				]
+			]
+		]);
+
+		$response->assertStatus(200);
+	}
+
+	/** @test */
+	function searchStoryList(){
+		$response = $this->get('/api/story/search/quos');
+
+		$response->assertJsonStructure([
+			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
+			'data' => [
+				'*' => [
+					'id','user_id','title','image_url','publish','active','year_of_release',
+					'user' => ['id','name'],
+					'story_category' => [
+						'*' => [
+								'story_id','category_type_id',
+								'category_type' => ['id', 'name']
+							]
+					]
+				]
+			]
+		]);
+
+		$response->assertStatus(200);
+	}
+
+	/** @test */
+	function get_ML_story_list(){
+		$response = $this->get('/api/story/getMLList');
 
 		$response->assertJsonStructure([
 			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
@@ -282,19 +320,11 @@ class ApiTest extends TestCase{
 	}
 
 	/** @test */
-	function writer_story_load_image(){
-
-		$response = $this->get('/api/story/writer/loadImage/1/?token='.$this->token);
-
-		$response->assertStatus(200);
-	}
-
-	/** @test */
 	function writer_story_update(){
 
 		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/1/?token='.$this->token, [
 			'title' => 'demo test',
-			'categories' => [2,3,4,7],
+			'categories' => json_encode([2,3,4,7]),
 			'description' => 'testing purpose'
 		]);
 
@@ -302,7 +332,7 @@ class ApiTest extends TestCase{
 
 		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/1/?token='.$this->token, [
 			'title' => 'demo test',
-			'categories' => [2,3,4,7],
+			'categories' => json_encode([2,3,4,7]),
 			'description' => 'testing purpose',
 			'image_url' => UploadedFile::fake()->image('avatar.jpg'),
 		]);
@@ -443,13 +473,6 @@ class ApiTest extends TestCase{
 				]
 			]
 		]);
-
-		$response->assertStatus(200);
-	}
-
-	/** @test */
-	function blog_load_image(){
-		$response = $this->get('/api/blog/loadImage/1');
 
 		$response->assertStatus(200);
 	}

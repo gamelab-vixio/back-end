@@ -91,7 +91,7 @@ class StoryController extends Controller
         }])->where('user_id', '=', $userID)->paginate(6);
 
         foreach($stories as $story){
-            $story['image_url'] = $this->loadImage($story->id);
+            $story['image_url'] = $this->loadImage($story['id']);
         }
 
         return response()->json($stories, 200);
@@ -311,12 +311,7 @@ class StoryController extends Controller
 
         $story = json_decode($res->getBody()->getContents(), true);
 
-        $data = [
-            'statusCode' => $res->getStatusCode(),
-            'data' => $story
-        ];
-
-        return response()->json($data, 200);
+        return response()->json($story, 200);
     }
 
     public function getStoryList(){
@@ -325,7 +320,7 @@ class StoryController extends Controller
     	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(5);
 
         foreach($stories as $story){
-            $story['image_url'] = $this->loadImage($story->id);
+            $story['image_url'] = $this->loadImage($story['id']);
         }
 
         return response()->json($stories, 200);

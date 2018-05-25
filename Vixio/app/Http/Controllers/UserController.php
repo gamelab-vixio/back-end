@@ -12,6 +12,7 @@ use JWTAuth;
 use Auth;
 use Image;
 use Hash;
+use App\Story;
 use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
@@ -155,11 +156,26 @@ class UserController extends Controller
         $userID = Auth::user()->id;
 
         $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->orderBy('created_at', 'DESC')->with(['story' => function($q){
-            $q->where('publish', 1)->where('active', 1)->get(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release']);
+            $q->select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->where('publish', 1)->where('active', 1)->get();
         }
-        ])->paginate(10);
+        ])->paginate(5);
+
+        foreach ($stories as $i => $story) {
+            $story['image_url'] = $this->loadStoryImage($story['id']);
+        }
 
         return response()->json($stories , 200);
+    }
+
+    public function loadStoryImage($sid){
+        $imageURL = Story::find($sid)->image_url;
+        
+        if(!is_null($imageURL))
+            $image = Image::make(public_path($imageURL))->resize(400,300)->encode('jpeg', 75);
+        else
+            $image = Image::make(public_path().'/image/default-story.png')->resize(400,300)->encode('png', 75);
+
+        return base64_encode($image);
     }
 
     //admin
