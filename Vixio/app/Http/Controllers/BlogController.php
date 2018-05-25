@@ -16,6 +16,10 @@ class BlogController extends Controller
     public function getPublishedBlog(){
     	$blog = Blog::select(['id', 'title', 'content', 'image_url', 'status', 'updated_at'])->where('status', 1)->orderBy('updated_at', 'desc')->paginate(6);
 
+        foreach ($blog as $key => $post) {
+            $post['image_url'] = $this->loadImage($post->id);
+        }
+
     	return response()->json($blog, 200);
     }
 
@@ -31,6 +35,8 @@ class BlogController extends Controller
                     'blogComment.reply.user:id,name,email,image_url'
                     ])
                 ->where('status', 1)->orderBy('updated_at', 'desc')->find($bid);
+
+        $post['image_url'] = $this->loadImage($bid);
 
         return response()->json($post, 200);
     }
@@ -77,10 +83,19 @@ class BlogController extends Controller
 
         $userID = Auth::user()->id;
 
+        $blog->title = $request->input('title');
+        $blog->user_id = $userID;
+        $blog->content = $request->input('content');
+        $blog->status = $request->input('status');
+
+        $blog->save();
+
+        $bid = $blog->id;
+
         //store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
-            $path = 'image/blog/'.$request->input('title').'/';
+            $path = 'image/blog/'.$bid.'/';
             if (! File::exists(public_path($path))) {
                 File::makeDirectory(public_path($path), 0755, true, true);
             }
@@ -89,13 +104,9 @@ class BlogController extends Controller
             Image::make($request->file('photo'))->save(public_path($path));
 
             $blog->image_url = $path;
-        }
-        $blog->title = $request->input('title');
-        $blog->user_id = $userID;
-        $blog->content = $request->input('content');
-        $blog->status = $request->input('status');
 
-        $blog->save();
+            $blog->save();
+        }
 
         $request->session()->flash('message', 'New blog post has been created');
 
@@ -106,11 +117,11 @@ class BlogController extends Controller
         $imageURL = Blog::find($bid)->image_url;
         
         if(!is_null($imageURL))
-            $image = Image::make(public_path($imageURL))->resize(600,400);
+            $image = Image::make(public_path($imageURL))->resize(600,400)->encode('jpeg', 75);;
         else
-            $image = Image::make(public_path().'/image/default-blog.png')->resize(600,400);
+            $image = Image::make(public_path().'/image/default-blog.png')->resize(600,400)->encode('png', 75);
         
-        return $image->response('jpeg');
+        return base64_encode($image);
     }
 
     public function getPublishedBlogAdmin(){
@@ -163,7 +174,7 @@ class BlogController extends Controller
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
             $oldPath = 'image/blog/'.$blog->title.'/';
-            $path = 'image/blog/'.$request->input('title').'/';
+            $path = 'image/blog/'.$bid.'/';
             if (! File::exists(public_path($path)) && File::exists(public_path($oldPath))) {
                 File::deleteDirectory(public_path($oldPath));
                 File::makeDirectory(public_path($path), 0755, true, true);
@@ -189,7 +200,7 @@ class BlogController extends Controller
     public function deleteBlog(Request $request, $bid){
         $blog = Blog::findOrFail($bid);
 
-        $path = 'image/blog/'.$blog->title.'/';
+        $path = 'image/blog/'.$bid'/';
 
         File::deleteDirectory(public_path($path));
 

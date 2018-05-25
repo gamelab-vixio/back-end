@@ -57,8 +57,9 @@ class StoryController extends Controller
             Image::make($request->file('photo'))->save(public_path($path));
             
             $story->image_url = $path;
+
+            $story->save();
         }
-        $story->save();
         //new one
 		$categories = json_decode($request->input('categories'));
         //old one
