@@ -25,27 +25,13 @@ class StoryController extends Controller
     public function createStory(Request $request){
     	$this->validate($request,[
     		'title' => 'required',
-    		'categories' => 'required|array',
+    		'categories' => 'required',
     		'description' => 'required',
 		]);
 
 		$userID = Auth::user()->id;
+
 		$story = new Story();
-
-		//store image
-        if($request->has(['photo']) && $request->file('photo')->isvalid() ){
-            $image = 'image.'.$request->file('photo')->extension();
-            $path = 'image/story/'.$userID.'/';
-            if (! File::exists(public_path($path))) {
-                File::makeDirectory(public_path($path), 0755, true, true);
-            }
-
-            $path = $path.$image;
-
-            Image::make($request->file('photo'))->save(public_path($path));
-            
-            $story->image_url = $path;
-        }
 
 		$story->user_id = $userID;
 		$story->title = $request->input('title');
@@ -57,7 +43,27 @@ class StoryController extends Controller
 		$story->save();
 
 		$sid = $story->id;
-		$categories = $request->input('categories');
+
+        //store image
+        if($request->has(['photo']) && $request->file('photo')->isvalid() ){
+            $image = 'image.'.$request->file('photo')->extension();
+            $path = 'image/story/'.$sid.'/';
+            if (! File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), 0755, true, true);
+            }
+
+            $path = $path.$image;
+
+            Image::make($request->file('photo'))->save(public_path($path));
+            
+            $story->image_url = $path;
+        }
+        $story->save();
+        //new one
+		$categories = json_decode($request->input('categories'));
+        //old one
+        // $categories = $request->input('categories');
+        
 		$length = count($categories);
 
 		for($i = 0; $i < $length; $i++){
