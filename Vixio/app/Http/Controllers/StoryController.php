@@ -35,7 +35,7 @@ class StoryController extends Controller
 		//store image
         if($request->has(['photo']) && $request->file('photo')->isvalid() ){
             $image = 'image.'.$request->file('photo')->extension();
-            $path = 'image/story/'.$sid.'/';
+            $path = 'image/story/'.$userID.'/';
             if (! File::exists(public_path($path))) {
                 File::makeDirectory(public_path($path), 0755, true, true);
             }

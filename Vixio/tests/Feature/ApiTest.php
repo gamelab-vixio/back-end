@@ -27,7 +27,7 @@ class ApiTest extends TestCase{
 		];
 
 		//change accordingly with the stories user_id
-		$user = User::find(642);
+		$user = User::find(7);
 
 		$this->token = JWTAuth::fromUser($user);
         
@@ -59,6 +59,7 @@ class ApiTest extends TestCase{
 		$response->assertStatus(200);
 	}
 
+	/** @test */
 	function uploadImage(){
 		$response = $this->withHeaders($this->header)->json('POST', '/api/user/uploadImage/?token='.$this->token, [
 			'photo' => UploadedFile::fake()->image('avatar.jpg')
@@ -404,13 +405,16 @@ class ApiTest extends TestCase{
 		$response = $this->get('/api/blog/getPublishedBlog');
 		
 		$response->assertJsonStructure([
+			'current_page',
+			'data' =>[
 			'*' => [
-				'id',
-				'title',
-				'content',
-				'image_url',
-				'status',
-				'updated_at'
+					'id',
+					'title',
+					'content',
+					'image_url',
+					'status',
+					'updated_at'		
+				]
 			]
 		]);
 
