@@ -38,10 +38,6 @@ Route::prefix('user')->group(function(){
 		'uses' => 'UserController@uploadImage',
 		'middleware' => 'auth.jwt'
 	]);
-	Route::get('/loadImage', [
-		'uses' => 'UserController@loadImage',
-		'middleware' => 'auth.jwt'
-	]);
 
 	Route::get('/getUser', [
 		'uses' => 'UserController@getUser',
@@ -102,7 +98,7 @@ Route::prefix('story')->group(function(){
 		'uses' => 'StoryController@createComment',
 		'middleware' => 'auth.jwt'
 	]);
-	
+
 	Route::prefix('writer')->group(function(){
 		Route::get('/getStoryList',[
 			'uses' => 'StoryController@writerGetStoryList',
@@ -157,10 +153,6 @@ Route::prefix('blog')->group(function(){
 
 	Route::get('/getPost/{id}', [
 		'uses' => 'BlogController@getPost'
-	]);
-
-	Route::get('/loadImage/{id}', [
-		'uses' => 'BlogController@loadImage',
 	]);
 
 	Route::post('/createComment/{bid}/{cpid?}', [

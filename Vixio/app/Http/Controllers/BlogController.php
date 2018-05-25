@@ -117,7 +117,7 @@ class BlogController extends Controller
         $imageURL = Blog::find($bid)->image_url;
         
         if(!is_null($imageURL))
-            $image = Image::make(public_path($imageURL))->resize(600,400)->encode('jpeg', 75);;
+            $image = Image::make(public_path($imageURL))->resize(600,400)->encode('jpeg', 75);
         else
             $image = Image::make(public_path().'/image/default-blog.png')->resize(600,400)->encode('png', 75);
         

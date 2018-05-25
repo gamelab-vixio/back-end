@@ -100,6 +100,8 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $user = User::select(['name','email', 'image_url'])->findOrFail($userID);
 
+        $user['image_url'] = $this->loadImage($userID);
+
         return response()->json($user ,201);
     }
 
@@ -142,11 +144,11 @@ class UserController extends Controller
         $userID = Auth::user()->id;
         $imageURL = User::find($userID)->image_url;
         if(!is_null($imageURL))
-            $image = Image::make(public_path($imageURL))->resize(300,300);
+            $image = Image::make(public_path($imageURL))->resize(300,300)->encode('jpeg', 75);
         else
-            $image = Image::make(public_path().'/image/default-user.png')->resize(300,300);
+            $image = Image::make(public_path().'/image/default-user.png')->resize(300,300)->encode('png', 75);
 
-        return $image->response('jpeg');
+        return base64_encode($image);
     }
 
     public function history(){
