@@ -90,9 +90,7 @@ class StoryController extends Controller
         }])->where('user_id', '=', $userID)->paginate(6);
 
         foreach($stories as $story){
-            if(!is_null($story->image_url)){
-                $story->image_url = $this->loadImage($sid);
-            }
+            $story['image_url'] = $this->loadImage($story->id);
         }
 
         return response()->json($stories, 200);
@@ -104,7 +102,7 @@ class StoryController extends Controller
             $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
         }])->where('user_id', '=', $userID)->find($sid);
 
-        $story->image_url = $this->loadImage($sid);
+        $story['image_url'] = $this->loadImage($sid);
 
         return response()->json($story, 200);
     }
@@ -326,9 +324,7 @@ class StoryController extends Controller
     	}])->where('active', '=', '1')->where('publish', '=', '1')->paginate(5);
 
         foreach($stories as $story){
-            if(!is_null($story->image_url)){
-                $story->image_url = $this->loadImage($sid);
-            }
+            $story['image_url'] = $this->loadImage($story->id);
         }
 
         return response()->json($stories, 200);
@@ -351,7 +347,7 @@ class StoryController extends Controller
             'storyComment.reply.user:id,name,email,image_url'
             ])->where('active', '=', '1')->where('publish', '=', '1')->find($sid);
 
-        $story->image_url = $this->loadImage($sid);
+        $story['image_url'] = $this->loadImage($sid);
 
         return response()->json($story, 200);
     }
@@ -362,7 +358,7 @@ class StoryController extends Controller
         if(!is_null($imageURL))
             $image = Image::make(public_path($imageURL))->resize(400,300)->encode('jpeg', 75);
         else
-            $image = Image::make(public_path().'/image/default-story.png')->resize(400,300)->encode('png2wbmp(pngname, wbmpname, dest_height, dest_width, threshold)', 75);
+            $image = Image::make(public_path().'/image/default-story.png')->resize(400,300)->encode('png', 75);
 
         return base64_encode($image);
     }
