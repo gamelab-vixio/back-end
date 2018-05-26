@@ -105,6 +105,11 @@ Route::prefix('story')->group(function(){
 			'middleware' => 'auth.jwt'
 		]);
 
+		Route::get('/search/{name?}',[
+			'uses' => 'StoryController@writerSearchStory',
+			'middleware' => 'auth.jwt'
+		]);
+
 		Route::get('/getStory/{id}',[
 			'uses' => 'StoryController@writerGetStory',
 			'middleware' => 'auth.jwt'

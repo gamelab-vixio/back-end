@@ -133,5 +133,20 @@ class WebTest extends TestCase{
 		$response->assertRedirect('/');
 	}
 
+	/** @test */
+	function delete_a_post(){
+		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/blog/deleteBlog/1',[
+			'_token' => csrf_token(),
+		]);
+
+		$response->assertRedirect('/');
+
+		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/blog/createBlog/2',[
+			'_token' => csrf_token(),
+		]);
+
+		$response->assertRedirect('/');
+	}
+
 	/***************************** Blog (END) ************************************/
 }
