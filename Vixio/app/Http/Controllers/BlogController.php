@@ -157,26 +157,13 @@ class BlogController extends Controller
 
         if($blog->title != $request->input('title')){
             $this->validate($request, ['title' => 'unique:blogs']);
-            if(!is_null($blog->image_url) && !$request->has('photo')){
-                $oldPath = 'image/blog/'.$blog->title.'/';
-                $path = 'image/blog/'.$request->input('title').'/';
-                File::makeDirectory(public_path($path), 0755, true, true);
-                $path = str_replace($blog->title, $request->input('title'), $blog->image_url);
-                Image::make(public_path($blog->image_url))->save($path);
-
-                $blog->image_url = $path;
-
-                File::deleteDirectory(public_path($oldPath));
-            }
         }
 
         //store image
         if($request->has('photo') && $request->file('photo')->isvalid()){
             $image = 'image.'.$request->file('photo')->extension();
-            $oldPath = 'image/blog/'.$blog->title.'/';
             $path = 'image/blog/'.$bid.'/';
-            if (! File::exists(public_path($path)) && File::exists(public_path($oldPath))) {
-                File::deleteDirectory(public_path($oldPath));
+            if (! File::exists(public_path($path))) {
                 File::makeDirectory(public_path($path), 0755, true, true);
             }
             $path = $path.$image;

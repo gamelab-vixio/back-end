@@ -93,9 +93,9 @@ class WebTest extends TestCase{
 
 		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/blog/createBlog',[
 			'_token' => csrf_token(),
-			'title' => "this is a drill",
+			'title' => "this is another test",
 			'content' => "this is not a drill",
-			'status' => 1 //publish
+			'status' => 1, //publish
 			'photo' => UploadedFile::fake()->image('avatar.jpg'),
 		]);
 
@@ -109,6 +109,25 @@ class WebTest extends TestCase{
 			'title' => "this is a drill",
 			'content' => "this is not a drill",
 			'status' => 1 //publish
+		]);
+
+		$response->assertRedirect('/');
+
+		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/blog/updateBlog/1',[
+			'_token' => csrf_token(),
+			'title' => "this is not a drill",
+			'content' => "this is not a drill",
+			'status' => 1, //publish
+		]);
+
+		$response->assertRedirect('/');
+
+		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/blog/updateBlog/1',[
+			'_token' => csrf_token(),
+			'title' => "this is something else",
+			'content' => "this is not a drill",
+			'status' => 1, //publish
+			'photo' => UploadedFile::fake()->image('avatar.jpg'),
 		]);
 
 		$response->assertRedirect('/');
