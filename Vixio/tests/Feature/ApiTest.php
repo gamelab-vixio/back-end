@@ -312,12 +312,27 @@ class ApiTest extends TestCase{
 		$response = $this->get('/api/story/writer/getStory/1/?token='.$this->token);
 
 		$response->assertJsonStructure([
-			'id','user_id','title', 'description','image_url','publish','active','year_of_release','played',
-			'story_category' => [
+			'stories' => [
+				'id','user_id','title', 'description','image_url','publish','content','active','year_of_release','played',
+				'story_category' => [
+					'*' => [
+							'story_id','category_type_id',
+							'category_type' => ['id', 'name']
+						]
+				]
+			],
+			'genres' => [
 				'*' => [
-						'story_id','category_type_id',
-						'category_type' => ['id', 'name']
+					'id',
+					'genre',
+					'category_type' => [
+						'*'=>[
+							'id',
+							'genre_id',
+							'name'
+						]
 					]
+				]
 			]
 		]);
 

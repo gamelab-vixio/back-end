@@ -86,17 +86,15 @@ class WebTest extends TestCase{
 	}
 
 	/** @test */
-	/*function forgot_password(){
-		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/user/addAdmin',[
+	function forgot_password(){
+		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/password/email',[
 			'_token' => csrf_token(),
-			'name' => 'admin',
-			'email' => 'admin@admin.com',
-			'password' => 'yourguessisright',
-			'password_confirmation' => 'yourguessisright'
+			'email' => 'Zulauf.Brendon@example.com',
 		]);
 
 		$response->assertRedirect('/');
-	}*/
+	}
+
 	/***************************** User (END) ************************************/
 
 	/***************************** Blog (START) ************************************/

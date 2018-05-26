@@ -158,7 +158,7 @@ class UserController extends Controller
         $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->orderBy('created_at', 'DESC')->with(['story' => function($q){
             $q->select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->where('publish', 1)->where('active', 1)->get();
         }
-        ])->paginate(5);
+        ])->paginate(8);
 
         foreach ($stories as $i => $story) {
             $story['image_url'] = $this->loadStoryImage($story['id']);
