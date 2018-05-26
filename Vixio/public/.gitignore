@@ -1,1 +1,4 @@
 /image/*
+!/image/default-blog.png
+!/image/default-story.png
+!/image/default-user.png
