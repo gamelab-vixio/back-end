@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\UserReport;
 use Auth;
+use File;
+use Image;
 
 class UserReportController extends Controller
 {
@@ -19,9 +21,9 @@ class UserReportController extends Controller
         $imageURL = NULL;
 
         //store image
-        if($request->has('photo') && $request->file('photo')->isvalid()){
+        if($request->has(['photo']) && $request->file('photo')->isvalid() ){
             $image = 'report_'.$reporterUserID.'.'.$request->file('photo')->extension();
-            $path = 'image/report/user/'.$reported_user_id.'/';
+            $path = 'image/report/'.$type.'/user/'.$reported_user_id.'/';
             if (! File::exists(public_path($path))) {
                 File::makeDirectory(public_path($path), 0755, true, true);
             }

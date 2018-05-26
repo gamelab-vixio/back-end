@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Story;
 use App\StoryReport;
 use Auth;
+use File;
+use Image;
 
 class StoryReportController extends Controller
 {
@@ -19,7 +21,7 @@ class StoryReportController extends Controller
         $imageURL = NULL;
 
 		//store image
-        if($request->has('photo') && $request->file('photo')->isvalid()){
+        if($request->has(['photo']) && $request->file('photo')->isvalid() ){
             $image = 'report_'.$reporterUserID.'.'.$request->file('photo')->extension();
             $path = 'image/report/story/'.$story_id.'/';
             if (! File::exists(public_path($path))) {
