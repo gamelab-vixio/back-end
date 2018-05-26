@@ -383,7 +383,7 @@ class StoryController extends Controller
 
         $stories = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
                 $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
-            }])->where('user_id', $userID)->where('active', '=', '1')->where('publish', '=', '1')->where('title','LIKE', '%'.$name.'%')->paginate(5);
+            }])->where('user_id', $userID)->where('active', '=', '1')->where('title','LIKE', '%'.$name.'%')->paginate(5);
 
         foreach($stories as $story){
             $story['image_url'] = $this->loadImage($story['id']);

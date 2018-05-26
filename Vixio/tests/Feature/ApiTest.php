@@ -28,8 +28,9 @@ class ApiTest extends TestCase{
 			'Content-Type' => 'application/json'
 		];
 
-		//change accordingly with the stories user_id
-		$user = User::find(7);
+		//change accordingly with the stories user_id (find stories id = 1 )
+		//publish the story
+		$user = User::find(88);
 
 		$this->token = JWTAuth::fromUser($user);
         
@@ -190,6 +191,29 @@ class ApiTest extends TestCase{
 	/** @test */
 	function searchStoryList(){
 		$response = $this->get('/api/story/search/quos');
+
+		$response->assertJsonStructure([
+			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
+			'data' => [
+				'*' => [
+					'id','user_id','title','image_url','publish','active','year_of_release',
+					'user' => ['id','name'],
+					'story_category' => [
+						'*' => [
+								'story_id','category_type_id',
+								'category_type' => ['id', 'name']
+							]
+					]
+				]
+			]
+		]);
+
+		$response->assertStatus(200);
+	}
+
+	/** @test */
+	function searchWriterStoryList(){
+		$response = $this->get('/api/story/writer/search/quos');
 
 		$response->assertJsonStructure([
 			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',

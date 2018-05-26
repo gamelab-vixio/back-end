@@ -27,6 +27,14 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 			'uses' => 'CategoryController@adminGetType',
 		])->name('categoryType');
 
+		Route::post('/genre/create', [
+			'uses' => 'CategoryController@createGenre',
+		])->name('addGenre');
+
+		Route::post('/type/create', [
+			'uses' => 'CategoryController@createType',
+		])->name('addType');
+
 		Route::post('/genre/adminUpdate/{id}', [
 			'uses' => 'CategoryController@adminUpdateGenre',
 		])->name('editGenre');
@@ -42,14 +50,6 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 		Route::post('/type/adminDelete/{id}', [
 			'uses' => 'CategoryController@adminDeleteType',
 		])->name('deleteType');
-
-		Route::post('/genre/create', [
-			'uses' => 'CategoryController@createGenre',
-		])->name('addGenre');
-
-		Route::post('/type/create', [
-			'uses' => 'CategoryController@createType',
-		])->name('addType');
 	});
 
 	Route::prefix('docs')->group(function(){
