@@ -115,16 +115,6 @@ Route::prefix('story')->group(function(){
 			'middleware' => 'auth.jwt'
 		]);
 
-		Route::get('/getContent/{id}',[
-			'uses' => 'StoryController@writerGetContent',
-			'middleware' => 'auth.jwt'
-		]);
-
-		Route::get('/getCategoryList',[
-			'uses' => 'StoryController@writerGetCategoryList',
-			'middleware' => 'auth.jwt'
-		]);
-
 		Route::post('/update/{id}',[
 			'uses' => 'StoryController@writerUpdateStory',
 			'middleware' => 'auth.jwt'

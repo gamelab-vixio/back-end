@@ -9,6 +9,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\Story;
 use App\StoryCategory;
 use App\CategoryType;
+use App\CategoryGenre;
 use App\StoryReview;
 use App\StoryComment;
 use App\StoryPlayed;
@@ -99,16 +100,23 @@ class StoryController extends Controller
 
     public function writerGetStory($sid){
     	$userID = Auth::user()->id;
-    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+    	$story = Story::select(['id','user_id','title', 'description','image_url', 'publish','content','active','year_of_release','played'])->with(['storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
             $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
         }])->where('user_id', '=', $userID)->find($sid);
 
         $story['image_url'] = $this->loadImage($sid);
 
-        return response()->json($story, 200);
+        $genres = CategoryGenre::where('id','!=',1)->with(['categoryType:id,genre_id,name'])->has('categoryType','>',0)->get(['id','genre']);
+
+        $data = [
+            'stories' => $story,
+            'genres' => $genres
+        ];
+
+        return response()->json($data, 200);
     }
 
-    public function writerGetContent($sid){
+    /*public function writerGetContent($sid){
     	$userID = Auth::user()->id;
 
     	$content = Story::select(['user_id','content'])->where('user_id', '=', $userID)->find($sid);    	
@@ -120,7 +128,7 @@ class StoryController extends Controller
     	$categories = CategoryType::where('genre_id','!=','1')->get(['id','genre_id','name']);
 
         return response()->json($categories, 200);
-    }
+    }*/
 
     public function writerUpdateStory(Request $request, $sid){
     	$this->validate($request,[

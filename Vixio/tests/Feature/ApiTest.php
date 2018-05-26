@@ -326,26 +326,6 @@ class ApiTest extends TestCase{
 	}
 
 	/** @test */
-	function writer_get_story_content_using_id(){
-		$response = $this->get('/api/story/writer/getContent/1/?token='.$this->token);
-
-		$response->assertJsonStructure(['user_id','content']);
-
-		$response->assertStatus(200);
-	}
-
-	/** @test */
-	function writer_get_category_list(){
-		$response = $this->get('/api/story/writer/getCategoryList/?token='.$this->token);
-
-		$response->assertJsonStructure([
-			'*'=> ['id','genre_id','name']
-		]);
-
-		$response->assertStatus(200);
-	}
-
-	/** @test */
 	function writer_story_update(){
 
 		$response = $this->withHeaders($this->header)->json('POST', '/api/story/writer/update/1/?token='.$this->token, [
