@@ -45,7 +45,6 @@ class ResetPasswordController extends Controller
     public function getToken(Request $request, $token = null){
         $data = [
             'token' => $token,
-            'email' => $request->email
         ];
         //go to form for reset password
         return response()->json($data ,201);

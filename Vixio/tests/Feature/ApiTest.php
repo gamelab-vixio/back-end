@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Session;
 use JWTAuth;
 use App\User;
 use Auth;
@@ -20,6 +21,7 @@ class ApiTest extends TestCase{
 
 	public function setUp(){
 		parent::setUp();
+		Session::start();
 
 		$this->header = [
 			'X-Requested-With' => 'XMLHttpRequest',

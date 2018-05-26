@@ -306,6 +306,7 @@ class StoryController extends Controller
 
     public function getMLList(){
         //Test
+        //Jangan lupa loadImage buat image_url
         $client = new \GuzzleHttp\Client();
         $res = $client->request('GET', 'vixio-backend.gamelabnetwork.com/api/story/getStoryList');
 
