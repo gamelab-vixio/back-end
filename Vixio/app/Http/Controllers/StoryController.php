@@ -368,7 +368,11 @@ class StoryController extends Controller
                 $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
             }])->where('active', '=', '1')->where('publish', '=', '1')->where('title','LIKE', '%'.$name.'%')->paginate(5);
 
-            return response()->json($stories, 200);
+        foreach($stories as $story){
+            $story['image_url'] = $this->loadImage($story['id']);
+        }
+
+        return response()->json($stories, 200);
     }
 
     public function writerSearchStory($name = NULL){
@@ -381,7 +385,11 @@ class StoryController extends Controller
                 $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
             }])->where('user_id', $userID)->where('active', '=', '1')->where('publish', '=', '1')->where('title','LIKE', '%'.$name.'%')->paginate(5);
 
-            return response()->json($stories, 200);
+        foreach($stories as $story){
+            $story['image_url'] = $this->loadImage($story['id']);
+        }
+        
+        return response()->json($stories, 200);
     }
 
     public function addPlayed($sid){
