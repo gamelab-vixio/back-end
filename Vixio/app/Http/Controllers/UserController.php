@@ -155,8 +155,12 @@ class UserController extends Controller
     public function history(){
         $userID = Auth::user()->id;
 
-        $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->orderBy('created_at', 'DESC')->with(['story' => function($q){
+        $stories = StoryPlayed::select(['id','story_id','user_id', 'created_at'])->where('user_id', $userID)->orderBy('created_at', 'DESC')->with([
+            'story' => function($q){
             $q->select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->where('publish', 1)->where('active', 1)->get();
+        }, 'story.user:id,name','story.storyCategory:story_id,category_type_id','story.storyCategory.categoryType:id,name',
+            'story.storyReview'=>function($query){
+            $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
         }
         ])->paginate(8);
 
