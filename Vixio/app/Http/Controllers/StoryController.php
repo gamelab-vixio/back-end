@@ -302,7 +302,7 @@ class StoryController extends Controller
         //Test
         //Jangan lupa loadImage buat image_url
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'vixio-backend.gamelabnetwork.com/api/story/getStoryList');
+        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
 
         $story = json_decode($res->getBody()->getContents(), true);
 
