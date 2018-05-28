@@ -235,8 +235,77 @@ class ApiTest extends TestCase{
 	}
 
 	/** @test */
-	function get_ML_story_list(){
-		$response = $this->get('/api/story/getMLList');
+	function get_most_popular(){
+		$response = $this->get('/api/story/getMostPopular');
+
+		$response->assertJsonStructure([
+			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
+			'data' => [
+				'*' => [
+					'id','user_id','title','image_url','publish','active','year_of_release',
+					'user' => ['id','name'],
+					'story_category' => [
+						'*' => [
+								'story_id','category_type_id',
+								'category_type' => ['id', 'name']
+							]
+					]
+				]
+			]
+		]);
+
+		$response->assertStatus(200);
+	}
+
+	/** @test */
+	function get_new_available(){
+		$response = $this->get('/api/story/getNewAvailable');
+
+		$response->assertJsonStructure([
+			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
+			'data' => [
+				'*' => [
+					'id','user_id','title','image_url','publish','active','year_of_release',
+					'user' => ['id','name'],
+					'story_category' => [
+						'*' => [
+								'story_id','category_type_id',
+								'category_type' => ['id', 'name']
+							]
+					]
+				]
+			]
+		]);
+
+		$response->assertStatus(200);
+	}
+
+	/** @test */
+	function get_user_based(){
+		$response = $this->get('/api/story/getUserBased');
+
+		$response->assertJsonStructure([
+			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',
+			'data' => [
+				'*' => [
+					'id','user_id','title','image_url','publish','active','year_of_release',
+					'user' => ['id','name'],
+					'story_category' => [
+						'*' => [
+								'story_id','category_type_id',
+								'category_type' => ['id', 'name']
+							]
+					]
+				]
+			]
+		]);
+
+		$response->assertStatus(200);
+	}
+
+	/** @test */
+	function get_item_based(){
+		$response = $this->get('/api/story/getItemBased');
 
 		$response->assertJsonStructure([
 			'current_page', 'first_page_url','from', 'last_page','last_page_url','next_page_url','path','per_page','prev_page_url','to','total',

@@ -298,7 +298,40 @@ class StoryController extends Controller
         return response()->json($response ,201);
     }
 
-    public function getMLList(){
+    public function getMostPopular(){
+        //Test
+        //Jangan lupa loadImage buat image_url
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
+
+        $story = json_decode($res->getBody()->getContents(), true);
+
+        return response()->json($story, 200);
+    }
+
+    public function getNewAvailable(){
+        //Test
+        //Jangan lupa loadImage buat image_url
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
+
+        $story = json_decode($res->getBody()->getContents(), true);
+
+        return response()->json($story, 200);
+    }
+
+    public function getUserBased(){
+        //Test
+        //Jangan lupa loadImage buat image_url
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
+
+        $story = json_decode($res->getBody()->getContents(), true);
+
+        return response()->json($story, 200);
+    }
+
+    public function getItemBased(){
         //Test
         //Jangan lupa loadImage buat image_url
         $client = new \GuzzleHttp\Client();
