@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 use JWTAuth;
 use App\User;
 use Auth;
-class ApiTest extends TestCase{
+class StoryApiTest extends TestCase{
 
 	// use RefreshDatabase;
 	use DatabaseTransactions;

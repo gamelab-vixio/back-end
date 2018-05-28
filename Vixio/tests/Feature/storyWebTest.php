@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Session;
 use App\User;
 use Auth;
-class WebTest extends TestCase{
+class StoryWebTest extends TestCase{
 
 	// use RefreshDatabase;
 	// use WithoutMiddleware;
