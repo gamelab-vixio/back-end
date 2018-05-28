@@ -36,17 +36,28 @@ class WebTest extends TestCase{
 
 	/***************************** User (START) ************************************/
 	/** @test */
-	function login(){
+	function view_login(){
 		//login page
 		$response = $this->get('/login');
 
         $response->assertStatus(200);
-
+	}
+	/** @test */
+	function login(){
 		//try to login
 		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/login',[
 			'_token' => csrf_token(),
 			'email' => 'Witting.Ava@example.net',
 			'password' => '123123'
+		]);
+
+		//redirect on success
+	    $response->assertStatus(302);
+	    $response->assertRedirect('/');
+
+	    //logout page
+		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/logout',[
+			'_token' => csrf_token(),
 		]);
 
 		//redirect on success
@@ -379,12 +390,6 @@ class WebTest extends TestCase{
 	}
 
 	/** @test */
-	function story_report_list(){
-		$response = $this->actingAs($this->user)->get('/report/story');
-		$response->assertStatus(200);
-	}
-
-	/** @test */
 	function ban_user(){
 		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/report/user/ban/5',[
 			'_token' => csrf_token(),
@@ -402,6 +407,12 @@ class WebTest extends TestCase{
 		$response->assertRedirect('/');
 	}
 
+	/** @test */
+	function story_report_list(){
+		$response = $this->actingAs($this->user)->get('/report/story');
+		$response->assertStatus(200);
+	}
+	
 	/** @test */
 	function ban_story(){
 		$response = $this->actingAs($this->user)->withHeaders($this->header)->json('POST', '/report/story/ban/5',[
