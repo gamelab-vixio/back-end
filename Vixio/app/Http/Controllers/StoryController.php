@@ -299,47 +299,65 @@ class StoryController extends Controller
     }
 
     public function getMostPopular(){
-        //Test
-        //Jangan lupa loadImage buat image_url
+        // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
-
-        $story = json_decode($res->getBody()->getContents(), true);
-
-        return response()->json($story, 200);
+        $res = $client->request('GET', 'http://178.128.50.251/mostpopular');
+        $recommendations = json_decode($res->getBody()->getContents(), true);
+        $recommendationsList = $recommendations['recommendations'];
+        // Convert the list into objects
+        $recommendationsObject = Story::find($recommendationsList);
+        foreach($recommendationsObject as $story){
+            $story['image_url'] = $this->loadImage($story['id']);
+        }
+        // Return recommendations object
+        return response()->json($recommendationsObject, 200);
     }
 
     public function getNewAvailable(){
-        //Test
-        //Jangan lupa loadImage buat image_url
+        // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
-
-        $story = json_decode($res->getBody()->getContents(), true);
-
-        return response()->json($story, 200);
+        $res = $client->request('GET', 'http://178.128.50.251/newreleases');
+        $recommendations = json_decode($res->getBody()->getContents(), true);
+        $recommendationsList = $recommendations['recommendations'];
+        // Convert the list into objects
+        $recommendationsObject = Story::find($recommendationsList);
+        foreach($recommendationsObject as $story){
+            $story['image_url'] = $this->loadImage($story['id']);
+        }
+        // Return recommendations object
+        return response()->json($recommendationsObject, 200);
     }
 
-    public function getUserBased(){
-        //Test
-        //Jangan lupa loadImage buat image_url
+    public function getUserBased($user_id){
+        $userIdString = (string) $user_id;
+        // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
-
-        $story = json_decode($res->getBody()->getContents(), true);
-
-        return response()->json($story, 200);
+        $res = $client->request('GET', 'http://178.128.50.251/personalized/' . $userIdString);
+        $recommendations = json_decode($res->getBody()->getContents(), true);
+        $recommendationsList = $recommendations['recommendations'];
+        // Convert the list into objects
+        $recommendationsObject = Story::find($recommendationsList);
+        foreach($recommendationsObject as $story){
+            $story['image_url'] = $this->loadImage($story['id']);
+        }
+        // Return recommendations object
+        return response()->json($recommendationsObject, 200);
     }
 
-    public function getItemBased(){
-        //Test
-        //Jangan lupa loadImage buat image_url
+    public function getItemBased($story_id){
+        $storyIdString = (string) $story_id;
+        // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'https://vixio-backend.gamelabnetwork.com/api/story/getStoryList');
-
-        $story = json_decode($res->getBody()->getContents(), true);
-
-        return response()->json($story, 200);
+        $res = $client->request('GET', 'http://178.128.50.251/similarstories/' . $storyIdString);
+        $recommendations = json_decode($res->getBody()->getContents(), true);
+        $recommendationsList = $recommendations['recommendations'];
+        // Convert the list into objects
+        $recommendationsObject = Story::find($recommendationsList);
+        foreach($recommendationsObject as $story){
+            $story['image_url'] = $this->loadImage($story['id']);
+        }
+        // Return recommendations object
+        return response()->json($recommendationsObject, 200);
     }
 
     public function getStoryList(){
