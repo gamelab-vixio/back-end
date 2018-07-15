@@ -162,7 +162,7 @@ class UserController extends Controller
             'story.storyReview'=>function($query){
             $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
         }
-        ])->paginate(8);
+        ])->paginate(10);
 
         foreach ($stories as $i => $story) {
             $story['image_url'] = $this->loadStoryImage($story['id']);
