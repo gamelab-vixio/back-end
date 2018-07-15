@@ -73,11 +73,11 @@ Route::prefix('story')->group(function(){
 		'uses' => 'StoryController@getNewAvailable'
 	]);
 	
-	Route::get('/getUserBased', [
+	Route::get('/getUserBased/{user_id}', [
 		'uses' => 'StoryController@getUserBased'
 	]);
 	
-	Route::get('/getItemBased', [
+	Route::get('/getItemBased/{story_id}', [
 		'uses' => 'StoryController@getItemBased'
 	]);
 	
