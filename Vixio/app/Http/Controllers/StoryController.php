@@ -308,11 +308,18 @@ class StoryController extends Controller
         $recommendationsList = $recommendations['recommendations'];
         // Convert the list into objects
         $recommendationsObject = Story::find($recommendationsList);
-        foreach($recommendationsObject as $story){
-            $story['image_url'] = $this->loadImage($story['id']);
+
+        $stories = [];
+
+        foreach($recommendationsObject as $key => $recommendation){
+            $story = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+                $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+            }])->where('active', '=', '1')->where('publish', '=', '1')->find($recommendation['id']);
+            $story['image_url'] = $this->loadImage($recommendation['id']);
+            $stories[$key] = $story;
         }
         // Return recommendations object
-        return response()->json($recommendationsObject, 200);
+        return response()->json($stories, 200);
     }
 
     public function getNewAvailable(){
@@ -321,13 +328,21 @@ class StoryController extends Controller
         $res = $client->request('GET', $this->machineLearningURL . 'newreleases');
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
+        
         // Convert the list into objects
         $recommendationsObject = Story::find($recommendationsList);
-        foreach($recommendationsObject as $story){
-            $story['image_url'] = $this->loadImage($story['id']);
+
+        $stories = [];
+
+        foreach($recommendationsObject as $key => $recommendation){
+            $story = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+                $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+            }])->where('active', '=', '1')->where('publish', '=', '1')->find($recommendation['id']);
+            $story['image_url'] = $this->loadImage($recommendation['id']);
+            $stories[$key] = $story;
         }
         // Return recommendations object
-        return response()->json($recommendationsObject, 200);
+        return response()->json($stories, 200);
     }
 
     public function getUserBased(){
@@ -337,13 +352,21 @@ class StoryController extends Controller
         $res = $client->request('GET', $this->machineLearningURL . 'personalized/' . $userID);
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
+        
         // Convert the list into objects
         $recommendationsObject = Story::find($recommendationsList);
-        foreach($recommendationsObject as $story){
-            $story['image_url'] = $this->loadImage($story['id']);
+
+        $stories = [];
+
+        foreach($recommendationsObject as $key => $recommendation){
+            $story = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+                $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+            }])->where('active', '=', '1')->where('publish', '=', '1')->find($recommendation['id']);
+            $story['image_url'] = $this->loadImage($recommendation['id']);
+            $stories[$key] = $story;
         }
         // Return recommendations object
-        return response()->json($recommendationsObject, 200);
+        return response()->json($stories, 200);
     }
 
     public function getItemBased($storyId){
@@ -353,13 +376,21 @@ class StoryController extends Controller
         $res = $client->request('GET', $this->machineLearningURL . 'similarstories/' . $storyIdString);
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
+        
         // Convert the list into objects
         $recommendationsObject = Story::find($recommendationsList);
-        foreach($recommendationsObject as $story){
-            $story['image_url'] = $this->loadImage($story['id']);
+
+        $stories = [];
+
+        foreach($recommendationsObject as $key => $recommendation){
+            $story = Story::select(['id','user_id','title','image_url', 'publish','active','year_of_release'])->with(['user:id,name','storyCategory:story_id,category_type_id','storyCategory.categoryType:id,name', 'storyReview'=>function($query){
+                $query->groupBy('story_id')->selectRaw('story_id, TRUNCATE(avg(star), 1) as star');
+            }])->where('active', '=', '1')->where('publish', '=', '1')->find($recommendation['id']);
+            $story['image_url'] = $this->loadImage($recommendation['id']);
+            $stories[$key] = $story;
         }
         // Return recommendations object
-        return response()->json($recommendationsObject, 200);
+        return response()->json($stories, 200);
     }
 
     public function getStoryList(){
