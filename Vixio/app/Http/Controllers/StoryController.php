@@ -23,6 +23,8 @@ use JWTAuth;
 
 class StoryController extends Controller
 {
+    protected $machineLearningURL = 'http://178.128.50.251/';
+
     public function createStory(Request $request){
     	$this->validate($request,[
     		'title' => 'required',
@@ -301,7 +303,7 @@ class StoryController extends Controller
     public function getMostPopular(){
         // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://178.128.50.251/mostpopular');
+        $res = $client->request('GET', $this->machineLearningURL . 'mostpopular');
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
         // Convert the list into objects
@@ -316,7 +318,7 @@ class StoryController extends Controller
     public function getNewAvailable(){
         // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://178.128.50.251/newreleases');
+        $res = $client->request('GET', $this->machineLearningURL . 'newreleases');
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
         // Convert the list into objects
@@ -328,11 +330,11 @@ class StoryController extends Controller
         return response()->json($recommendationsObject, 200);
     }
 
-    public function getUserBased($user_id){
-        $userIdString = (string) $user_id;
+    public function getUserBased(){
+        $userID = (string) Auth::user()->id;
         // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://178.128.50.251/personalized/' . $userIdString);
+        $res = $client->request('GET', $this->machineLearningURL . 'personalized/' . $userID);
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
         // Convert the list into objects
@@ -344,11 +346,11 @@ class StoryController extends Controller
         return response()->json($recommendationsObject, 200);
     }
 
-    public function getItemBased($story_id){
-        $storyIdString = (string) $story_id;
+    public function getItemBased($storyId){
+        $storyIdString = (string) $storyId;
         // Fetch recommendations from Vixio Recommender System API
         $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://178.128.50.251/similarstories/' . $storyIdString);
+        $res = $client->request('GET', $this->machineLearningURL . 'similarstories/' . $storyIdString);
         $recommendations = json_decode($res->getBody()->getContents(), true);
         $recommendationsList = $recommendations['recommendations'];
         // Convert the list into objects
